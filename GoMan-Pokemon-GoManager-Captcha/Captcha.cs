@@ -14,7 +14,7 @@ namespace GoManCaptcha
 {
     class Captcha : IPlugin
     {
-        public override string PluginName { get; set; }
+        public override string PluginName { get; set; } = "GoMan Auto Captcha";
         public static ApplicationModel Settings = ApplicationModel.Settings();
 
         //Subitems when hovering over plugin in menu
