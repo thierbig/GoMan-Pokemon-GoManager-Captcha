@@ -14,11 +14,12 @@ namespace GoManCaptcha
 {
     class Captcha : IPlugin
     {
-        public override string PluginName { get; set; } = "GoManCaptcha";
+        public override string PluginName { get; set; }
         public static ApplicationModel Settings = ApplicationModel.Settings();
 
         //Subitems when hovering over plugin in menu
         public override IEnumerable<PluginDropDownItem> MenuItems { get; set; }
+        private IEnumerable<IManager> _managers;
 
         public Captcha()
         {
@@ -27,8 +28,6 @@ namespace GoManCaptcha
         public override void AddManager(IManager manager)
         {
             manager.OnCaptcha += CaptchaHandler;
-            //manager.OnAccountStop += StopHandler;
-            //manager.OnAccountStop += StartHandler;
             base.AddManager(manager);
 
         }
@@ -36,8 +35,6 @@ namespace GoManCaptcha
         public override void RemoveManager(IManager manager)
         {
             manager.OnCaptcha -= CaptchaHandler;
-            //manager.OnAccountStop -= StopHandler;
-            //manager.OnAccountStop -= StartHandler;
             base.RemoveManager(manager);
 
         }
@@ -52,56 +49,69 @@ namespace GoManCaptcha
                     "2Captcha.com API Key", -1, -1);
 
                 Settings.CaptchaKey = captchaApiKey;
-                Settings.SaveSetting();
+                await Settings.SaveSetting();
             }
-
+            _managers = managers;
             //Occurs when the plugin is loaded.
-            foreach (var manager in managers)
+            foreach (var manager in _managers)
             {
                 manager.OnCaptcha += CaptchaHandler;
-               // manager.OnAccountStop += StopHandler;
-               // manager.OnAccountStop += StartHandler;
             }
            
             return true;
         }
-        private static readonly Func<string, string, Task<MethodResult<string>>> GetCaptchaResponseAction = async (captchaKey, captchaUrl) => await HttpStuff.GetCaptchaResponse(captchaKey, captchaUrl);
+        private static readonly Func<string, string, IManager, Task<MethodResult>> SolveCaptchaAction = async (captchaKey, captchaUrl, manager) => await SolveCaptcha(captchaKey, captchaUrl, manager);
 
         public async void CaptchaHandler(object sender, CaptchaRequiredEventArgs captchaRequiredEventArgs)
         {
+
             IManager manager = sender as IManager;
             if (manager == null) return;
 
-            while (manager.State != BotState.Paused)
+            if (!Settings.Enabled)
             {
-                await Task.Delay(250);
+                manager.Stop();
+                return;
             }
-            
-            MethodResult<string> captchaResponse = await RetryAction(GetCaptchaResponseAction, Settings.CaptchaKey, manager.CaptchaURL, 5);
-            var verifyCaptchaResults = await manager.VerifyCaptcha(captchaResponse.Data);
 
-            if (!verifyCaptchaResults.Success) manager.Stop();
+            if (!manager.CaptchaRequired) return;
+
+            while (manager.State != BotState.Paused)
+                await Task.Delay(250);
+
+           var solveCaptchaRetryActionResults = await RetryAction(
+               SolveCaptchaAction, 
+               Settings.CaptchaKey, 
+               manager.CaptchaURL, 
+               manager, 
+               Settings.SolveAttemptsBeforeStop);
+
+           if (!solveCaptchaRetryActionResults.Success) manager.Stop();
         }
 
-        private static async Task<MethodResult<string>> RetryAction(Func<string, string, Task<MethodResult<string>>> action, string captchaKey, string captchaUrl, int tryCount)
+        public static async Task<MethodResult> SolveCaptcha(string captchaKey, string captchaUrl, IManager manager)
+        {
+           MethodResult<string> captchaResponse = await HttpStuff.GetCaptchaResponse(captchaKey, captchaUrl);
+           if (!captchaResponse.Success) return captchaResponse;
+           
+           return await manager.VerifyCaptcha(captchaResponse.Data);
+        }
+
+        private static async Task<MethodResult> RetryAction(Func<string, string, IManager, Task<MethodResult>> action, string captchaKey, string captchaUrl, IManager manager, int tryCount)
         {
             int tries = 1;
-            MethodResult<string> methodResult = new MethodResult<string>();
+            MethodResult methodResult = new MethodResult();
 
             while (tries < tryCount)
             {
-                methodResult = await action(captchaKey, captchaUrl);
-
-                var tryMsg = " Try #" + tries;
+                methodResult = await action(captchaKey, captchaUrl, manager);
 
                 if (!methodResult.Success)
-                {
                     tries++;
-                }
 
                 if (methodResult.Success) break;
+                await Task.Delay(1000);
             }
-
             return methodResult;
         }
 
@@ -118,12 +128,15 @@ namespace GoManCaptcha
 
         public override async Task Run(IEnumerable<IManager> managers)
         {
-            MessageBox.Show("Fuck bitches get money");
+            Settings.Enabled = !Settings.Enabled;
+            await Settings.SaveSetting();
+
+            MessageBox.Show("Autosolve Captcha is " + Settings.Enabled);
         }
 
         public override async Task<bool> Save()
         {
-            return true;
+            return await Settings.SaveSetting();
         }
     }
 }
