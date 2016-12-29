@@ -78,8 +78,6 @@ namespace GoManCaptcha
             }
             
             MethodResult<string> captchaResponse = await RetryAction(GetCaptchaResponseAction, Settings.CaptchaKey, manager.CaptchaURL, 5);
-            Settings.TotalCaptchaSolved += 1;
-            Settings.SaveSetting();
             var verifyCaptchaResults = await manager.VerifyCaptcha(captchaResponse.Data);
 
             if (!verifyCaptchaResults.Success) manager.Stop();

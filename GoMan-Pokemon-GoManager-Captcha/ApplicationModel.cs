@@ -33,7 +33,6 @@ namespace GoManCaptcha
         public string ProxyDomain { get; set; } = "chancity.hopto.org";
         public int ProxyPort { get; set; } = 1080;
         public string CaptchaKey { get; set; } = "";
-        public int TotalCaptchaSolved { get; set; } = 0;
 
         public void SaveSetting()
         {
