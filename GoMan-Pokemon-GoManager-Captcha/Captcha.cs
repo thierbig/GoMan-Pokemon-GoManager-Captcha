@@ -16,14 +16,8 @@ namespace GoManCaptcha
     {
         public override string PluginName { get; set; } = "GoMan Auto Captcha";
         public static ApplicationModel Settings = ApplicationModel.Settings();
-
-        //Subitems when hovering over plugin in menu
         public override IEnumerable<PluginDropDownItem> MenuItems { get; set; }
-        private IEnumerable<IManager> _managers;
-
-        public Captcha()
-        {
-        }
+        private static readonly Func<string, string, IManager, Task<MethodResult>> SolveCaptchaAction = async (captchaKey, captchaUrl, manager) => await SolveCaptcha(captchaKey, captchaUrl, manager);
 
         public override void AddManager(IManager manager)
         {
@@ -51,16 +45,15 @@ namespace GoManCaptcha
                 Settings.CaptchaKey = captchaApiKey;
                 await Settings.SaveSetting();
             }
-            _managers = managers;
+
             //Occurs when the plugin is loaded.
-            foreach (var manager in _managers)
+            foreach (var manager in managers)
             {
                 manager.OnCaptcha += CaptchaHandler;
             }
            
             return true;
         }
-        private static readonly Func<string, string, IManager, Task<MethodResult>> SolveCaptchaAction = async (captchaKey, captchaUrl, manager) => await SolveCaptcha(captchaKey, captchaUrl, manager);
 
         public async void CaptchaHandler(object sender, CaptchaRequiredEventArgs captchaRequiredEventArgs)
         {
@@ -115,25 +108,14 @@ namespace GoManCaptcha
             return methodResult;
         }
 
-        public void StartHandler(object sender, EventArgs eventArgs)
-        {
-            IManager manager = sender as IManager;
-        }
-
-        public void StopHandler(object sender, EventArgs eventArgs)
-        {
-            IManager manager = sender as IManager;
-        }
-
-
         public override async Task Run(IEnumerable<IManager> managers)
         {
             Settings.Enabled = !Settings.Enabled;
             await Settings.SaveSetting();
 
-            MessageBox.Show("Autosolve Captcha enabled: " + Settings.Enabled);
+            MessageBox.Show("Autosolve Captcha enabled: " + Settings.Enabled + "\n\n Make sure you leave 'Stop on Captcha' unchecked before starting bots.", 
+                PluginName, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
         public override async Task<bool> Save()
         {
             return await Settings.SaveSetting();
