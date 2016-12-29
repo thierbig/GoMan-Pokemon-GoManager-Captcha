@@ -131,7 +131,7 @@ namespace GoManCaptcha
             Settings.Enabled = !Settings.Enabled;
             await Settings.SaveSetting();
 
-            MessageBox.Show("Autosolve Captcha is " + Settings.Enabled);
+            MessageBox.Show("Autosolve Captcha enabled: " + Settings.Enabled);
         }
 
         public override async Task<bool> Save()
