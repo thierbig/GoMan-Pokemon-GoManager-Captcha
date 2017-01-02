@@ -34,6 +34,8 @@ namespace GoManCaptcha
 
         public override async Task<bool> Load(IEnumerable<IManager> managers)
         {
+            if (!Directory.Exists("./Plugins/GoManLogs")) Directory.CreateDirectory("./Plugins/GoManLogs");
+
             if (string.IsNullOrEmpty(Settings.CaptchaKey))
             {
                 var captchaApiKey =
@@ -67,12 +69,11 @@ namespace GoManCaptcha
             }
 
             if (!manager.CaptchaRequired) return;
+            var logPath = $"./Plugins/GoManLogs/{manager.AccountName}_log.txt";
+            LogMessageToFile(logPath, $"Solving captcha at URL: {manager.CaptchaURL}");
 
             while (manager.State != BotState.Paused)
                 await Task.Delay(250);
-
-            var logPath = $"./Plugins/GoManLogs/{manager.AccountName}_log.txt";
-            LogMessageToFile(logPath, $"Solving captcha at URL: {manager.CaptchaURL}");
 
             var solveCaptchaRetryActionResults = await RetryAction(
                 SolveCaptchaAction,
