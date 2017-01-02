@@ -82,8 +82,8 @@ namespace GoManCaptcha
                 manager,
                 Settings.SolveAttemptsBeforeStop);
 
-            if (solveCaptchaRetryActionResults.Success) return;
             LogMessageToFile(logPath, solveCaptchaRetryActionResults.Message);
+            if (solveCaptchaRetryActionResults.Success) return;
             manager.Stop();
         }
 
