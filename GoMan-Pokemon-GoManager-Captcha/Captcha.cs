@@ -14,7 +14,7 @@ namespace GoManCaptcha
     internal class Captcha : IPlugin
     {
         public static ApplicationModel Settings = ApplicationModel.Settings();
-        public static ArrayList AccountsBeingChecked = new ArrayList();
+        public static HashSet<IManager> AccountsBeingChecked = new HashSet<IManager>();
         private static readonly Func<string, string, IManager, Task<MethodResult>> SolveCaptchaAction =
             async (captchaKey, captchaUrl, manager) => await SolveCaptcha(captchaKey, captchaUrl, manager);
 
