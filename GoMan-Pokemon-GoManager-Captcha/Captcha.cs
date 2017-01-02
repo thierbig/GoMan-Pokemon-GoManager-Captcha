@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace GoManCaptcha
     internal class Captcha : IPlugin
     {
         public static ApplicationModel Settings = ApplicationModel.Settings();
-
+        public static ArrayList AccountsBeingChecked = new ArrayList();
         private static readonly Func<string, string, IManager, Task<MethodResult>> SolveCaptchaAction =
             async (captchaKey, captchaUrl, manager) => await SolveCaptcha(captchaKey, captchaUrl, manager);
 
@@ -68,7 +69,9 @@ namespace GoManCaptcha
                 return;
             }
 
-            if (!manager.CaptchaRequired) return;
+            if (!manager.CaptchaRequired || AccountsBeingChecked.Contains(manager)) return;
+            AccountsBeingChecked.Add(manager);
+
             var logPath = $"./Plugins/GoManLogs/{manager.AccountName}_log.txt";
             LogMessageToFile(logPath, $"Solving captcha at URL: {manager.CaptchaURL}");
 
@@ -83,8 +86,10 @@ namespace GoManCaptcha
                 Settings.SolveAttemptsBeforeStop);
 
             LogMessageToFile(logPath, solveCaptchaRetryActionResults.Message);
-            if (solveCaptchaRetryActionResults.Success) return;
-            manager.Stop();
+            AccountsBeingChecked.Remove(manager);
+
+            if (!solveCaptchaRetryActionResults.Success) manager.Stop();
+
         }
 
         public static async Task<MethodResult> SolveCaptcha(string captchaKey, string captchaUrl, IManager manager)
