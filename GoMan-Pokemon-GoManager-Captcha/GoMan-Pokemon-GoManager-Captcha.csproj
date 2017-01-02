@@ -35,7 +35,12 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GoPlugin">
+    <Reference Include="GoMan, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\GoMan\bin\Release\GoMan.dll</HintPath>
+    </Reference>
+    <Reference Include="GoPlugin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\GoPlugin.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
@@ -57,7 +62,6 @@
     <Compile Include="ApplicationModel.cs" />
     <Compile Include="Captcha.cs" />
     <Compile Include="HttpStuff.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

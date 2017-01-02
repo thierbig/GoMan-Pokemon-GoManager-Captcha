@@ -1,46 +1,46 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
 using GoPlugin;
 using GoPlugin.Enums;
 using GoPlugin.Events;
+using Microsoft.VisualBasic;
 
 namespace GoManCaptcha
 {
-    class Captcha : IPlugin
+    internal class Captcha : IPlugin
     {
-        public override string PluginName { get; set; } = "GoMan Auto Captcha";
         public static ApplicationModel Settings = ApplicationModel.Settings();
+
+        private static readonly Func<string, string, IManager, Task<MethodResult>> SolveCaptchaAction =
+            async (captchaKey, captchaUrl, manager) => await SolveCaptcha(captchaKey, captchaUrl, manager);
+
+        public override string PluginName { get; set; } = "GoMan Auto Captcha";
         public override IEnumerable<PluginDropDownItem> MenuItems { get; set; }
-        private static readonly Func<string, string, IManager, Task<MethodResult>> SolveCaptchaAction = async (captchaKey, captchaUrl, manager) => await SolveCaptcha(captchaKey, captchaUrl, manager);
 
         public override void AddManager(IManager manager)
         {
             manager.OnCaptcha += CaptchaHandler;
             base.AddManager(manager);
-
         }
 
         public override void RemoveManager(IManager manager)
         {
             manager.OnCaptcha -= CaptchaHandler;
             base.RemoveManager(manager);
-
         }
 
         public override async Task<bool> Load(IEnumerable<IManager> managers)
         {
-
             if (string.IsNullOrEmpty(Settings.CaptchaKey))
             {
-                string captchaApiKey = Microsoft.VisualBasic.Interaction.InputBox("Enter your 2Captcha API key and make sure you leave 'Stop on Captcha' unchecked before starting bots.", 
-                    "Enter 2Captcha.com API Key",
-                    "2Captcha.com API Key", -1, -1);
+                var captchaApiKey =
+                    Interaction.InputBox(
+                        "Enter your 2Captcha API key and make sure you leave 'Stop on Captcha' unchecked before starting bots.",
+                        "Enter 2Captcha.com API Key",
+                        "2Captcha.com API Key", -1, -1);
 
                 Settings.CaptchaKey = captchaApiKey;
                 await Settings.SaveSetting();
@@ -51,14 +51,13 @@ namespace GoManCaptcha
             {
                 manager.OnCaptcha += CaptchaHandler;
             }
-           
+
             return true;
         }
 
         public async void CaptchaHandler(object sender, CaptchaRequiredEventArgs captchaRequiredEventArgs)
         {
-
-            IManager manager = sender as IManager;
+            var manager = sender as IManager;
             if (manager == null) return;
 
             if (!Settings.Enabled)
@@ -72,28 +71,34 @@ namespace GoManCaptcha
             while (manager.State != BotState.Paused)
                 await Task.Delay(250);
 
-           var solveCaptchaRetryActionResults = await RetryAction(
-               SolveCaptchaAction, 
-               Settings.CaptchaKey, 
-               manager.CaptchaURL, 
-               manager, 
-               Settings.SolveAttemptsBeforeStop);
+            var logPath = $"./Plugins/GoManLogs/{manager.AccountName}_log.txt";
+            LogMessageToFile(logPath, $"Solving captcha at URL: {manager.CaptchaURL}");
 
-           if (!solveCaptchaRetryActionResults.Success) manager.Stop();
+            var solveCaptchaRetryActionResults = await RetryAction(
+                SolveCaptchaAction,
+                Settings.CaptchaKey,
+                manager.CaptchaURL,
+                manager,
+                Settings.SolveAttemptsBeforeStop);
+
+            if (solveCaptchaRetryActionResults.Success) return;
+            LogMessageToFile(logPath, solveCaptchaRetryActionResults.Message);
+            manager.Stop();
         }
 
         public static async Task<MethodResult> SolveCaptcha(string captchaKey, string captchaUrl, IManager manager)
         {
-           MethodResult<string> captchaResponse = await HttpStuff.GetCaptchaResponse(captchaKey, captchaUrl);
-           if (!captchaResponse.Success) return captchaResponse;
-           
-           return await manager.VerifyCaptcha(captchaResponse.Data);
+            var captchaResponse = await HttpStuff.GetCaptchaResponse(captchaKey, captchaUrl);
+            if (!captchaResponse.Success) return captchaResponse;
+
+            return await manager.VerifyCaptcha(captchaResponse.Data);
         }
 
-        private static async Task<MethodResult> RetryAction(Func<string, string, IManager, Task<MethodResult>> action, string captchaKey, string captchaUrl, IManager manager, int tryCount)
+        private static async Task<MethodResult> RetryAction(Func<string, string, IManager, Task<MethodResult>> action,
+            string captchaKey, string captchaUrl, IManager manager, int tryCount)
         {
-            int tries = 1;
-            MethodResult methodResult = new MethodResult();
+            var tries = 1;
+            var methodResult = new MethodResult();
 
             while (tries < tryCount)
             {
@@ -113,9 +118,27 @@ namespace GoManCaptcha
             Settings.Enabled = !Settings.Enabled;
             await Settings.SaveSetting();
 
-            MessageBox.Show("Autosolve Captcha enabled: " + Settings.Enabled + "\n\n Make sure you leave 'Stop on Captcha' unchecked before starting bots.", 
+            MessageBox.Show(
+                "Autosolve Captcha enabled: " + Settings.Enabled +
+                "\n\n Make sure you leave 'Stop on Captcha' unchecked before starting bots.",
                 PluginName, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        public void LogMessageToFile(string path, string msg)
+        {
+            if (!Directory.Exists("./Plugins/GoManLogs")) Directory.CreateDirectory("./Plugins/GoManLogs");
+
+            try
+            {
+                using (var sw = File.AppendText(path))
+                    sw.WriteLine($"{DateTime.Now:G}: {msg}.");
+            }
+            catch (Exception)
+            {
+                //ignore
+            }
+        }
+
         public override async Task<bool> Save()
         {
             return await Settings.SaveSetting();
