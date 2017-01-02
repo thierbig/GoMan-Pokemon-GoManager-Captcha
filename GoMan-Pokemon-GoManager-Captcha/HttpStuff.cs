@@ -47,7 +47,7 @@ namespace GoManCaptcha
             }
             catch (Exception ex)
             {
-                methodResult.Message = ex.ToString();
+                methodResult.Message = ex.ToString() + "\n\t" + ex.StackTrace;
                 methodResult.Success = false;
             }
 
@@ -81,7 +81,7 @@ namespace GoManCaptcha
             }
             catch (Exception ex)
             {
-                methodResult.Message = ex.Message;
+                methodResult.Message = ex.ToString() + "\n\t" + ex.StackTrace;
                 methodResult.Success = false;
             }
 
