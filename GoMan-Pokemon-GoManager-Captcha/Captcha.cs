@@ -36,6 +36,8 @@ namespace GoManCaptcha
 
         public override async Task<bool> Load(IEnumerable<IManager> managers)
         {
+            if (!Directory.Exists("./Plugins/GoManLogs")) Directory.CreateDirectory("./Plugins/GoManLogs");
+
             if (string.IsNullOrEmpty(Settings.CaptchaKey))
             {
                 var captchaApiKey =
@@ -71,7 +73,10 @@ namespace GoManCaptcha
             if (!manager.CaptchaRequired || AccountsBeingChecked.Contains(manager)) return;
             AccountsBeingChecked.Add(manager);
 
+            var logPath = $"./Plugins/GoManLogs/{manager.AccountName}_log.txt";
+            LogMessageToFile(logPath, $"Solving captcha at URL: {manager.CaptchaURL}");
             LoggerEventArgs log1 = new LoggerEventArgs($"Solving captcha at URL: {manager.CaptchaURL}", LoggerTypes.Info);
+
             manager.LogCallerPlugin(log1);
 
             while (manager.State != BotState.Paused)
@@ -86,8 +91,12 @@ namespace GoManCaptcha
 
             LoggerEventArgs log2 = new LoggerEventArgs($"{solveCaptchaRetryActionResults.Message}", solveCaptchaRetryActionResults.Success ? LoggerTypes.Info : LoggerTypes.Exception);
             manager.LogCallerPlugin(log2);
+
+            LogMessageToFile(logPath, solveCaptchaRetryActionResults.Message);
             AccountsBeingChecked.Remove(manager);
+
             if (!solveCaptchaRetryActionResults.Success) manager.Stop();
+
         }
 
         public static async Task<MethodResult> SolveCaptcha(string captchaKey, string captchaUrl, IManager manager)
