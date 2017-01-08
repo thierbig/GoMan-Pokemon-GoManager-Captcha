@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -13,13 +12,15 @@ namespace GoManCaptcha
 {
     internal class Captcha : IPlugin
     {
+        public override string PluginName { get; set; } = "GoMan Auto Captcha";
         public static ApplicationModel Settings = ApplicationModel.Settings();
-        public static HashSet<IManager> AccountsBeingChecked = new HashSet<IManager>();
+        private static readonly HashSet<IManager> AccountsBeingChecked = new HashSet<IManager>();
+        public override IEnumerable<PluginDropDownItem> MenuItems { get; set; }
+
+
         private static readonly Func<string, string, IManager, Task<MethodResult>> SolveCaptchaAction =
             async (captchaKey, captchaUrl, manager) => await SolveCaptcha(captchaKey, captchaUrl, manager);
 
-        public override string PluginName { get; set; } = "GoMan Auto Captcha";
-        public override IEnumerable<PluginDropDownItem> MenuItems { get; set; }
 
         public override void AddManager(IManager manager)
         {
@@ -35,15 +36,13 @@ namespace GoManCaptcha
 
         public override async Task<bool> Load(IEnumerable<IManager> managers)
         {
-            if (!Directory.Exists("./Plugins/GoManLogs")) Directory.CreateDirectory("./Plugins/GoManLogs");
-
             if (string.IsNullOrEmpty(Settings.CaptchaKey))
             {
                 var captchaApiKey =
                     Interaction.InputBox(
                         "Enter your 2Captcha API key and make sure you leave 'Stop on Captcha' unchecked before starting bots.",
                         "Enter 2Captcha.com API Key",
-                        "2Captcha.com API Key", -1, -1);
+                        "2Captcha.com API Key");
 
                 Settings.CaptchaKey = captchaApiKey;
                 await Settings.SaveSetting();
@@ -72,8 +71,8 @@ namespace GoManCaptcha
             if (!manager.CaptchaRequired || AccountsBeingChecked.Contains(manager)) return;
             AccountsBeingChecked.Add(manager);
 
-            var logPath = $"./Plugins/GoManLogs/{manager.AccountName}_log.txt";
-            LogMessageToFile(logPath, $"Solving captcha at URL: {manager.CaptchaURL}");
+            LoggerEventArgs log1 = new LoggerEventArgs($"Solving captcha at URL: {manager.CaptchaURL}", LoggerTypes.Info);
+            manager.LogCallerPlugin(log1);
 
             while (manager.State != BotState.Paused)
                 await Task.Delay(250);
@@ -85,11 +84,10 @@ namespace GoManCaptcha
                 manager,
                 Settings.SolveAttemptsBeforeStop);
 
-            LogMessageToFile(logPath, solveCaptchaRetryActionResults.Message);
+            LoggerEventArgs log2 = new LoggerEventArgs($"{solveCaptchaRetryActionResults.Message}", solveCaptchaRetryActionResults.Success ? LoggerTypes.Info : LoggerTypes.Exception);
+            manager.LogCallerPlugin(log2);
             AccountsBeingChecked.Remove(manager);
-
             if (!solveCaptchaRetryActionResults.Success) manager.Stop();
-
         }
 
         public static async Task<MethodResult> SolveCaptcha(string captchaKey, string captchaUrl, IManager manager)
