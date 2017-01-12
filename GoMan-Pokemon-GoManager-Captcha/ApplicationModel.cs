@@ -13,12 +13,13 @@ namespace GoManCaptcha
         {
         }
 
-        public static ApplicationModel Settings()
+        public static ApplicationModel Settings
         {
-            if (_instance != null)
-                return _instance;
-            else
+            get
             {
+                if (_instance != null)
+                    return _instance;
+
                 if (File.Exists("GoMan-Pokemon-GoManager-Captcha.json"))
                     _instance = LoadSetting();
                 else
@@ -34,7 +35,7 @@ namespace GoManCaptcha
         public string CaptchaKey { get; set; } = "";
         public int SolveAttemptsBeforeStop { get; set; } = 5;
         public bool Enabled { get; set; } = true;
-        public bool Logging { get; set; } = true;
+        public bool SaveLogs { get; set; } = true;
         //public int MaxThreads { get; set; } = 15;
         public string ProxyDomain { get; set; } = "chancity.hopto.org";
         public int ProxyPort { get; set; } = 1080;
