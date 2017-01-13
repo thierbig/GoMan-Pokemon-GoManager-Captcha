@@ -22,6 +22,10 @@ namespace GoManCaptcha
             manager.OnCaptcha += OnCaptcha;
         }
 
+        public async void StoppedSolveCaptcha()
+        {
+            var results = await CaptchaHandler.Handle(this);
+        }
         public async void OnCaptcha(object sender, CaptchaRequiredEventArgs captchaRequiredEventArgs)
         {
             if (SolvingCaptcha || !Manager.CaptchaRequired) return;

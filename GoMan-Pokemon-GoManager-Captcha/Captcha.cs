@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 using GoPlugin;
 using GoPlugin.Enums;
-using GoPlugin.Events;
-using Microsoft.VisualBasic;
+using Timer = System.Timers.Timer;
+
 
 namespace GoManCaptcha
 {
@@ -14,7 +14,7 @@ namespace GoManCaptcha
     {
         public override string PluginName { get; set; } = "GoMan Auto Captcha";
         private static readonly Dictionary<IManager, ManagerHandler> Accounts = new Dictionary<IManager, ManagerHandler>();
-
+        private static Timer _timer; // From System.Timers
 
         public override IEnumerable<PluginDropDownItem> MenuItems { get; set; }
 
@@ -33,6 +33,10 @@ namespace GoManCaptcha
         public override async Task<bool> Load(IEnumerable<IManager> managers)
         {
             if (!Directory.Exists("./Plugins/GoManLogs")) Directory.CreateDirectory("./Plugins/GoManLogs");
+            _timer = new Timer(200); 
+            _timer.Elapsed += new ElapsedEventHandler(_timer_Elapsed);
+            _timer.Enabled = true; 
+
 
             if (string.IsNullOrEmpty(ApplicationModel.Settings.CaptchaKey))
             {
@@ -49,6 +53,17 @@ namespace GoManCaptcha
             }
 
             return true;
+        }
+
+        static void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            foreach (var keyValuePair in Accounts)
+            {
+                if (keyValuePair.Key.AccountState == AccountState.CaptchaRequired && keyValuePair.Key.State == BotState.Stopped)
+                {
+                    keyValuePair.Value.StoppedSolveCaptcha();
+                }
+            }
         }
 
         public override async Task Run(IEnumerable<IManager> managers)
