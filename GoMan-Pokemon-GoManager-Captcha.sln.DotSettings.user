@@ -3,4 +3,6 @@
   &lt;Assembly Path="C:\Users\Chancey\Source\Repos\GoMan-Pokemon-GoManager-Captcha\GoMan-Pokemon-GoManager-Captcha\packages\GoPlugin.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorlib.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Windows.Forms.dll" /&gt;&#xD;
-&lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>
+  &lt;Assembly Path="C:\Users\Chancey\Source\Repos\GoMan-Pokemon-GoManager-Captcha\packages\ObjectListView.Official.2.8.1\lib\net20\ObjectListView.dll" /&gt;&#xD;
+&lt;/AssemblyExplorer&gt;</s:String>
+	<s:Int64 x:Key="/Default/Environment/SearchAndNavigation/DefaultOccurrencesGroupingIndex/@EntryValue">2</s:Int64></wpf:ResourceDictionary>

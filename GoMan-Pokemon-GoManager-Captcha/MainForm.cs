@@ -4,33 +4,56 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 using GoPlugin;
 using GoPlugin.Enums;
+using Timer = System.Timers.Timer;
 
 namespace GoManCaptcha
 {
     public partial class MainForm : Form
     {
-        private readonly List<ManagerHandler> _accounts = new List<ManagerHandler>();
-
+        private readonly HashSet<ManagerHandler> _accounts = new HashSet<ManagerHandler>();
+        private readonly System.Timers.Timer _timer;
         public MainForm(Dictionary<IManager, ManagerHandler> accounts)
+
         {
             InitializeComponent();
+
+            this.fastObjecttListView1.PrimarySortColumn = this.olvBotState;
+            this.fastObjecttListView1.PrimarySortOrder = SortOrder.Descending;
+
+            toolStripStatusLabelSuccessfulCaptchas.Text = string.Format(toolStripStatusLabelSuccessfulCaptchas.Tag.ToString(), ManagerHandler.TotalSuccessCount);
+            toolStripStatusLabelFailedCaptchas.Text = string.Format(toolStripStatusLabelFailedCaptchas.Tag.ToString(), ManagerHandler.TotalSuccessCount);
 
             cbkEnabled.Checked = ApplicationModel.Settings.Enabled;
             cbkSaveLogs.Checked = ApplicationModel.Settings.SaveLogs;
             textBox2CaptchaApiKey.Text = ApplicationModel.Settings.CaptchaKey;
             numericUpDownSolveAttempts.Value = ApplicationModel.Settings.SolveAttemptsBeforeStop;
 
+            ManagerHandler.SolvedCaptchaEvent += UpdateCounters_Event;
+
             foreach (var keyValuePair in accounts)
-            {
-                objectListView1.AddObject(keyValuePair.Value);
                 _accounts.Add(keyValuePair.Value);
-            }
 
-            timer1.Enabled = true;
+            
+            fastObjecttListView1.SetObjects(_accounts);
 
+            _timer = new Timer(1000);
+            _timer.Elapsed += _timer_Elapsed;
+            _timer.Enabled = true;
+
+        }
+        private void UpdateCounters_Event(object sender, EventArgs e)
+        {
+            toolStripStatusLabelSuccessfulCaptchas.Text = string.Format(toolStripStatusLabelSuccessfulCaptchas.Tag.ToString(), ManagerHandler.TotalSuccessCount);
+            toolStripStatusLabelFailedCaptchas.Text = string.Format(toolStripStatusLabelFailedCaptchas.Tag.ToString(), ManagerHandler.TotalFailedCount);
+        }
+
+        private void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            fastObjecttListView1.RefreshObject(_accounts.AsEnumerable().First<ManagerHandler>());
         }
 
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
@@ -44,68 +67,70 @@ namespace GoManCaptcha
             g.DrawString(sText, ctlTab.Font, Brushes.Black, iX, iY);
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            foreach (var managerHandler in _accounts)
-            {
-                objectListView1.RefreshObject(managerHandler);
-            }
-           
-        }
-
         private void objectListView1_FormatCell(object sender, BrightIdeasSoftware.FormatCellEventArgs e)
         {
-            ManagerHandler managerHandler = (ManagerHandler)e.Model;
+            var managerHandler = (ManagerHandler)e.Model;
+            var manager = managerHandler.Manager;
 
-            if (e.Column == olvAccountState)
+            if (manager != null)
             {
-                switch (managerHandler.Manager.AccountState)
+                if (e.Column == this.olvAccountState)
                 {
-                    case AccountState.Good:
-                        e.SubItem.ForeColor = Color.Green;
-                        break;
-                    case AccountState.CaptchaRequired:
-                        e.SubItem.ForeColor = Color.LightSkyBlue;
-                        break;
-                    default:
-                        e.SubItem.ForeColor = Color.Red;
-                        break;
+                    switch (manager.AccountState)
+                    {
+                        case AccountState.Good:
+                            e.SubItem.ForeColor = Color.Green;
+                            break;
+                        case AccountState.PermAccountBan:
+                        case AccountState.NotVerified:
+                            e.SubItem.ForeColor = Color.Red;
+                            break;
+                        case AccountState.AccountWarning:
+                        case AccountState.PokemonBanAndPokestopBanTemp:
+                        case AccountState.PokestopBanTemp:
+                        case AccountState.PokemonBanTemp:
+                            e.SubItem.ForeColor = Color.Yellow;
+                            break;
+                        case AccountState.CaptchaRequired:
+                            e.SubItem.ForeColor = Color.MediumAquamarine;
+                            break;
+                    }
                 }
-            }
-            else if (e.Column == olvBotState)
-            {
-                switch (managerHandler.Manager.State)
+                else if (e.Column == this.olvBotState)
                 {
-                    case BotState.Running:
-                        e.SubItem.ForeColor = Color.Green;
-                        break;
-                    case BotState.Starting:
-                        e.SubItem.ForeColor = Color.LightGreen;
-                        break;
-                    case BotState.Waiting:
-                        e.SubItem.ForeColor = Color.Orange;
-                        break;
-                    case BotState.Pausing:
-                        e.SubItem.ForeColor = Color.Yellow;
-                        break;
-                    case BotState.Paused:
-                        e.SubItem.ForeColor = Color.Yellow;
-                        break;
-                    default:
-                        e.SubItem.ForeColor = Color.Red;
-                        break;
+                    switch (manager.State)
+                    {
+                        case BotState.Stopped:
+                            e.SubItem.ForeColor = Color.Red;
+                            break;
+                        case BotState.Stopping:
+                            e.SubItem.ForeColor = Color.OrangeRed;
+                            break;
+                        case BotState.Starting:
+                            e.SubItem.ForeColor = Color.LightGreen;
+                            break;
+                        case BotState.Running:
+                            e.SubItem.ForeColor = Color.Green;
+                            break;
+                        case BotState.Pausing:
+                            e.SubItem.ForeColor = Color.MediumAquamarine;
+                            break;
+                        case BotState.Paused:
+                            e.SubItem.ForeColor = Color.MediumAquamarine;
+                            break;
+                    }
                 }
-            }
-            else if (e.Column == olvLastLog)
-            {
-                LogModel log = managerHandler.EventLog.LastOrDefault();
+                else if (e.Column == olvLastLog)
+                {
+                    LogModel log = managerHandler.EventLog.LastOrDefault();
 
-                if (log == null)
-                {
-                    return;
-                }
+                    if (log == null)
+                    {
+                        return;
+                    }
 
-                e.SubItem.ForeColor = log.GetLogColor();
+                    e.SubItem.ForeColor = log.GetLogColor();
+                }
             }
         }
 
@@ -147,6 +172,44 @@ namespace GoManCaptcha
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://goman.io");
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _timer.Dispose();
+            ManagerHandler.SolvedCaptchaEvent -= UpdateCounters_Event;
+        }
+
+        private void startToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (ManagerHandler selectedObject in fastObjecttListView1.SelectedObjects)
+            {
+                selectedObject.Manager.Start();
+            }
+        }
+
+        private void restartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (ManagerHandler selectedObject in fastObjecttListView1.SelectedObjects)
+            {
+                selectedObject.Manager.Restart();
+            }
+        }
+
+        private void togglePauseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (ManagerHandler selectedObject in fastObjecttListView1.SelectedObjects)
+            {
+                selectedObject.Manager.TogglePause();
+            }
+        }
+
+        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (ManagerHandler selectedObject in fastObjecttListView1.SelectedObjects)
+            {
+                selectedObject.Manager.Stop();
+            }
         }
     }
 }

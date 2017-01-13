@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Timers;
-using System.Windows.Forms;
 using GoPlugin;
 using GoPlugin.Enums;
 using Timer = System.Timers.Timer;
@@ -68,10 +67,8 @@ namespace GoManCaptcha
 
         public override async Task Run(IEnumerable<IManager> managers)
         {
-            using (var captchaSettingsFrom = new MainForm(Accounts))
-            {
-                captchaSettingsFrom.ShowDialog();
-            }
+            var captchaSettingsFrom = new MainForm(Accounts);
+            captchaSettingsFrom.Show();
         }
 
         public override async Task<bool> Save()

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using GoPlugin;
-using GoPlugin.Enums;
 using GoPlugin.Events;
 
 namespace GoManCaptcha
@@ -17,6 +16,15 @@ namespace GoManCaptcha
         private bool SolvingCaptcha { get; set; }
         public string Log { get; set; } = "";
 
+        private static int _totalSuccessCount = 0;
+        private static int _totalFailedCount = 0;
+
+        public static int TotalSuccessCount => _totalSuccessCount;
+        public static int TotalFailedCount => _totalFailedCount;
+
+        public delegate void SolvedCaptcha(object sender, EventArgs e);
+        public static event SolvedCaptcha SolvedCaptchaEvent;
+
         public List<LogModel> EventLog = new List<LogModel>();
 
         public ManagerHandler(IManager manager)
@@ -24,7 +32,6 @@ namespace GoManCaptcha
             Manager = manager;
             manager.OnCaptcha += OnCaptcha;
         }
-
         public async void StoppedSolveCaptcha()
         {
             if (SolvingCaptcha || !ApplicationModel.Settings.Enabled) return;
@@ -34,9 +41,9 @@ namespace GoManCaptcha
                 Manager.Login();
                 Manager.LoginWait();
             });
-
         }
-        public async void OnCaptcha(object sender, CaptchaRequiredEventArgs captchaRequiredEventArgs)
+
+        private async void OnCaptcha(object sender, CaptchaRequiredEventArgs captchaRequiredEventArgs)
         {
             if (SolvingCaptcha || !Manager.CaptchaRequired && !string.IsNullOrEmpty(Manager.CaptchaURL)) return;
 
@@ -50,14 +57,27 @@ namespace GoManCaptcha
 
             var results = await CaptchaHandler.Handle(this);
 
-            SuccessCount += results.Success ? 1 : 0;
-            FailedCount += results.Success ? 0 : 1;
-
+             UpdateCounters(results.Success);
             if (!results.Success) Manager.Stop();
 
             SolvingCaptcha = false;
         }
 
+        public void UpdateCounters(bool success)
+        {
+            if (success)
+            {
+                Interlocked.Increment(ref _totalSuccessCount);
+                SuccessCount += 1;
+            }
+            else
+            {
+                Interlocked.Increment(ref _totalFailedCount);
+                FailedCount += 1;
+            }
+
+            SolvedCaptchaEvent?.Invoke(this, EventArgs.Empty);
+        }
         public void AddLog(LoggerTypes type, string message, Exception ex = null)
         {
             LogModel newLog = new LogModel(type, message, ex);
@@ -69,7 +89,7 @@ namespace GoManCaptcha
                 LogMessageToFile($"./Plugins/GoManLogs/{Manager.AccountName}_log.txt", message);
         }
 
-        public static void LogMessageToFile(string path, string msg)
+        private static void LogMessageToFile(string path, string msg)
         {
             if (!Directory.Exists("./Plugins/GoManLogs")) Directory.CreateDirectory("./Plugins/GoManLogs");
 
