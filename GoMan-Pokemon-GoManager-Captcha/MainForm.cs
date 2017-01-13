@@ -48,7 +48,7 @@ namespace GoManCaptcha
         {
             foreach (var managerHandler in _accounts)
             {
-                if(managerHandler.Manager.AccountState == AccountState.CaptchaRequired || managerHandler.Manager.State == BotState.Running)
+                if(managerHandler.Manager.AccountState == AccountState.CaptchaRequired || managerHandler.Manager.State != BotState.Stopped)
                     objectListView1.RefreshObject(managerHandler);
             }
            
