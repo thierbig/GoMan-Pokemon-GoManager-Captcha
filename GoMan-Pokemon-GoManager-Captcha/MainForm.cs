@@ -145,11 +145,6 @@ namespace GoManCaptcha
             }
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            this.DialogResult = DialogResult.OK;
-        }
-
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://goman.io");

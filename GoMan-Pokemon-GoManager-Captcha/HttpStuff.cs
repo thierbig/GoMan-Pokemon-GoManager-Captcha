@@ -12,8 +12,8 @@ namespace GoManCaptcha
     public class HttpStuff
     {
         private const string RecaptchaSiteKey = "6LeeTScTAAAAADqvhqVMhPpr_vB9D364Ia-1dSgK";
-        private const string CaptchaIn = "http://2captcha.com/in.php?";
-        private const string CaptchaOut = "http://2captcha.com/res.php?";
+        private const string CaptchaIn = "http://89.108.117.181/in.php?";
+        private const string CaptchaOut = "http://89.108.117.181/res.php?";
 
         public static async Task<MethodResult<string>> GetCaptchaResponse(string captchaKey, string captchaUrl)
         {
