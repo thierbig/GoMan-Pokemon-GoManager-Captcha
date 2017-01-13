@@ -25,7 +25,7 @@ namespace GoManCaptcha
             this.fastObjecttListView1.PrimarySortOrder = SortOrder.Descending;
 
             toolStripStatusLabelSuccessfulCaptchas.Text = string.Format(toolStripStatusLabelSuccessfulCaptchas.Tag.ToString(), ManagerHandler.TotalSuccessCount);
-            toolStripStatusLabelFailedCaptchas.Text = string.Format(toolStripStatusLabelFailedCaptchas.Tag.ToString(), ManagerHandler.TotalSuccessCount);
+            toolStripStatusLabelFailedCaptchas.Text = string.Format(toolStripStatusLabelFailedCaptchas.Tag.ToString(), ManagerHandler.TotalFailedCount);
 
             cbkEnabled.Checked = ApplicationModel.Settings.Enabled;
             cbkSaveLogs.Checked = ApplicationModel.Settings.SaveLogs;
