@@ -33,8 +33,8 @@ namespace GoManCaptcha
         public override async Task<bool> Load(IEnumerable<IManager> managers)
         {
             if (!Directory.Exists("./Plugins/GoManLogs")) Directory.CreateDirectory("./Plugins/GoManLogs");
-            _timer = new Timer(200); 
-            _timer.Elapsed += new ElapsedEventHandler(_timer_Elapsed);
+            _timer = new Timer(1000); 
+            _timer.Elapsed += _timer_Elapsed;
             _timer.Enabled = true; 
 
 

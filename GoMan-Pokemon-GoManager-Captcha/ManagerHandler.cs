@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using GoPlugin;
+using GoPlugin.Enums;
 using GoPlugin.Events;
 
 namespace GoManCaptcha
@@ -24,11 +27,18 @@ namespace GoManCaptcha
 
         public async void StoppedSolveCaptcha()
         {
-            var results = await CaptchaHandler.Handle(this);
+            if (SolvingCaptcha || !ApplicationModel.Settings.Enabled) return;
+
+            await Task.Run(delegate
+            {
+                Manager.Login();
+                Manager.LoginWait();
+            });
+
         }
         public async void OnCaptcha(object sender, CaptchaRequiredEventArgs captchaRequiredEventArgs)
         {
-            if (SolvingCaptcha || !Manager.CaptchaRequired) return;
+            if (SolvingCaptcha || !Manager.CaptchaRequired && !string.IsNullOrEmpty(Manager.CaptchaURL)) return;
 
             if (!ApplicationModel.Settings.Enabled)
             {
