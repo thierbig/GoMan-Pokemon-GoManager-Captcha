@@ -58,12 +58,12 @@ namespace GoManCaptcha
             SolvingCaptcha = false;
         }
 
-        public void AddLog(LoggerTypes type, string message)
+        public void AddLog(LoggerTypes type, string message, Exception ex = null)
         {
-            LogModel newLog = new LogModel(type, message);
+            LogModel newLog = new LogModel(type, message, ex);
             EventLog.Add(newLog);
             this.Log = newLog.ToString();
-            Manager.LogCallerPlugin(newLog);
+            Manager.LogCallerPlugin(new LoggerEventArgs(newLog));
 
             if (ApplicationModel.Settings.SaveLogs)
                 LogMessageToFile($"./Plugins/GoManLogs/{Manager.AccountName}_log.txt", message);

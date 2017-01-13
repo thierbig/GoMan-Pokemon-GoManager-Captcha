@@ -137,7 +137,7 @@
             // 
             this.olvLastLog.AspectName = "Log";
             this.olvLastLog.FillsFreeSpace = true;
-            this.olvLastLog.Text = "Log";
+            this.olvLastLog.Text = "Last Log";
             this.olvLastLog.Width = 258;
             // 
             // tabControl1
