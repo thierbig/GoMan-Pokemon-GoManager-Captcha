@@ -17,12 +17,10 @@ namespace GoManCaptcha
         {
             get
             {
-                if (_instance != null)
-                    return _instance;
-
-                if (File.Exists("GoMan-Pokemon-GoManager-Captcha.json"))
+                if (_instance == null && File.Exists("GoMan-Pokemon-GoManager-Captcha.json"))
                     _instance = LoadSetting();
-                else
+
+                if (_instance == null)
                 {
                     _instance = new ApplicationModel();
                     _instance.SaveSetting();
@@ -59,10 +57,18 @@ namespace GoManCaptcha
         }
         private static ApplicationModel LoadSetting()
         {
-            using (StreamReader sr = new StreamReader("GoMan-Pokemon-GoManager-Captcha.json"))
+            try
             {
-                return JsonConvert.DeserializeObject<ApplicationModel>(sr.ReadToEnd());
+                using (var sr = new StreamReader("GoMan-Pokemon-GoManager-Captcha.json"))
+                {
+                    return JsonConvert.DeserializeObject<ApplicationModel>(sr.ReadToEnd());
+                }
             }
+            catch (Exception e)
+            {
+                return null;
+            }
+
         }
 
     }

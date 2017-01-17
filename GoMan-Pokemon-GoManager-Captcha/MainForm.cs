@@ -53,7 +53,7 @@ namespace GoManCaptcha
 
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            fastObjecttListView1.RefreshObject(_accounts.AsEnumerable().First<ManagerHandler>());
+            fastObjecttListView1.RefreshObject(_accounts.First());
         }
 
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)

@@ -103,5 +103,17 @@ namespace GoManCaptcha
                 //ignore
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            ManagerHandler managerHandler = (ManagerHandler) obj;
+
+            return Manager.Equals(managerHandler?.Manager);
+        }
+
+        public override int GetHashCode()
+        {
+            return Manager.GetHashCode();
+        }
     }
 }
