@@ -302,7 +302,7 @@
             this.cbkAutoUpdate.AutoSize = true;
             this.cbkAutoUpdate.Checked = true;
             this.cbkAutoUpdate.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbkAutoUpdate.Location = new System.Drawing.Point(157, 6);
+            this.cbkAutoUpdate.Location = new System.Drawing.Point(153, 8);
             this.cbkAutoUpdate.Name = "cbkAutoUpdate";
             this.cbkAutoUpdate.Size = new System.Drawing.Size(133, 28);
             this.cbkAutoUpdate.TabIndex = 11;
