@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Forms;
 using GoPlugin;
 using GoPlugin.Enums;
+using Newtonsoft.Json;
 using Timer = System.Timers.Timer;
 
 
@@ -32,6 +37,9 @@ namespace GoManCaptcha
         public override async Task<bool> Load(IEnumerable<IManager> managers)
         {
             if (!Directory.Exists("./Plugins/GoManLogs")) Directory.CreateDirectory("./Plugins/GoManLogs");
+
+            if(ApplicationModel.Settings.AutoUpdate)
+                await Update();
             _timer = new Timer(1000); 
             _timer.Elapsed += _timer_Elapsed;
             _timer.Enabled = true; 
@@ -54,6 +62,35 @@ namespace GoManCaptcha
             return true;
         }
 
+        private static async Task Update()
+        {
+            using (var wc = new WebClient())
+            {
+                var result = await wc.DownloadStringTaskAsync(VersionModel.Uri);
+                MessageBox.Show(result);
+                var version = JsonConvert.DeserializeObject<VersionModel>(result);
+
+                if (!version.Version.Equals(VersionModel.CurrentVersion))
+                {
+                    var updateQuestionResults =
+                        MessageBox.Show("GoMan Captcha has been updated! Would you like to download the update?",
+                            "GoMan Captcha Updated!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (updateQuestionResults == DialogResult.Yes)
+                    {
+                        await wc.DownloadFileTaskAsync(version.UpdateUrl, VersionModel.SavePath);
+                        var restartQuestionResults =
+                            MessageBox.Show("GoMan Captcha has been updated! Would you like to restart GoManager?",
+                                "GoMan Captcha Updated!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (restartQuestionResults == DialogResult.Yes)
+                        {
+                            Process.Start(Application.ExecutablePath);
+                            Application.Exit();
+                        }
+                    }
+                }
+            }
+        }
         static void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             foreach (var keyValuePair in Accounts)

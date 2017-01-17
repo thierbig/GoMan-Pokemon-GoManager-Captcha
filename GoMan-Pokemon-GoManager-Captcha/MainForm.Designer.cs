@@ -53,6 +53,7 @@
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpSettings = new System.Windows.Forms.TabPage();
+            this.cbkAutoUpdate = new System.Windows.Forms.CheckBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.cbkSaveLogs = new System.Windows.Forms.CheckBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
@@ -279,6 +280,7 @@
             // tpSettings
             // 
             this.tpSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.tpSettings.Controls.Add(this.cbkAutoUpdate);
             this.tpSettings.Controls.Add(this.linkLabel1);
             this.tpSettings.Controls.Add(this.cbkSaveLogs);
             this.tpSettings.Controls.Add(this.richTextBox1);
@@ -294,6 +296,19 @@
             this.tpSettings.Size = new System.Drawing.Size(1010, 319);
             this.tpSettings.TabIndex = 1;
             this.tpSettings.Text = "Settings";
+            // 
+            // cbkAutoUpdate
+            // 
+            this.cbkAutoUpdate.AutoSize = true;
+            this.cbkAutoUpdate.Checked = true;
+            this.cbkAutoUpdate.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbkAutoUpdate.Location = new System.Drawing.Point(157, 6);
+            this.cbkAutoUpdate.Name = "cbkAutoUpdate";
+            this.cbkAutoUpdate.Size = new System.Drawing.Size(133, 28);
+            this.cbkAutoUpdate.TabIndex = 11;
+            this.cbkAutoUpdate.Text = "Auto Update";
+            this.cbkAutoUpdate.UseVisualStyleBackColor = true;
+            this.cbkAutoUpdate.CheckedChanged += new System.EventHandler(this.ckAutoUpdate_CheckedChanged);
             // 
             // linkLabel1
             // 
@@ -474,5 +489,6 @@
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSuccessfulCaptchas;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelFailedCaptchas;
+        private System.Windows.Forms.CheckBox cbkAutoUpdate;
     }
 }

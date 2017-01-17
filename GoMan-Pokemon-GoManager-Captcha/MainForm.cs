@@ -157,7 +157,11 @@ namespace GoManCaptcha
             ApplicationModel.Settings.SaveLogs = cbkSaveLogs.Checked;
             ApplicationModel.Settings.SaveSetting();
         }
-
+        private void ckAutoUpdate_CheckedChanged(object sender, EventArgs e)
+        {
+            ApplicationModel.Settings.AutoUpdate = cbkAutoUpdate.Checked;
+            ApplicationModel.Settings.SaveSetting();
+        }
         private void MainForm_Load(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(ApplicationModel.Settings.CaptchaKey))

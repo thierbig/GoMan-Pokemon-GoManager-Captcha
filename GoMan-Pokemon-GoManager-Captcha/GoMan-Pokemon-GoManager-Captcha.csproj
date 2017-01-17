@@ -51,9 +51,6 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoSniper">
-      <HintPath>..\..\..\..\Desktop\PokemonGoGUI\Plugins\AutoSniper.dll</HintPath>
-    </Reference>
     <Reference Include="GoPlugin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\GoPlugin.dll</HintPath>

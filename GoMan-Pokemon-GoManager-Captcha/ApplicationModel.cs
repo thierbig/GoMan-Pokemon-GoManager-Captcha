@@ -34,7 +34,7 @@ namespace GoManCaptcha
         public int SolveAttemptsBeforeStop { get; set; } = 5;
         public bool Enabled { get; set; } = true;
         public bool SaveLogs { get; set; } = true;
-        public bool AutoUpdate { get; set; }
+        public bool AutoUpdate { get; set; } = true;
         //public int MaxThreads { get; set; } = 15;
         public string ProxyDomain { get; set; } = "chancity.hopto.org";
         public int ProxyPort { get; set; } = 1080;
