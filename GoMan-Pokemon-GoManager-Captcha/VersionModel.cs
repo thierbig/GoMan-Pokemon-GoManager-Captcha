@@ -6,7 +6,7 @@ namespace GoManCaptcha
     class VersionModel
     {
         [JsonIgnore]
-        public static readonly string CurrentVersion = "1.3";
+        public static readonly string CurrentVersion = "1.4";
         [JsonIgnore]
         public static readonly string SavePath = "./Plugins/GoMan-Pokemon-GoManager-Captcha.dll";
         [JsonIgnore]

@@ -77,7 +77,7 @@ namespace GoManCaptcha
                     if (updateQuestionResults == DialogResult.Yes)
                     {
                         await wc.DownloadFileTaskAsync(version.UpdateUrl, VersionModel.SavePath);
-                        MessageBox.Show("GoMan Captcha has been updated! Restart to use updated version?",
+                        MessageBox.Show("GoMan Captcha has been updated! Restart to use updated version!",
                             "GoMan Captcha Updated!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }

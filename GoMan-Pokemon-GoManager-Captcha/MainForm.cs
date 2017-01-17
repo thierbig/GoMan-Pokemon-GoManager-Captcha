@@ -164,6 +164,7 @@ namespace GoManCaptcha
         }
         private void MainForm_Load(object sender, EventArgs e)
         {
+            this.Text = "GoMan Captcha - v" + VersionModel.CurrentVersion;
             if (string.IsNullOrEmpty(ApplicationModel.Settings.CaptchaKey))
             {
                 textBox2CaptchaApiKey.Focus();
