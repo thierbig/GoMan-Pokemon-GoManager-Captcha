@@ -67,7 +67,6 @@ namespace GoManCaptcha
             using (var wc = new WebClient())
             {
                 var result = await wc.DownloadStringTaskAsync(VersionModel.Uri);
-                MessageBox.Show(result);
                 var version = JsonConvert.DeserializeObject<VersionModel>(result);
 
                 if (!version.Version.Equals(VersionModel.CurrentVersion))
