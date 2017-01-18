@@ -10,7 +10,7 @@ namespace GoManCaptcha
         [JsonIgnore]
         public static readonly string SavePath = "./Plugins/GoMan-Pokemon-GoManager-Plugin.dll";
         [JsonIgnore]
-        public static readonly Uri Uri = new Uri("http://bit.ly/2k3b0PF");
+        public static readonly Uri Uri = new Uri("http://bit.ly/2k4Kl51");
         public string Version { get; set; }
         public string UpdateUrl { get; set; }
     }
