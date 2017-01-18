@@ -39,6 +39,9 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControlMain = new GoMan.View.BorderlessTabControl();
             this.tpCaptcha = new GoMan.View.BorderlessTabPage();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabelSuccessfulCaptchas = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelFailedCaptchas = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControlCaptcha = new GoMan.View.BorderlessTabControl();
             this.tpAccounts = new GoMan.View.BorderlessTabPage();
             this.fastObjecttListView1 = new BrightIdeasSoftware.FastObjectListView();
@@ -56,9 +59,6 @@
             this.olvBotState = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvProxy = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvLastLog = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabelSuccessfulCaptchas = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelFailedCaptchas = new System.Windows.Forms.ToolStripStatusLabel();
             this.tpSettings = new GoMan.View.BorderlessTabPage();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.numericUpDownSolveAttempts = new System.Windows.Forms.NumericUpDown();
@@ -73,10 +73,10 @@
             this.statusStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tpCaptcha.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.tabControlCaptcha.SuspendLayout();
             this.tpAccounts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fastObjecttListView1)).BeginInit();
-            this.statusStrip.SuspendLayout();
             this.tpSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSolveAttempts)).BeginInit();
             this.tpGlobalSettings.SuspendLayout();
@@ -175,8 +175,38 @@
             this.tpCaptcha.TabIndex = 0;
             this.tpCaptcha.Text = "Captcha";
             // 
+            // statusStrip
+            // 
+            this.statusStrip.BackColor = System.Drawing.Color.Transparent;
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabelSuccessfulCaptchas,
+            this.toolStripStatusLabelFailedCaptchas});
+            this.statusStrip.Location = new System.Drawing.Point(3, 275);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(1010, 22);
+            this.statusStrip.SizingGrip = false;
+            this.statusStrip.TabIndex = 1;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabelSuccessfulCaptchas
+            // 
+            this.toolStripStatusLabelSuccessfulCaptchas.Name = "toolStripStatusLabelSuccessfulCaptchas";
+            this.toolStripStatusLabelSuccessfulCaptchas.Size = new System.Drawing.Size(155, 17);
+            this.toolStripStatusLabelSuccessfulCaptchas.Tag = "Total Successful Captchas: {0}";
+            this.toolStripStatusLabelSuccessfulCaptchas.Text = "Total Successful Captchas: 0";
+            // 
+            // toolStripStatusLabelFailedCaptchas
+            // 
+            this.toolStripStatusLabelFailedCaptchas.Name = "toolStripStatusLabelFailedCaptchas";
+            this.toolStripStatusLabelFailedCaptchas.Size = new System.Drawing.Size(131, 17);
+            this.toolStripStatusLabelFailedCaptchas.Tag = "Total Failed Captchas: {0}";
+            this.toolStripStatusLabelFailedCaptchas.Text = "Total Failed Captchas: 0";
+            // 
             // tabControlCaptcha
             // 
+            this.tabControlCaptcha.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlCaptcha.Controls.Add(this.tpAccounts);
             this.tabControlCaptcha.Controls.Add(this.tpSettings);
             this.tabControlCaptcha.ItemSize = new System.Drawing.Size(26, 30);
@@ -337,33 +367,6 @@
             this.olvLastLog.Text = "Last Log";
             this.olvLastLog.Width = 258;
             // 
-            // statusStrip
-            // 
-            this.statusStrip.BackColor = System.Drawing.Color.Transparent;
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabelSuccessfulCaptchas,
-            this.toolStripStatusLabelFailedCaptchas});
-            this.statusStrip.Location = new System.Drawing.Point(3, 275);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1010, 22);
-            this.statusStrip.SizingGrip = false;
-            this.statusStrip.TabIndex = 1;
-            this.statusStrip.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabelSuccessfulCaptchas
-            // 
-            this.toolStripStatusLabelSuccessfulCaptchas.Name = "toolStripStatusLabelSuccessfulCaptchas";
-            this.toolStripStatusLabelSuccessfulCaptchas.Size = new System.Drawing.Size(155, 17);
-            this.toolStripStatusLabelSuccessfulCaptchas.Tag = "Total Successful Captchas: {0}";
-            this.toolStripStatusLabelSuccessfulCaptchas.Text = "Total Successful Captchas: 0";
-            // 
-            // toolStripStatusLabelFailedCaptchas
-            // 
-            this.toolStripStatusLabelFailedCaptchas.Name = "toolStripStatusLabelFailedCaptchas";
-            this.toolStripStatusLabelFailedCaptchas.Size = new System.Drawing.Size(131, 17);
-            this.toolStripStatusLabelFailedCaptchas.Tag = "Total Failed Captchas: {0}";
-            this.toolStripStatusLabelFailedCaptchas.Text = "Total Failed Captchas: 0";
-            // 
             // tpSettings
             // 
             this.tpSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
@@ -508,11 +511,11 @@
             this.tabControlMain.ResumeLayout(false);
             this.tpCaptcha.ResumeLayout(false);
             this.tpCaptcha.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.tabControlCaptcha.ResumeLayout(false);
             this.tpAccounts.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.fastObjecttListView1)).EndInit();
-            this.statusStrip.ResumeLayout(false);
-            this.statusStrip.PerformLayout();
             this.tpSettings.ResumeLayout(false);
             this.tpSettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSolveAttempts)).EndInit();
