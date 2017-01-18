@@ -6,7 +6,7 @@ using GoMan.Model;
 using GoPlugin;
 using GoPlugin.Enums;
 
-namespace GoManCaptcha.Captcha
+namespace GoMan.Captcha
 {
     class CaptchaHandler
     {

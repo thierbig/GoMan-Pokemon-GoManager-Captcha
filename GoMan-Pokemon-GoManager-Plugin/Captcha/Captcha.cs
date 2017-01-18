@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 using GoMan.Model;
-using GoManCaptcha;
-using GoManCaptcha.Captcha;
+using GoMan.View;
 using GoPlugin;
 using GoPlugin.Enums;
 using Newtonsoft.Json;
@@ -17,7 +16,7 @@ namespace GoMan.Captcha
 {
     internal class Captcha : IPlugin
     {
-        public override string PluginName { get; set; } = "GoMan Auto Captcha";
+        public override string PluginName { get; set; } = "GoMan Plugin";
         private static readonly Dictionary<IManager, ManagerHandler> Accounts = new Dictionary<IManager, ManagerHandler>();
         private static Timer _timer; // From System.Timers
 
@@ -73,13 +72,13 @@ namespace GoMan.Captcha
                 if (!version.Version.Equals(VersionModel.CurrentVersion))
                 {
                     var updateQuestionResults =
-                        MessageBox.Show("GoMan Captcha has been updated! Would you like to download the update?",
-                            "GoMan Captcha Updated!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        MessageBox.Show("GoMan Plugin has been updated! Would you like to download the update?",
+                            "GoMan Plugin Updated!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (updateQuestionResults == DialogResult.Yes)
                     {
                         await wc.DownloadFileTaskAsync(version.UpdateUrl, VersionModel.SavePath);
-                        MessageBox.Show("GoMan Captcha has been updated! Restart to use updated version!",
-                            "GoMan Captcha Updated!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("GoMan Plugin has been updated! Restart to use updated version!",
+                            "GoMan Plugin Updated!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }

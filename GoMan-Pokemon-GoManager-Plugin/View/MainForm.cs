@@ -5,12 +5,13 @@ using System.Drawing;
 using System.Linq;
 using System.Timers;
 using System.Windows.Forms;
+using GoMan.Captcha;
 using GoMan.Model;
 using GoPlugin;
 using GoPlugin.Enums;
 using Timer = System.Timers.Timer;
 
-namespace GoManCaptcha.Captcha
+namespace GoMan.View
 {
     public partial class MainForm : Form
     {
@@ -58,7 +59,7 @@ namespace GoManCaptcha.Captcha
 
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
-            var ctlTab = (TabControl)sender;
+           var ctlTab = (BorderlessTabControl)sender;
             var g = e.Graphics;
             var sText = ctlTab.TabPages[e.Index].Text;
             var sizeText = g.MeasureString(sText, ctlTab.Font);
@@ -164,17 +165,18 @@ namespace GoManCaptcha.Captcha
         }
         private void MainForm_Load(object sender, EventArgs e)
         {
-            this.Text = "GoMan Captcha - v" + VersionModel.CurrentVersion;
+            this.Text = "GoMan Plugin - v" + VersionModel.CurrentVersion;
             if (string.IsNullOrEmpty(ApplicationModel.Settings.CaptchaKey))
             {
                 textBox2CaptchaApiKey.Focus();
                 textBox2CaptchaApiKey.BackColor = Color.Red;
-                tabControl1.SelectedTab = tpSettings;
+                tabControlMain.SelectedTab = tpGlobalSettings;
 
             }
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+
+        private void linkLabel1_LinkClicked(object sender, EventArgs e)
         {
             Process.Start("https://goman.io");
         }

@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
+using GoMan.Captcha;
+using GoMan.View;
+using GoPlugin;
 
 namespace GoMan
 {
@@ -13,7 +17,7 @@ namespace GoMan
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new MainForm());
+            Application.Run(new MainForm(new Dictionary<IManager, ManagerHandler>()));
         }
     }
 }

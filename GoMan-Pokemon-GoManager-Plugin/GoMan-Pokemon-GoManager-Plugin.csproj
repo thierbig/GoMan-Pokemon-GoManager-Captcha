@@ -83,10 +83,13 @@
     <Compile Include="Captcha\HttpStuff.cs" />
     <Compile Include="Eventviewer\Program.cs" />
     <Compile Include="Model\LogModel.cs" />
-    <Compile Include="Captcha\MainForm.cs">
+    <Compile Include="View\BordlessTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Captcha\MainForm.Designer.cs">
+    <Compile Include="View\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Captcha\ManagerHandler.cs" />
@@ -111,7 +114,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Captcha\MainForm.resx">
+    <EmbeddedResource Include="View\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

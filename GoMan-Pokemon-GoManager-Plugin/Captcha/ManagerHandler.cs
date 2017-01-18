@@ -7,7 +7,7 @@ using GoMan.Model;
 using GoPlugin;
 using GoPlugin.Events;
 
-namespace GoManCaptcha.Captcha
+namespace GoMan.Captcha
 {
     public class ManagerHandler
     {

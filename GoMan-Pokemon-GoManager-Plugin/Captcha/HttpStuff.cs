@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GoPlugin;
 
-namespace GoManCaptcha.Captcha
+namespace GoMan.Captcha
 {
     public class HttpStuff
     {
