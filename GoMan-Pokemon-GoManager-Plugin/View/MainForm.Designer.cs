@@ -165,6 +165,7 @@
             // tpCaptcha
             // 
             this.tpCaptcha.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.tpCaptcha.Controls.Add(this.statusStrip);
             this.tpCaptcha.Controls.Add(this.tabControlCaptcha);
             this.tpCaptcha.ForeColor = System.Drawing.Color.LightGray;
             this.tpCaptcha.Location = new System.Drawing.Point(101, 1);
@@ -176,9 +177,6 @@
             // 
             // tabControlCaptcha
             // 
-            this.tabControlCaptcha.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlCaptcha.Controls.Add(this.tpAccounts);
             this.tabControlCaptcha.Controls.Add(this.tpSettings);
             this.tabControlCaptcha.ItemSize = new System.Drawing.Size(26, 30);
@@ -186,7 +184,7 @@
             this.tabControlCaptcha.Multiline = true;
             this.tabControlCaptcha.Name = "tabControlCaptcha";
             this.tabControlCaptcha.SelectedIndex = 0;
-            this.tabControlCaptcha.Size = new System.Drawing.Size(1016, 300);
+            this.tabControlCaptcha.Size = new System.Drawing.Size(1016, 272);
             this.tabControlCaptcha.TabIndex = 1;
             this.tabControlCaptcha.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabControl1_DrawItem);
             // 
@@ -194,11 +192,10 @@
             // 
             this.tpAccounts.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
             this.tpAccounts.Controls.Add(this.fastObjecttListView1);
-            this.tpAccounts.Controls.Add(this.statusStrip);
             this.tpAccounts.Location = new System.Drawing.Point(1, 31);
             this.tpAccounts.Name = "tpAccounts";
             this.tpAccounts.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAccounts.Size = new System.Drawing.Size(1014, 268);
+            this.tpAccounts.Size = new System.Drawing.Size(1014, 240);
             this.tpAccounts.TabIndex = 0;
             this.tpAccounts.Text = "Accounts";
             // 
@@ -218,9 +215,6 @@
             this.fastObjecttListView1.AllColumns.Add(this.olvBotState);
             this.fastObjecttListView1.AllColumns.Add(this.olvProxy);
             this.fastObjecttListView1.AllColumns.Add(this.olvLastLog);
-            this.fastObjecttListView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.fastObjecttListView1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
             this.fastObjecttListView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.fastObjecttListView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -240,14 +234,15 @@
             this.olvLastLog});
             this.fastObjecttListView1.ContextMenuStrip = this.contextMenuStrip;
             this.fastObjecttListView1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.fastObjecttListView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.fastObjecttListView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.fastObjecttListView1.ForeColor = System.Drawing.Color.LightGray;
             this.fastObjecttListView1.FullRowSelect = true;
-            this.fastObjecttListView1.Location = new System.Drawing.Point(0, 0);
+            this.fastObjecttListView1.Location = new System.Drawing.Point(3, 3);
             this.fastObjecttListView1.Margin = new System.Windows.Forms.Padding(2);
             this.fastObjecttListView1.Name = "fastObjecttListView1";
             this.fastObjecttListView1.ShowGroups = false;
-            this.fastObjecttListView1.Size = new System.Drawing.Size(1015, 241);
+            this.fastObjecttListView1.Size = new System.Drawing.Size(1008, 234);
             this.fastObjecttListView1.TabIndex = 0;
             this.fastObjecttListView1.TintSortColumn = true;
             this.fastObjecttListView1.UseCellFormatEvents = true;
@@ -348,9 +343,9 @@
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelSuccessfulCaptchas,
             this.toolStripStatusLabelFailedCaptchas});
-            this.statusStrip.Location = new System.Drawing.Point(3, 243);
+            this.statusStrip.Location = new System.Drawing.Point(3, 275);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1008, 22);
+            this.statusStrip.Size = new System.Drawing.Size(1010, 22);
             this.statusStrip.SizingGrip = false;
             this.statusStrip.TabIndex = 1;
             this.statusStrip.Text = "statusStrip1";
@@ -382,23 +377,23 @@
             this.tpSettings.Location = new System.Drawing.Point(1, 31);
             this.tpSettings.Name = "tpSettings";
             this.tpSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSettings.Size = new System.Drawing.Size(1014, 268);
+            this.tpSettings.Size = new System.Drawing.Size(1014, 240);
             this.tpSettings.TabIndex = 2;
             this.tpSettings.Text = "Settings";
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(28, 197);
+            this.richTextBox1.Location = new System.Drawing.Point(28, 174);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(958, 55);
+            this.richTextBox1.Size = new System.Drawing.Size(958, 51);
             this.richTextBox1.TabIndex = 17;
             this.richTextBox1.Text = "Disable \'Stop on Captcha\' for this plugin to work properly.  Highlight all accoun" +
     "ts, right click, and uncheck Captcha.  Settings>Auto Stops>Captcha";
             // 
             // numericUpDownSolveAttempts
             // 
-            this.numericUpDownSolveAttempts.Location = new System.Drawing.Point(215, 122);
+            this.numericUpDownSolveAttempts.Location = new System.Drawing.Point(162, 87);
             this.numericUpDownSolveAttempts.Minimum = new decimal(new int[] {
             1,
             0,
@@ -417,7 +412,7 @@
             // labelSolveAttempts
             // 
             this.labelSolveAttempts.AutoSize = true;
-            this.labelSolveAttempts.Location = new System.Drawing.Point(44, 121);
+            this.labelSolveAttempts.Location = new System.Drawing.Point(35, 89);
             this.labelSolveAttempts.Name = "labelSolveAttempts";
             this.labelSolveAttempts.Size = new System.Drawing.Size(121, 20);
             this.labelSolveAttempts.TabIndex = 15;
@@ -426,7 +421,7 @@
             // label2CaptchaApiKey
             // 
             this.label2CaptchaApiKey.AutoSize = true;
-            this.label2CaptchaApiKey.Location = new System.Drawing.Point(14, 85);
+            this.label2CaptchaApiKey.Location = new System.Drawing.Point(14, 52);
             this.label2CaptchaApiKey.Name = "label2CaptchaApiKey";
             this.label2CaptchaApiKey.Size = new System.Drawing.Size(142, 20);
             this.label2CaptchaApiKey.TabIndex = 14;
@@ -434,7 +429,7 @@
             // 
             // textBox2CaptchaApiKey
             // 
-            this.textBox2CaptchaApiKey.Location = new System.Drawing.Point(215, 85);
+            this.textBox2CaptchaApiKey.Location = new System.Drawing.Point(162, 49);
             this.textBox2CaptchaApiKey.Name = "textBox2CaptchaApiKey";
             this.textBox2CaptchaApiKey.Size = new System.Drawing.Size(487, 26);
             this.textBox2CaptchaApiKey.TabIndex = 13;
@@ -512,9 +507,9 @@
             this.statusStrip1.PerformLayout();
             this.tabControlMain.ResumeLayout(false);
             this.tpCaptcha.ResumeLayout(false);
+            this.tpCaptcha.PerformLayout();
             this.tabControlCaptcha.ResumeLayout(false);
             this.tpAccounts.ResumeLayout(false);
-            this.tpAccounts.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fastObjecttListView1)).EndInit();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
