@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoMan-Pokemon-GoManager-Captcha", "GoMan-Pokemon-GoManager-Captcha\GoMan-Pokemon-GoManager-Captcha.csproj", "{7BCCCDD5-18F4-445B-B321-5513917690AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoMan-Pokemon-GoManager-Plugin", "GoMan-Pokemon-GoManager-Plugin\GoMan-Pokemon-GoManager-Plugin.csproj", "{7BCCCDD5-18F4-445B-B321-5513917690AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,4 @@
-﻿namespace GoManCaptcha
+﻿namespace GoManCaptcha.Captcha
 {
     partial class MainForm
     {

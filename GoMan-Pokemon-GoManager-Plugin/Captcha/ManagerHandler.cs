@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using GoPlugin;
 using GoPlugin.Events;
 
-namespace GoManCaptcha
+namespace GoManCaptcha.Captcha
 {
     public class ManagerHandler
     {

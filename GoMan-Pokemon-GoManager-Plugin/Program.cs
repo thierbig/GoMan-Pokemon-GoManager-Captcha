@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace GoManCaptcha
+namespace GoMan
 {
     static class Program
     {

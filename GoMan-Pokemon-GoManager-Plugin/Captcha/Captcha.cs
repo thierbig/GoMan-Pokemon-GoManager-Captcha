@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
+using GoManCaptcha;
+using GoManCaptcha.Captcha;
 using GoPlugin;
 using GoPlugin.Enums;
 using Newtonsoft.Json;
 using Timer = System.Timers.Timer;
 
 
-namespace GoManCaptcha
+namespace GoMan.Captcha
 {
     internal class Captcha : IPlugin
     {
