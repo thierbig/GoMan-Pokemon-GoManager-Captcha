@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GoMan.Model;
 using GoPlugin;
 using GoPlugin.Enums;
 

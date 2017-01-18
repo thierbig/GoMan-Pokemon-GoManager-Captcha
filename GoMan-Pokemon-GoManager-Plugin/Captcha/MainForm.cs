@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Timers;
 using System.Windows.Forms;
+using GoMan.Model;
 using GoPlugin;
 using GoPlugin.Enums;
 using Timer = System.Timers.Timer;

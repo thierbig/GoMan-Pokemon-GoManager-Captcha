@@ -77,12 +77,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationModel.cs" />
+    <Compile Include="Model\ApplicationModel.cs" />
     <Compile Include="Captcha\Captcha.cs" />
     <Compile Include="Captcha\CaptchaHandler.cs" />
     <Compile Include="Captcha\HttpStuff.cs" />
     <Compile Include="Eventviewer\Program.cs" />
-    <Compile Include="LogModel.cs" />
+    <Compile Include="Model\LogModel.cs" />
     <Compile Include="Captcha\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,7 +92,7 @@
     <Compile Include="Captcha\ManagerHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VersionModel.cs" />
+    <Compile Include="Model\VersionModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

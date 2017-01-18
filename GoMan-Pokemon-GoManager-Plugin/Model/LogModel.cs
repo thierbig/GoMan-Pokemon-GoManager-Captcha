@@ -1,7 +1,7 @@
 ﻿using System;
 using GoPlugin;
 
-namespace GoManCaptcha
+namespace GoMan.Model
 {
 
 

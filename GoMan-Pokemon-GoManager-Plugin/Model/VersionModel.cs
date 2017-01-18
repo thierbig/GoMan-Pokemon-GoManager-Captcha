@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace GoManCaptcha
+namespace GoMan.Model
 {
     class VersionModel
     {

@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
+using GoMan.Model;
 using GoManCaptcha;
 using GoManCaptcha.Captcha;
 using GoPlugin;
