@@ -175,12 +175,6 @@ namespace GoMan.View
             }
         }
 
-
-        private void linkLabel1_LinkClicked(object sender, EventArgs e)
-        {
-            Process.Start("https://goman.io");
-        }
-
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             _timer.Dispose();
@@ -217,6 +211,11 @@ namespace GoMan.View
             {
                 selectedObject.Manager.Stop();
             }
+        }
+
+        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://goman.io");
         }
     }
 }

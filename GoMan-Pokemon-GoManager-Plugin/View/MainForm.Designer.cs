@@ -140,7 +140,7 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(193, 17);
             this.toolStripStatusLabel1.Tag = "";
             this.toolStripStatusLabel1.Text = "Cheap Pokemon Go Proxy Services!";
-            this.toolStripStatusLabel1.DoubleClick += new System.EventHandler(this.linkLabel1_LinkClicked);
+            this.toolStripStatusLabel1.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
             // 
             // tabControlMain
             // 
