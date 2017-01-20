@@ -50,12 +50,12 @@ namespace GoMan.View
         {
             toolStripStatusLabelSuccessfulCaptchas.Text = string.Format(toolStripStatusLabelSuccessfulCaptchas.Tag.ToString(), ManagerHandler.TotalSuccessCount);
             toolStripStatusLabelFailedCaptchas.Text = string.Format(toolStripStatusLabelFailedCaptchas.Tag.ToString(), ManagerHandler.TotalFailedCount);
-            toolStripStatusLabelCaptchaRate.Text = string.Format(toolStripStatusLabelCaptchaRate.Tag.ToString(), _stringCaptchaRate, ManagerHandler.GetCaptchasRate());
         }
 
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             fastObjecttListView1.RefreshObject(_accounts.First());
+            toolStripStatusLabelCaptchaRate.Text = string.Format(toolStripStatusLabelCaptchaRate.Tag.ToString(), _stringCaptchaRate, ManagerHandler.GetCaptchasRate());
         }
 
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
@@ -218,27 +218,25 @@ namespace GoMan.View
         }
 
         private string _stringCaptchaRate = "1 Minute";
-        private void seconds30ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _stringCaptchaRate = "30 Seconds";
-            toolStripStatusLabelCaptchaRate.Text = string.Format(toolStripStatusLabelCaptchaRate.Tag.ToString(), _stringCaptchaRate, ManagerHandler.GetCaptchasRate());
-        }
 
         private void minute1ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _stringCaptchaRate = "1 Minute";
+            ApplicationModel.Settings.CaptchaSamplingTimeMinutes = 1;
             toolStripStatusLabelCaptchaRate.Text = string.Format(toolStripStatusLabelCaptchaRate.Tag.ToString(), _stringCaptchaRate, ManagerHandler.GetCaptchasRate());
         }
 
         private void minutes30ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _stringCaptchaRate = "30 Minute";
+            ApplicationModel.Settings.CaptchaSamplingTimeMinutes = 30;
             toolStripStatusLabelCaptchaRate.Text = string.Format(toolStripStatusLabelCaptchaRate.Tag.ToString(), _stringCaptchaRate, ManagerHandler.GetCaptchasRate());
         }
 
         private void hour1ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _stringCaptchaRate = "1 Hour";
+            ApplicationModel.Settings.CaptchaSamplingTimeMinutes = 60;
             toolStripStatusLabelCaptchaRate.Text = string.Format(toolStripStatusLabelCaptchaRate.Tag.ToString(), _stringCaptchaRate, ManagerHandler.GetCaptchasRate());
         }
     }

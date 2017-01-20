@@ -41,7 +41,6 @@
             this.tpCaptcha = new GoMan.View.BorderlessTabPage();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.contextMenuStripRate = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.seconds30ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.minute1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.minutes30ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hour1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -200,38 +199,30 @@
             // contextMenuStripRate
             // 
             this.contextMenuStripRate.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.seconds30ToolStripMenuItem,
             this.minute1ToolStripMenuItem,
             this.minutes30ToolStripMenuItem,
             this.hour1ToolStripMenuItem});
             this.contextMenuStripRate.Name = "contextMenuStripRate";
-            this.contextMenuStripRate.Size = new System.Drawing.Size(134, 92);
-            // 
-            // seconds30ToolStripMenuItem
-            // 
-            this.seconds30ToolStripMenuItem.Name = "seconds30ToolStripMenuItem";
-            this.seconds30ToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
-            this.seconds30ToolStripMenuItem.Text = "30 Seconds";
-            this.seconds30ToolStripMenuItem.Click += new System.EventHandler(this.seconds30ToolStripMenuItem_Click);
+            this.contextMenuStripRate.Size = new System.Drawing.Size(153, 92);
             // 
             // minute1ToolStripMenuItem
             // 
             this.minute1ToolStripMenuItem.Name = "minute1ToolStripMenuItem";
-            this.minute1ToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.minute1ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.minute1ToolStripMenuItem.Text = "1 Minute";
             this.minute1ToolStripMenuItem.Click += new System.EventHandler(this.minute1ToolStripMenuItem_Click);
             // 
             // minutes30ToolStripMenuItem
             // 
             this.minutes30ToolStripMenuItem.Name = "minutes30ToolStripMenuItem";
-            this.minutes30ToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.minutes30ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.minutes30ToolStripMenuItem.Text = "30 Minutes";
             this.minutes30ToolStripMenuItem.Click += new System.EventHandler(this.minutes30ToolStripMenuItem_Click);
             // 
             // hour1ToolStripMenuItem
             // 
             this.hour1ToolStripMenuItem.Name = "hour1ToolStripMenuItem";
-            this.hour1ToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.hour1ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.hour1ToolStripMenuItem.Text = "1 Hour";
             this.hour1ToolStripMenuItem.Click += new System.EventHandler(this.hour1ToolStripMenuItem_Click);
             // 
@@ -624,7 +615,6 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelCaptchaRate;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripRate;
-        private System.Windows.Forms.ToolStripMenuItem seconds30ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem minute1ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem minutes30ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hour1ToolStripMenuItem;

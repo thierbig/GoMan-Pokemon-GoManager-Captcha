@@ -40,11 +40,11 @@ namespace GoMan.Captcha
             var data = CaptchaRateLog.ToDictionary(d => DateTime.Parse(d.Key), d => d.Value);
 
             var result = from kvp in data
-                let key = RoundToNearestInterval(kvp.Key, TimeSpan.FromSeconds(ApplicationModel.Settings.CaptchaSamplingTimeSeconds))
+                let key = RoundToNearestInterval(kvp.Key, TimeSpan.FromMinutes(ApplicationModel.Settings.CaptchaSamplingTimeMinutes))
                 group kvp by key into g
                 select new { g.Key, Value = g.Average(x => x.Value) };
 
-            return result.ToDictionary(r => r.Key, v => v.Value).Average(g => g.Value);
+            return result.ToDictionary(r => r.Key, v => v.Value).Sum(g => g.Value);
         }
         private static DateTime RoundToNearestInterval(DateTime dt, TimeSpan d)
         {
@@ -59,7 +59,7 @@ namespace GoMan.Captcha
         {
             if (_timer == null)
             {
-                _timer = new Timer(1000);
+                _timer = new Timer(6000);
                 _timer.Elapsed += _timer_Elapsed;
                 _timer.Enabled = true;
             }
@@ -69,10 +69,10 @@ namespace GoMan.Captcha
 
         private static void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            var time = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            var time = DateTime.Now.ToString("MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture);
             CaptchaRateLog.AddOrUpdate(time, 0, (k, v) => v + 0);
 
-            if (CaptchaRateLog.Count >= 86400)
+            if (CaptchaRateLog.Count >= 10080)
             {
                 int removedValue;
                 CaptchaRateLog.TryRemove(CaptchaRateLog.Keys.ElementAt(0), out removedValue);
@@ -123,7 +123,7 @@ namespace GoMan.Captcha
                 FailedCount += 1;
             }
 
-            var time = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            var time = DateTime.Now.ToString("MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture);
             CaptchaRateLog.AddOrUpdate(time, 1, (k, v) => v + 1);
             SolvedCaptchaEvent?.Invoke(this, EventArgs.Empty);
         }
