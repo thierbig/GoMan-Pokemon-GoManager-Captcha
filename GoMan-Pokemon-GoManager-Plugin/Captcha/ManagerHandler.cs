@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using GoMan.Model;
@@ -15,7 +16,7 @@ namespace GoMan.Captcha
         public int SuccessCount { get; set; }
         public int FailedCount { get; set; }
         private bool SolvingCaptcha { get; set; }
-        public string Log { get; set; } = "";
+        public LogModel Log { get; set; }
 
         private static int _totalSuccessCount = 0;
         private static int _totalFailedCount = 0;
@@ -25,8 +26,26 @@ namespace GoMan.Captcha
 
         public delegate void SolvedCaptcha(object sender, EventArgs e);
         public static event SolvedCaptcha SolvedCaptchaEvent;
+        public static List<LogModel> EventLog = new List<LogModel>();
 
-        public List<LogModel> EventLog = new List<LogModel>();
+        public static int GetCaptchasRate(long rateMs)
+        {
+            var result = from kvp in EventLog
+                let key = RoundToNearestInterval(kvp.LogTime, TimeSpan.FromMilliseconds(rateMs))
+                where kvp.LoggerType == LoggerTypes.Success
+                group kvp by key
+                into g select new {g.Key};
+
+            return result.Count();
+        }
+        private static DateTime RoundToNearestInterval(DateTime dt, TimeSpan d)
+        {
+            var f = 0;
+            var m = (double)(dt.Ticks % d.Ticks) / d.Ticks;
+            if (m >= 0.5)
+                f = 1;
+            return new DateTime(((dt.Ticks / d.Ticks) + f) * d.Ticks);
+        }
 
         public ManagerHandler(IManager manager)
         {
@@ -83,7 +102,7 @@ namespace GoMan.Captcha
         {
             LogModel newLog = new LogModel(type, message, ex);
             EventLog.Add(newLog);
-            this.Log = newLog.ToString();
+            this.Log = newLog;
             Manager.LogCallerPlugin(new LoggerEventArgs(newLog));
 
             if (ApplicationModel.Settings.SaveLogs)

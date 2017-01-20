@@ -50,6 +50,7 @@ namespace GoMan.View
         {
             toolStripStatusLabelSuccessfulCaptchas.Text = string.Format(toolStripStatusLabelSuccessfulCaptchas.Tag.ToString(), ManagerHandler.TotalSuccessCount);
             toolStripStatusLabelFailedCaptchas.Text = string.Format(toolStripStatusLabelFailedCaptchas.Tag.ToString(), ManagerHandler.TotalFailedCount);
+            toolStripStatusLabelCaptchaRate.Text = string.Format(toolStripStatusLabelCaptchaRate.Tag.ToString(), _stringCaptchaRate, ManagerHandler.GetCaptchasRate(_showCaptchaRate));
         }
 
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
@@ -123,14 +124,12 @@ namespace GoMan.View
                 }
                 else if (e.Column == olvLastLog)
                 {
-                    LogModel log = managerHandler.EventLog.LastOrDefault();
-
-                    if (log == null)
+                    if (managerHandler.Log == null)
                     {
                         return;
                     }
 
-                    e.SubItem.ForeColor = log.GetLogColor();
+                    e.SubItem.ForeColor = managerHandler.Log.GetLogColor();
                 }
             }
         }
@@ -216,6 +215,36 @@ namespace GoMan.View
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
         {
             Process.Start("https://goman.io");
+        }
+
+        private long _showCaptchaRate = 30000;
+        private string _stringCaptchaRate = "30 seconds";
+        private void seconds30ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _showCaptchaRate = 30000;
+            _stringCaptchaRate = "30 seconds";
+            toolStripStatusLabelCaptchaRate.Text = string.Format(toolStripStatusLabelCaptchaRate.Tag.ToString(), _stringCaptchaRate, ManagerHandler.GetCaptchasRate(_showCaptchaRate));
+        }
+
+        private void minute1ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _showCaptchaRate = 60000;
+            _stringCaptchaRate = "1 minute";
+            toolStripStatusLabelCaptchaRate.Text = string.Format(toolStripStatusLabelCaptchaRate.Tag.ToString(), _stringCaptchaRate, ManagerHandler.GetCaptchasRate(_showCaptchaRate));
+        }
+
+        private void minutes30ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _showCaptchaRate = 1800000;
+            _stringCaptchaRate = "30 minute";
+            toolStripStatusLabelCaptchaRate.Text = string.Format(toolStripStatusLabelCaptchaRate.Tag.ToString(), _stringCaptchaRate, ManagerHandler.GetCaptchasRate(_showCaptchaRate));
+        }
+
+        private void hour1ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _showCaptchaRate = 3600000;
+            _stringCaptchaRate = "1 hour";
+            toolStripStatusLabelCaptchaRate.Text = string.Format(toolStripStatusLabelCaptchaRate.Tag.ToString(), _stringCaptchaRate, ManagerHandler.GetCaptchasRate(_showCaptchaRate));
         }
     }
 }

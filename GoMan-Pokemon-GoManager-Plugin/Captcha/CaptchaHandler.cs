@@ -56,7 +56,7 @@ namespace GoMan.Captcha
                 }
             }
 
-            managerHandler.AddLog(solveCaptchaRetryActionResults.Success ? LoggerTypes.Info : LoggerTypes.Exception, $"{solveCaptchaRetryActionResults.Message}");
+            managerHandler.AddLog(solveCaptchaRetryActionResults.Success ? LoggerTypes.Success : LoggerTypes.Exception, $"{solveCaptchaRetryActionResults.Message}");
 
             return solveCaptchaRetryActionResults;
         }

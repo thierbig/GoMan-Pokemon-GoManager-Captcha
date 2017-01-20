@@ -40,8 +40,15 @@
             this.tabControlMain = new GoMan.View.BorderlessTabControl();
             this.tpCaptcha = new GoMan.View.BorderlessTabPage();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.contextMenuStripRate = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.seconds30ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minute1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minutes30ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hour1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.customToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripStatusLabelSuccessfulCaptchas = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelFailedCaptchas = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelCaptchaRate = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControlCaptcha = new GoMan.View.BorderlessTabControl();
             this.tpAccounts = new GoMan.View.BorderlessTabPage();
             this.fastObjecttListView1 = new BrightIdeasSoftware.FastObjectListView();
@@ -74,6 +81,7 @@
             this.tabControlMain.SuspendLayout();
             this.tpCaptcha.SuspendLayout();
             this.statusStrip.SuspendLayout();
+            this.contextMenuStripRate.SuspendLayout();
             this.tabControlCaptcha.SuspendLayout();
             this.tpAccounts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fastObjecttListView1)).BeginInit();
@@ -178,15 +186,62 @@
             // statusStrip
             // 
             this.statusStrip.BackColor = System.Drawing.Color.Transparent;
+            this.statusStrip.ContextMenuStrip = this.contextMenuStripRate;
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelSuccessfulCaptchas,
-            this.toolStripStatusLabelFailedCaptchas});
+            this.toolStripStatusLabelFailedCaptchas,
+            this.toolStripStatusLabelCaptchaRate});
             this.statusStrip.Location = new System.Drawing.Point(3, 275);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(1010, 22);
             this.statusStrip.SizingGrip = false;
             this.statusStrip.TabIndex = 1;
             this.statusStrip.Text = "statusStrip1";
+            // 
+            // contextMenuStripRate
+            // 
+            this.contextMenuStripRate.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.seconds30ToolStripMenuItem,
+            this.minute1ToolStripMenuItem,
+            this.minutes30ToolStripMenuItem,
+            this.hour1ToolStripMenuItem,
+            this.customToolStripMenuItem});
+            this.contextMenuStripRate.Name = "contextMenuStripRate";
+            this.contextMenuStripRate.Size = new System.Drawing.Size(134, 114);
+            // 
+            // seconds30ToolStripMenuItem
+            // 
+            this.seconds30ToolStripMenuItem.Name = "seconds30ToolStripMenuItem";
+            this.seconds30ToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.seconds30ToolStripMenuItem.Text = "30 Seconds";
+            this.seconds30ToolStripMenuItem.Click += new System.EventHandler(this.seconds30ToolStripMenuItem_Click);
+            // 
+            // minute1ToolStripMenuItem
+            // 
+            this.minute1ToolStripMenuItem.Name = "minute1ToolStripMenuItem";
+            this.minute1ToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.minute1ToolStripMenuItem.Text = "1 Minute";
+            this.minute1ToolStripMenuItem.Click += new System.EventHandler(this.minute1ToolStripMenuItem_Click);
+            // 
+            // minutes30ToolStripMenuItem
+            // 
+            this.minutes30ToolStripMenuItem.Name = "minutes30ToolStripMenuItem";
+            this.minutes30ToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.minutes30ToolStripMenuItem.Text = "30 Minutes";
+            this.minutes30ToolStripMenuItem.Click += new System.EventHandler(this.minutes30ToolStripMenuItem_Click);
+            // 
+            // hour1ToolStripMenuItem
+            // 
+            this.hour1ToolStripMenuItem.Name = "hour1ToolStripMenuItem";
+            this.hour1ToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.hour1ToolStripMenuItem.Text = "1 Hour";
+            this.hour1ToolStripMenuItem.Click += new System.EventHandler(this.hour1ToolStripMenuItem_Click);
+            // 
+            // customToolStripMenuItem
+            // 
+            this.customToolStripMenuItem.Name = "customToolStripMenuItem";
+            this.customToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.customToolStripMenuItem.Text = "Custom";
             // 
             // toolStripStatusLabelSuccessfulCaptchas
             // 
@@ -201,6 +256,13 @@
             this.toolStripStatusLabelFailedCaptchas.Size = new System.Drawing.Size(131, 17);
             this.toolStripStatusLabelFailedCaptchas.Tag = "Total Failed Captchas: {0}";
             this.toolStripStatusLabelFailedCaptchas.Text = "Total Failed Captchas: 0";
+            // 
+            // toolStripStatusLabelCaptchaRate
+            // 
+            this.toolStripStatusLabelCaptchaRate.Name = "toolStripStatusLabelCaptchaRate";
+            this.toolStripStatusLabelCaptchaRate.Size = new System.Drawing.Size(129, 17);
+            this.toolStripStatusLabelCaptchaRate.Tag = "Captchas Per {0}: {1}";
+            this.toolStripStatusLabelCaptchaRate.Text = "Captchas Per Minute: 0";
             // 
             // tabControlCaptcha
             // 
@@ -513,6 +575,7 @@
             this.tpCaptcha.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            this.contextMenuStripRate.ResumeLayout(false);
             this.tabControlCaptcha.ResumeLayout(false);
             this.tpAccounts.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.fastObjecttListView1)).EndInit();
@@ -567,5 +630,12 @@
         private System.Windows.Forms.CheckBox cbkSaveLogs;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelCaptchaRate;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripRate;
+        private System.Windows.Forms.ToolStripMenuItem seconds30ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem minute1ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem minutes30ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hour1ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem customToolStripMenuItem;
     }
 }
