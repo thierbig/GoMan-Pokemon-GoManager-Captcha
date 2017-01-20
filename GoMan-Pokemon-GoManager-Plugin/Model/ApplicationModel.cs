@@ -38,7 +38,7 @@ namespace GoMan.Model
         //public int MaxThreads { get; set; } = 15;
         public string ProxyDomain { get; set; } = "chancity.hopto.org";
         public int ProxyPort { get; set; } = 1080;
-        
+        public int CaptchaSamplingTimeSeconds = 60;
 
         public async Task<bool> SaveSetting()
         {

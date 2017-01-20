@@ -1,9 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
+
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
+using Timer = System.Timers.Timer;
 using GoMan.Model;
 using GoPlugin;
 using GoPlugin.Events;
@@ -17,6 +21,7 @@ namespace GoMan.Captcha
         public int FailedCount { get; set; }
         private bool SolvingCaptcha { get; set; }
         public LogModel Log { get; set; }
+        private static System.Timers.Timer _timer;
 
         private static int _totalSuccessCount = 0;
         private static int _totalFailedCount = 0;
@@ -26,17 +31,20 @@ namespace GoMan.Captcha
 
         public delegate void SolvedCaptcha(object sender, EventArgs e);
         public static event SolvedCaptcha SolvedCaptchaEvent;
-        public static List<LogModel> EventLog = new List<LogModel>();
+        public static ConcurrentDictionary<string, int> CaptchaRateLog = new ConcurrentDictionary<string, int>();
 
-        public static int GetCaptchasRate(long rateMs)
+        public static double GetCaptchasRate()
         {
-            var result = from kvp in EventLog
-                let key = RoundToNearestInterval(kvp.LogTime, TimeSpan.FromMilliseconds(rateMs))
-                where kvp.LoggerType == LoggerTypes.Success
-                group kvp by key
-                into g select new {g.Key};
+            if (CaptchaRateLog.IsEmpty) return 0;
 
-            return result.Count();
+            var data = CaptchaRateLog.ToDictionary(d => DateTime.Parse(d.Key), d => d.Value);
+
+            var result = from kvp in data
+                let key = RoundToNearestInterval(kvp.Key, TimeSpan.FromSeconds(ApplicationModel.Settings.CaptchaSamplingTimeSeconds))
+                group kvp by key into g
+                select new { g.Key, Value = g.Average(x => x.Value) };
+
+            return result.ToDictionary(r => r.Key, v => v.Value).Average(g => g.Value);
         }
         private static DateTime RoundToNearestInterval(DateTime dt, TimeSpan d)
         {
@@ -49,9 +57,28 @@ namespace GoMan.Captcha
 
         public ManagerHandler(IManager manager)
         {
+            if (_timer == null)
+            {
+                _timer = new Timer(1000);
+                _timer.Elapsed += _timer_Elapsed;
+                _timer.Enabled = true;
+            }
             Manager = manager;
             manager.OnCaptcha += OnCaptcha;
         }
+
+        private static void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            var time = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            CaptchaRateLog.AddOrUpdate(time, 0, (k, v) => v + 0);
+
+            if (CaptchaRateLog.Count >= 86400)
+            {
+                int removedValue;
+                CaptchaRateLog.TryRemove(CaptchaRateLog.Keys.ElementAt(0), out removedValue);
+            }
+        }
+
         public async void StoppedSolveCaptcha()
         {
             if (SolvingCaptcha || !ApplicationModel.Settings.Enabled) return;
@@ -83,7 +110,7 @@ namespace GoMan.Captcha
             SolvingCaptcha = false;
         }
 
-        public void UpdateCounters(bool success)
+        private void UpdateCounters(bool success)
         {
             if (success)
             {
@@ -96,12 +123,13 @@ namespace GoMan.Captcha
                 FailedCount += 1;
             }
 
+            var time = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            CaptchaRateLog.AddOrUpdate(time, 1, (k, v) => v + 1);
             SolvedCaptchaEvent?.Invoke(this, EventArgs.Empty);
         }
         public void AddLog(LoggerTypes type, string message, Exception ex = null)
         {
             LogModel newLog = new LogModel(type, message, ex);
-            EventLog.Add(newLog);
             this.Log = newLog;
             Manager.LogCallerPlugin(new LoggerEventArgs(newLog));
 

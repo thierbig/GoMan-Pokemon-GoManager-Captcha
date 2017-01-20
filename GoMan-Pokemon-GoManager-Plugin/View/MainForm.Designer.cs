@@ -45,7 +45,6 @@
             this.minute1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.minutes30ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hour1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.customToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripStatusLabelSuccessfulCaptchas = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelFailedCaptchas = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelCaptchaRate = new System.Windows.Forms.ToolStripStatusLabel();
@@ -204,10 +203,9 @@
             this.seconds30ToolStripMenuItem,
             this.minute1ToolStripMenuItem,
             this.minutes30ToolStripMenuItem,
-            this.hour1ToolStripMenuItem,
-            this.customToolStripMenuItem});
+            this.hour1ToolStripMenuItem});
             this.contextMenuStripRate.Name = "contextMenuStripRate";
-            this.contextMenuStripRate.Size = new System.Drawing.Size(134, 114);
+            this.contextMenuStripRate.Size = new System.Drawing.Size(134, 92);
             // 
             // seconds30ToolStripMenuItem
             // 
@@ -236,12 +234,6 @@
             this.hour1ToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.hour1ToolStripMenuItem.Text = "1 Hour";
             this.hour1ToolStripMenuItem.Click += new System.EventHandler(this.hour1ToolStripMenuItem_Click);
-            // 
-            // customToolStripMenuItem
-            // 
-            this.customToolStripMenuItem.Name = "customToolStripMenuItem";
-            this.customToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
-            this.customToolStripMenuItem.Text = "Custom";
             // 
             // toolStripStatusLabelSuccessfulCaptchas
             // 
@@ -636,6 +628,5 @@
         private System.Windows.Forms.ToolStripMenuItem minute1ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem minutes30ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hour1ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem customToolStripMenuItem;
     }
 }
