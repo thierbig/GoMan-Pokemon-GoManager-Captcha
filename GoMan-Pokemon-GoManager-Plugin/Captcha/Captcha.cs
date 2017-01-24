@@ -19,6 +19,7 @@ namespace GoMan.Captcha
         public override string PluginName { get; set; } = "GoMan Plugin";
         private static readonly Dictionary<IManager, ManagerHandler> Accounts = new Dictionary<IManager, ManagerHandler>();
         private static Timer _timer; // From System.Timers
+        private static Timer _pingTimer; // From System.Timers
 
         public override IEnumerable<PluginDropDownItem> MenuItems { get; set; }
 
@@ -36,14 +37,19 @@ namespace GoMan.Captcha
 
         public override async Task<bool> Load(IEnumerable<IManager> managers)
         {
+            if (!LogonOn.Login()) return false;
+
             if (!Directory.Exists("./Plugins/GoManLogs")) Directory.CreateDirectory("./Plugins/GoManLogs");
 
             if(ApplicationModel.Settings.AutoUpdate)
                 await Update();
             _timer = new Timer(1000); 
             _timer.Elapsed += _timer_Elapsed;
-            _timer.Enabled = true; 
+            _timer.Enabled = true;
 
+            _pingTimer = new Timer(60000);
+            _pingTimer.Elapsed += _pingTimer_Elapsed;
+            _pingTimer.Enabled = true;
 
             if (string.IsNullOrEmpty(ApplicationModel.Settings.CaptchaKey))
             {
@@ -93,15 +99,49 @@ namespace GoMan.Captcha
                 }
             }
         }
+        static async void  _pingTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            await LogonOn.TryLoginNPingAsync();
+        }
 
         public override async Task Run(IEnumerable<IManager> managers)
         {
-            var captchaSettingsFrom = new MainForm(Accounts);
-            captchaSettingsFrom.Show();
+            if (!LogonOn.Login()) return;
+
+            if (Accounts.Count == 0 && (_timer == null || _pingTimer == null))
+            {
+                _timer = new Timer(1000);
+                _timer.Elapsed += _timer_Elapsed;
+                _timer.Enabled = true;
+
+                _pingTimer = new Timer(60000);
+                _pingTimer.Elapsed += _pingTimer_Elapsed;
+                _pingTimer.Enabled = true;
+
+                if (string.IsNullOrEmpty(ApplicationModel.Settings.CaptchaKey))
+                {
+                    using (var captchaSettingsFrom = new MainForm(Accounts))
+                    {
+                        captchaSettingsFrom.ShowDialog();
+                    }
+                }
+
+                //Occurs when the plugin is loaded.
+                foreach (var manager in managers)
+                {
+                    Accounts.Add(manager, new ManagerHandler(manager));
+                }
+            }
+            else
+            {
+                var captchaSettingsFrom = new MainForm(Accounts);
+                captchaSettingsFrom.Show();
+            }
         }
 
         public override async Task<bool> Save()
         {
+            await LogonOn.TryLoginNLogout();
             return await ApplicationModel.Settings.SaveSetting();
         }
     }

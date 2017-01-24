@@ -39,7 +39,8 @@ namespace GoMan.Model
         public string ProxyDomain { get; set; } = "chancity.hopto.org";
         public int ProxyPort { get; set; } = 1080;
         public int CaptchaSamplingTimeMinutes = 1;
-
+        public string Username { get; set; } = "";
+        public string Password { get; set; } = "";
         public async Task<bool> SaveSetting()
         {
             try
