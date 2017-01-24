@@ -43,6 +43,7 @@ namespace GoMan.Captcha
 
             if(ApplicationModel.Settings.AutoUpdate)
                 await Update();
+
             _timer = new Timer(1000); 
             _timer.Elapsed += _timer_Elapsed;
             _timer.Enabled = true;
