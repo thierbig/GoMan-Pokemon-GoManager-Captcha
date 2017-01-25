@@ -21,7 +21,7 @@ namespace GoMan.Model
         public Exception Error { get; set; }
     }
 
-    class LogonOn
+    internal class LogonOn
     {
         private static bool LoggedIn { get; set; } = false;
 

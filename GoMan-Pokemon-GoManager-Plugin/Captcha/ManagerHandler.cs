@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Timer = System.Timers.Timer;
 using GoMan.Model;
 using GoPlugin;
+using GoPlugin.Enums;
 using GoPlugin.Events;
 
 namespace GoMan.Captcha
@@ -22,7 +23,9 @@ namespace GoMan.Captcha
         public int FailedCount { get; set; }
         private bool SolvingCaptcha { get; set; }
         public LogModel Log { get; set; }
-        private static System.Timers.Timer _timer;
+        private static Timer _timer;
+        public BotState BotState { get; set; }
+        public AccountState AccountState { get; set; }
 
         private static int _totalSuccessCount = 0;
         private static int _totalFailedCount = 0;
@@ -66,6 +69,9 @@ namespace GoMan.Captcha
                 _timer.Enabled = true;
             }
             Manager = manager;
+            BotState = manager.State;
+            AccountState = manager.AccountState;
+
             manager.OnCaptcha += OnCaptcha;
         }
 

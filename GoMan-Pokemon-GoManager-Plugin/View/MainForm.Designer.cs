@@ -203,26 +203,26 @@
             this.minutes30ToolStripMenuItem,
             this.hour1ToolStripMenuItem});
             this.contextMenuStripRate.Name = "contextMenuStripRate";
-            this.contextMenuStripRate.Size = new System.Drawing.Size(153, 92);
+            this.contextMenuStripRate.Size = new System.Drawing.Size(133, 70);
             // 
             // minute1ToolStripMenuItem
             // 
             this.minute1ToolStripMenuItem.Name = "minute1ToolStripMenuItem";
-            this.minute1ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.minute1ToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.minute1ToolStripMenuItem.Text = "1 Minute";
             this.minute1ToolStripMenuItem.Click += new System.EventHandler(this.minute1ToolStripMenuItem_Click);
             // 
             // minutes30ToolStripMenuItem
             // 
             this.minutes30ToolStripMenuItem.Name = "minutes30ToolStripMenuItem";
-            this.minutes30ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.minutes30ToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.minutes30ToolStripMenuItem.Text = "30 Minutes";
             this.minutes30ToolStripMenuItem.Click += new System.EventHandler(this.minutes30ToolStripMenuItem_Click);
             // 
             // hour1ToolStripMenuItem
             // 
             this.hour1ToolStripMenuItem.Name = "hour1ToolStripMenuItem";
-            this.hour1ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.hour1ToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.hour1ToolStripMenuItem.Text = "1 Hour";
             this.hour1ToolStripMenuItem.Click += new System.EventHandler(this.hour1ToolStripMenuItem_Click);
             // 
@@ -342,7 +342,7 @@
             // 
             // olvAccountState
             // 
-            this.olvAccountState.AspectName = "Manager.AccountState";
+            this.olvAccountState.AspectName = "AccountState";
             this.olvAccountState.Text = "Account State";
             this.olvAccountState.Width = 87;
             // 
@@ -396,7 +396,7 @@
             // 
             // olvBotState
             // 
-            this.olvBotState.AspectName = "Manager.State";
+            this.olvBotState.AspectName = "BotState";
             this.olvBotState.Text = "Bot State";
             this.olvBotState.Width = 61;
             // 

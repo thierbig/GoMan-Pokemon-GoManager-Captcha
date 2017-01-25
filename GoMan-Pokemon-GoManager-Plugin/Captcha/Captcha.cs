@@ -128,7 +128,7 @@ namespace GoMan.Captcha
                 }
 
                 //Occurs when the plugin is loaded.
-                foreach (var manager in managers)
+                foreach (var manager in _uniqueManagers)
                 {
                     Accounts.Add(manager, new ManagerHandler(manager));
                 }
