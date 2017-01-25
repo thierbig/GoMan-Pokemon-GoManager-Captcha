@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
-using System.Windows.Forms;
 using Timer = System.Timers.Timer;
 using GoMan.Model;
 using GoPlugin;
@@ -24,8 +23,6 @@ namespace GoMan.Captcha
         private bool SolvingCaptcha { get; set; }
         public LogModel Log { get; set; }
         private static Timer _timer;
-        public BotState BotState { get; set; }
-        public AccountState AccountState { get; set; }
 
         private static int _totalSuccessCount = 0;
         private static int _totalFailedCount = 0;
@@ -69,9 +66,7 @@ namespace GoMan.Captcha
                 _timer.Enabled = true;
             }
             Manager = manager;
-            BotState = manager.State;
-            AccountState = manager.AccountState;
-
+            
             manager.OnCaptcha += OnCaptcha;
         }
 

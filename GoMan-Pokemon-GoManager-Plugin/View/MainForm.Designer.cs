@@ -342,7 +342,7 @@
             // 
             // olvAccountState
             // 
-            this.olvAccountState.AspectName = "AccountState";
+            this.olvAccountState.AspectName = "Manager.AccountState";
             this.olvAccountState.Text = "Account State";
             this.olvAccountState.Width = 87;
             // 
@@ -396,7 +396,7 @@
             // 
             // olvBotState
             // 
-            this.olvBotState.AspectName = "BotState";
+            this.olvBotState.AspectName = "Manager.State";
             this.olvBotState.Text = "Bot State";
             this.olvBotState.Width = 61;
             // 
