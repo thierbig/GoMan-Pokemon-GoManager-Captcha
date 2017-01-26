@@ -35,7 +35,7 @@ namespace GoMan.View
             pbRefresh.Visible = true;
             btnSubmit.Enabled = false;
 
-            var methodResult = await LogonOn.TryLoginNPingAsync();
+            var methodResult = await LogonOn.TryPing();
 
             pbRefresh.Visible = false;
             btnSubmit.Enabled = true;

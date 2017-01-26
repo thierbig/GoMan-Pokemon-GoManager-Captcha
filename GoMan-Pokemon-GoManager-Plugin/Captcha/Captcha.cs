@@ -119,7 +119,7 @@ namespace GoMan.Captcha
             _uploading = true;
             var listAccountData = Accounts.Select(keyValuePair => new AccountData(keyValuePair.Key)).ToList();
             var jsonString = JsonConvert.SerializeObject(listAccountData);
-            var result = await LogonOn.TryLoginNUploadAccountInfo(new StringContent(jsonString, Encoding.UTF8, "application/json"));
+            var result = await LogonOn.TryUploadAccountInfo(new StringContent(jsonString, Encoding.UTF8, "application/json"));
 
             _uploading = false;
         }
@@ -172,7 +172,7 @@ namespace GoMan.Captcha
 
         static async void  _pingTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            await LogonOn.TryLoginNPingAsync();
+            await LogonOn.TryPing();
         }
 
         public override async Task Run(IEnumerable<IManager> managers)
@@ -216,7 +216,7 @@ namespace GoMan.Captcha
 
         public override async Task<bool> Save()
         {
-            await LogonOn.TryLoginNLogout();
+            await LogonOn.TryLogout();
             return await ApplicationModel.Settings.SaveSetting();
         }
     }
