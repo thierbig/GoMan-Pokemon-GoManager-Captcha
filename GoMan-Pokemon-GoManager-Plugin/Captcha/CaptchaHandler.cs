@@ -63,7 +63,7 @@ namespace GoMan.Captcha
 
         private static async Task<MethodResult> SolveCaptcha(string captchaKey, string captchaUrl, IManager manager)
         {
-            var captchaResponse = await HttpStuff.GetCaptchaResponse(captchaKey, captchaUrl);
+            var captchaResponse = await CaptchaHttp.GetCaptchaResponse(captchaKey, captchaUrl);
             if (!captchaResponse.Success) return captchaResponse;
 
             return await manager.VerifyCaptcha(captchaResponse.Data);

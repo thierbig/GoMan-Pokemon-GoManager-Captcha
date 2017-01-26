@@ -82,7 +82,7 @@
     <Compile Include="Model\ApplicationModel.cs" />
     <Compile Include="Captcha\Captcha.cs" />
     <Compile Include="Captcha\CaptchaHandler.cs" />
-    <Compile Include="Captcha\HttpStuff.cs" />
+    <Compile Include="Captcha\CaptchaHttp.cs" />
     <Compile Include="Eventviewer\Program.cs" />
     <Compile Include="Model\FingerPrint.cs" />
     <Compile Include="Model\LogModel.cs" />

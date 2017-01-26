@@ -37,13 +37,13 @@
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tabControlMain = new GoMan.View.BorderlessTabControl();
-            this.tpCaptcha = new GoMan.View.BorderlessTabPage();
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.contextMenuStripRate = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.minute1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.minutes30ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hour1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabControlMain = new GoMan.View.BorderlessTabControl();
+            this.tpCaptcha = new GoMan.View.BorderlessTabPage();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelSuccessfulCaptchas = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelFailedCaptchas = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelCaptchaRate = new System.Windows.Forms.ToolStripStatusLabel();
@@ -76,10 +76,10 @@
             this.cbkAutoUpdate = new System.Windows.Forms.CheckBox();
             this.contextMenuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.contextMenuStripRate.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tpCaptcha.SuspendLayout();
             this.statusStrip.SuspendLayout();
-            this.contextMenuStripRate.SuspendLayout();
             this.tabControlCaptcha.SuspendLayout();
             this.tpAccounts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fastObjecttListView1)).BeginInit();
@@ -148,6 +148,36 @@
             this.toolStripStatusLabel1.Text = "Cheap Pokemon Go Proxy Services!";
             this.toolStripStatusLabel1.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
             // 
+            // contextMenuStripRate
+            // 
+            this.contextMenuStripRate.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.minute1ToolStripMenuItem,
+            this.minutes30ToolStripMenuItem,
+            this.hour1ToolStripMenuItem});
+            this.contextMenuStripRate.Name = "contextMenuStripRate";
+            this.contextMenuStripRate.Size = new System.Drawing.Size(133, 70);
+            // 
+            // minute1ToolStripMenuItem
+            // 
+            this.minute1ToolStripMenuItem.Name = "minute1ToolStripMenuItem";
+            this.minute1ToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.minute1ToolStripMenuItem.Text = "1 Minute";
+            this.minute1ToolStripMenuItem.Click += new System.EventHandler(this.minute1ToolStripMenuItem_Click);
+            // 
+            // minutes30ToolStripMenuItem
+            // 
+            this.minutes30ToolStripMenuItem.Name = "minutes30ToolStripMenuItem";
+            this.minutes30ToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.minutes30ToolStripMenuItem.Text = "30 Minutes";
+            this.minutes30ToolStripMenuItem.Click += new System.EventHandler(this.minutes30ToolStripMenuItem_Click);
+            // 
+            // hour1ToolStripMenuItem
+            // 
+            this.hour1ToolStripMenuItem.Name = "hour1ToolStripMenuItem";
+            this.hour1ToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.hour1ToolStripMenuItem.Text = "1 Hour";
+            this.hour1ToolStripMenuItem.Click += new System.EventHandler(this.hour1ToolStripMenuItem_Click);
+            // 
             // tabControlMain
             // 
             this.tabControlMain.Alignment = System.Windows.Forms.TabAlignment.Left;
@@ -195,36 +225,6 @@
             this.statusStrip.SizingGrip = false;
             this.statusStrip.TabIndex = 1;
             this.statusStrip.Text = "statusStrip1";
-            // 
-            // contextMenuStripRate
-            // 
-            this.contextMenuStripRate.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.minute1ToolStripMenuItem,
-            this.minutes30ToolStripMenuItem,
-            this.hour1ToolStripMenuItem});
-            this.contextMenuStripRate.Name = "contextMenuStripRate";
-            this.contextMenuStripRate.Size = new System.Drawing.Size(133, 70);
-            // 
-            // minute1ToolStripMenuItem
-            // 
-            this.minute1ToolStripMenuItem.Name = "minute1ToolStripMenuItem";
-            this.minute1ToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
-            this.minute1ToolStripMenuItem.Text = "1 Minute";
-            this.minute1ToolStripMenuItem.Click += new System.EventHandler(this.minute1ToolStripMenuItem_Click);
-            // 
-            // minutes30ToolStripMenuItem
-            // 
-            this.minutes30ToolStripMenuItem.Name = "minutes30ToolStripMenuItem";
-            this.minutes30ToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
-            this.minutes30ToolStripMenuItem.Text = "30 Minutes";
-            this.minutes30ToolStripMenuItem.Click += new System.EventHandler(this.minutes30ToolStripMenuItem_Click);
-            // 
-            // hour1ToolStripMenuItem
-            // 
-            this.hour1ToolStripMenuItem.Name = "hour1ToolStripMenuItem";
-            this.hour1ToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
-            this.hour1ToolStripMenuItem.Text = "1 Hour";
-            this.hour1ToolStripMenuItem.Click += new System.EventHandler(this.hour1ToolStripMenuItem_Click);
             // 
             // toolStripStatusLabelSuccessfulCaptchas
             // 
@@ -392,7 +392,7 @@
             // 
             this.olvRunningTime.AspectName = "Manager.RunningTime";
             this.olvRunningTime.Text = "Time";
-            this.olvRunningTime.Width = 40;
+            this.olvRunningTime.Width = 48;
             // 
             // olvBotState
             // 
@@ -553,12 +553,12 @@
             this.contextMenuStrip.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.contextMenuStripRate.ResumeLayout(false);
             this.tabControlMain.ResumeLayout(false);
             this.tpCaptcha.ResumeLayout(false);
             this.tpCaptcha.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
-            this.contextMenuStripRate.ResumeLayout(false);
             this.tabControlCaptcha.ResumeLayout(false);
             this.tpAccounts.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.fastObjecttListView1)).EndInit();

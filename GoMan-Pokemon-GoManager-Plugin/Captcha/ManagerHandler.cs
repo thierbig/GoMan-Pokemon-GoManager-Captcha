@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -10,7 +9,6 @@ using System.Timers;
 using Timer = System.Timers.Timer;
 using GoMan.Model;
 using GoPlugin;
-using GoPlugin.Enums;
 using GoPlugin.Events;
 
 namespace GoMan.Captcha

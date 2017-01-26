@@ -7,7 +7,7 @@ using GoPlugin;
 
 namespace GoMan.Captcha
 {
-    public class HttpStuff
+    public class CaptchaHttp
     {
         private const string RecaptchaSiteKey = "6LeeTScTAAAAADqvhqVMhPpr_vB9D364Ia-1dSgK";
         private const string CaptchaIn = "http://2captcha.com/in.php?";
