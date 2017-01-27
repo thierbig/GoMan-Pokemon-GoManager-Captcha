@@ -126,7 +126,8 @@ namespace GoMan.Captcha
         private class AccountData
         {
             private static readonly Munger LevelMunger = new Munger("Level");
-            private static readonly Munger LogMunger = new Munger("LastLogMessage");
+            private static readonly Munger LogMunger = new Munger("Logs");
+            private static readonly Munger LastLogMessageMunger = new Munger("LastLogMessage");
             private static readonly Munger ExpPerHourMunger = new Munger("ExpPerHour");
             private static readonly Munger RunTimeMunger = new Munger("RunningTime");
             private static readonly Munger TillLevelUpMunger = new Munger("TillLevelUp");
@@ -145,10 +146,11 @@ namespace GoMan.Captcha
             public string ExpPerHour { get; set; }
             [JsonProperty("level_up_time")]
             public string TillLevelUp { get; set; }
+
             [JsonProperty("log_type")]
-            public string LogType { get; set; }
+            public string LogType { get; set; } = "0";
             [JsonProperty("last_log")]
-            public string LastLog { get; set; }
+            public string LastLog { get; set; } = "";
 
             public AccountData(IManager manager)
             {
@@ -159,14 +161,13 @@ namespace GoMan.Captcha
                 ExpPerHour = ExpPerHourMunger.GetValue(manager).ToString();
                 TillLevelUp = TillLevelUpMunger.GetValue(manager).ToString();
                 RunningTime = RunTimeMunger.GetValue(manager).ToString();
+                LastLog = LastLogMessageMunger.GetValue(manager).ToString();
 
-                var log = LogMunger.GetValue(manager);
-                LastLog = log.ToString();
-                LogType = "0";
+                var logs = ((ICollection<Log>) LogMunger.GetValue(manager));
+                if (logs == null || logs.Count == 0) return;
 
-                //var log = (Log)LogMunger.GetValue(manager);
-                //if (log?.LoggerType != null) LogType = ((int)log.LoggerType).ToString();
-                //if (log != null) LastLog = log.ToString();
+                var log = logs.Last();
+                LogType = ((int)log.LoggerType).ToString();
             }
         }
 
