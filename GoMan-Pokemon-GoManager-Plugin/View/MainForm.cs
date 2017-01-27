@@ -171,7 +171,8 @@ namespace GoMan.View
             {
                 textBox2CaptchaApiKey.Focus();
                 textBox2CaptchaApiKey.BackColor = Color.Red;
-                tabControlMain.SelectedTab = tpGlobalSettings;
+                tabControlMain.SelectedTab = tpCaptcha;
+                tabControlCaptcha.SelectedTab = tpSettings;
 
             }
         }
