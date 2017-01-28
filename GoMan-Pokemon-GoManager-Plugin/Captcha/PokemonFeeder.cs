@@ -17,7 +17,7 @@ namespace GoMan.Captcha
 {
     public class PokemonFeeder
     {
-        private static readonly Timer Timer = new Timer(10000);
+        private static readonly Timer Timer = new Timer(60000);
         public static HashSet<PokemonLocationInfo> PokemonDataInformation = new HashSet<PokemonLocationInfo>();
         static PokemonFeeder()
         {
