@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
-using System.Windows.Forms;
 using GoMan.Model;
 using GoPlugin.Events;
 using Newtonsoft.Json;
@@ -41,9 +35,7 @@ namespace GoMan.Captcha
 
             if (result.Success) return;
             lock (PokemonDataInformation)
-            {
                 copiedList.ForEach(x => PokemonDataInformation.Add(x));
-            }
         }
     }
 
@@ -72,7 +64,6 @@ namespace GoMan.Captcha
 
             public PokemonLocationInfo(PokemonCaughtEventArgs e, double iv)
             {
-
                 EncounterId = (long)e.MapPokemon.EncounterId;
                 Iv = iv;
                 Cp = e.Pokemon.Cp;
