@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
@@ -10,6 +13,7 @@ using Timer = System.Timers.Timer;
 using GoMan.Model;
 using GoPlugin;
 using GoPlugin.Events;
+using Newtonsoft.Json;
 
 namespace GoMan.Captcha
 {
@@ -31,6 +35,7 @@ namespace GoMan.Captcha
         public delegate void SolvedCaptcha(object sender, EventArgs e);
         public static event SolvedCaptcha SolvedCaptchaEvent;
         public static ConcurrentDictionary<string, int> CaptchaRateLog = new ConcurrentDictionary<string, int>();
+        private readonly PokemonFeeder _pokemonFeeder = new PokemonFeeder();
 
         public static double GetCaptchasRate()
         {
@@ -66,8 +71,19 @@ namespace GoMan.Captcha
             Manager = manager;
             
             manager.OnCaptcha += OnCaptcha;
+            manager.OnPokemonCaught += OnPokemonCaught;
         }
 
+        private void OnPokemonCaught(object sender, PokemonCaughtEventArgs e)
+        {
+            lock (PokemonFeeder.PokemonDataInformation)
+            {
+                var iv = Manager.CalculateIVPerfection(e.Pokemon).Data;
+                PokemonFeeder.PokemonDataInformation.Add(new PokemonLocationInfo(e, iv));
+            }
+        }
+
+       
         private static void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             var time = DateTime.Now.ToString("MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture);

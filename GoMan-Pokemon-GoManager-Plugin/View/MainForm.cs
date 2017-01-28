@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Net.Http;
 using System.Timers;
 using System.Windows.Forms;
-using BrightIdeasSoftware;
 using GoMan.Captcha;
 using GoMan.Model;
 using GoPlugin;
@@ -21,6 +19,7 @@ namespace GoMan.View
         private readonly System.Timers.Timer _timer;
         public MainForm(Dictionary<IManager, ManagerHandler> accounts)
         {
+            
             InitializeComponent();
 
             this.fastObjecttListView1.PrimarySortColumn = this.olvBotState;

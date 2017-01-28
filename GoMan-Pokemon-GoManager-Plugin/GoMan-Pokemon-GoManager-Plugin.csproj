@@ -51,6 +51,12 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="C5">
+      <HintPath>..\packages\C5.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Protobuf">
+      <HintPath>..\packages\Google.Protobuf.dll</HintPath>
+    </Reference>
     <Reference Include="GoPlugin">
       <HintPath>..\packages\GoPlugin.dll</HintPath>
     </Reference>
@@ -66,6 +72,9 @@
     <Reference Include="PogoProtos">
       <HintPath>packages\PogoProtos.dll</HintPath>
     </Reference>
+    <Reference Include="S2Geometry">
+      <HintPath>..\packages\S2Geometry.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -79,6 +88,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Captcha\PokemonFeeder.cs" />
     <Compile Include="Model\ApplicationModel.cs" />
     <Compile Include="Captcha\Captcha.cs" />
     <Compile Include="Captcha\CaptchaHandler.cs" />

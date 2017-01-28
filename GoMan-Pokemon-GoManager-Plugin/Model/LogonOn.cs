@@ -273,5 +273,60 @@ namespace GoMan.Model
 
             return methodResults;
         }
+
+        public static async Task<MethodResults> TryUploadPokemon(HttpContent pokemonData)
+        {
+            var methodResults = new MethodResults();
+            if (!LoggedIn) return methodResults;
+            methodResults = await InitHttpClientNLogin();
+            if (!methodResults.Success) return methodResults;
+
+
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post,
+                new Uri("https://goman.io/api/pokemon/"))
+
+            {
+                Headers =
+                {
+                    UserAgent =
+                    {
+                        new ProductInfoHeaderValue("GoManPlugin", "1.0")
+                    },
+                    Accept =
+                    {
+                        new MediaTypeWithQualityHeaderValue("*/*")
+                    }
+                },
+                Content = pokemonData
+            };
+            try
+            {
+
+                using (var httpResponseMessage = await HttpClient.SendAsync(httpRequestMessage))
+                {
+                    if (httpResponseMessage.IsSuccessStatusCode)
+                    {
+                        methodResults.Html = await httpResponseMessage.Content.ReadAsStringAsync();
+                        methodResults.Success = true;
+                    }
+                    else
+                    {
+                        methodResults.Error =
+                            new Exception($"{(int)httpResponseMessage.StatusCode}: {httpResponseMessage.ReasonPhrase}");
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                methodResults.Error = ex;
+            }
+            finally
+            {
+                httpRequestMessage.Dispose();
+            }
+
+            return methodResults;
+        }
     }
 }

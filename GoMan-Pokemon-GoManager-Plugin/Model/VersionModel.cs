@@ -6,7 +6,7 @@ namespace GoMan.Model
     class VersionModel
     {
         [JsonIgnore]
-        public static readonly string CurrentVersion = "3.2";
+        public static readonly string CurrentVersion = "3.3";
         [JsonIgnore]
         public static readonly string SavePath = "./Plugins/GoMan-Pokemon-GoManager-Plugin.dll";
         [JsonIgnore]
