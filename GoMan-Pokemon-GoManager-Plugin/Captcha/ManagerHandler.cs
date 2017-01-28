@@ -62,12 +62,6 @@ namespace GoMan.Captcha
 
         public ManagerHandler(IManager manager)
         {
-            if (_timer == null)
-            {
-                _timer = new Timer(6000);
-                _timer.Elapsed += _timer_Elapsed;
-                _timer.Enabled = true;
-            }
             Manager = manager;
             
             manager.OnCaptcha += OnCaptcha;
@@ -80,19 +74,6 @@ namespace GoMan.Captcha
             {
                 var iv = Manager.CalculateIVPerfection(e.Pokemon).Data;
                 PokemonFeeder.PokemonDataInformation.Add(new PokemonLocationInfo(e, iv));
-            }
-        }
-
-       
-        private static void _timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            var time = DateTime.Now.ToString("MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture);
-            CaptchaRateLog.AddOrUpdate(time, 0, (k, v) => v + 0);
-
-            if (CaptchaRateLog.Count >= 10080)
-            {
-                int removedValue;
-                CaptchaRateLog.TryRemove(CaptchaRateLog.Keys.ElementAt(0), out removedValue);
             }
         }
 
@@ -139,10 +120,6 @@ namespace GoMan.Captcha
                 Interlocked.Increment(ref _totalFailedCount);
                 FailedCount += 1;
             }
-
-            var time = DateTime.Now.ToString("MM/dd/yyyy HH:mm", CultureInfo.InvariantCulture);
-            CaptchaRateLog.AddOrUpdate(time, 1, (k, v) => v + 1);
-            SolvedCaptchaEvent?.Invoke(this, EventArgs.Empty);
         }
         public void AddLog(LoggerTypes type, string message, Exception ex = null)
         {

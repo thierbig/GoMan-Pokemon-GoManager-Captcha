@@ -214,7 +214,6 @@
             // statusStrip
             // 
             this.statusStrip.BackColor = System.Drawing.Color.Transparent;
-            this.statusStrip.ContextMenuStrip = this.contextMenuStripRate;
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelSuccessfulCaptchas,
             this.toolStripStatusLabelFailedCaptchas,
@@ -246,6 +245,7 @@
             this.toolStripStatusLabelCaptchaRate.Size = new System.Drawing.Size(129, 17);
             this.toolStripStatusLabelCaptchaRate.Tag = "Captchas Per {0}: {1}";
             this.toolStripStatusLabelCaptchaRate.Text = "Captchas Per Minute: 0";
+            this.toolStripStatusLabelCaptchaRate.Visible = false;
             // 
             // tabControlCaptcha
             // 
