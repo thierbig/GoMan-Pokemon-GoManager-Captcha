@@ -102,6 +102,8 @@ namespace GoMan.Captcha
         }
         static  void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            if (!ApplicationModel.Settings.Enabled) return;
+
             foreach (var keyValuePair in Accounts)
             {
                 if (keyValuePair.Key.AccountState == AccountState.CaptchaRequired && keyValuePair.Key.State == BotState.Stopped)
