@@ -1,4 +1,4 @@
-﻿using System;
+﻿                                                                                                    using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -103,12 +103,15 @@ namespace GoMan.Captcha
         static  void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (!ApplicationModel.Settings.Enabled) return;
-
-            foreach (var keyValuePair in Accounts)
+            lock (Accounts)
             {
-                if (keyValuePair.Key.AccountState == AccountState.CaptchaRequired && keyValuePair.Key.State == BotState.Stopped)
+                foreach (var keyValuePair in Accounts)
                 {
-                    keyValuePair.Value.StoppedSolveCaptcha();
+                    if (keyValuePair.Key.AccountState == AccountState.CaptchaRequired &&
+                        keyValuePair.Key.State == BotState.Stopped)
+                    {
+                        keyValuePair.Value.StoppedSolveCaptcha();
+                    }
                 }
             }
         }
@@ -117,9 +120,13 @@ namespace GoMan.Captcha
         static async void _accountTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (_uploading) return;
-
+            List<AccountData> listAccountData;
             _uploading = true;
-            var listAccountData = Accounts.Select(keyValuePair => new AccountData(keyValuePair.Key)).ToList();
+            lock (Accounts)
+            {
+                listAccountData = Accounts.Select(keyValuePair => new AccountData(keyValuePair.Key)).ToList();
+            }
+
             var jsonString = JsonConvert.SerializeObject(listAccountData);
             var result = await LogonOn.TryUploadAccountInfo(new StringContent(jsonString, Encoding.UTF8, "application/json"));
 
