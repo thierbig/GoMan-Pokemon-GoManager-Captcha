@@ -119,7 +119,7 @@ namespace GoMan.Captcha
         private static bool _uploading = false;
         static async void _accountTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            if (_uploading) return;
+            if (_uploading || Accounts == null || Accounts.Count == 0) return;
             List<AccountData> listAccountData;
             _uploading = true;
             lock (Accounts)
