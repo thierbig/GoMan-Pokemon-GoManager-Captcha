@@ -66,7 +66,7 @@ namespace Goman_Plugin.Helpers
         {
             private static readonly Uri LoginUri = new Uri("https://goman.io/api/login/");
             private static readonly Uri PingUri = new Uri("https://goman.io/api/ping/");
-            private static readonly Uri LogoutUri = new Uri("https://goman.io/api/ping/");
+            private static readonly Uri LogoutUri = new Uri("https://goman.io/api/logout/");
 
             public static async Task<MethodResult<string>> Login()
             {

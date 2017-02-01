@@ -7,6 +7,7 @@ using BrightIdeasSoftware;
 using Goman_Plugin.Model;
 using GoPlugin;
 using GoPlugin.Enums;
+using GoPlugin.Events;
 using Timer = System.Timers.Timer;
 
 namespace Goman_Plugin.Wrapper
@@ -24,7 +25,7 @@ namespace Goman_Plugin.Wrapper
         public event Action<object, EventArgs> ManagerChanged;
         public int SuccessCount { get; set; }
         public int FailedCount { get; set; }
-        private bool SolvingCaptcha { get; set; }
+        public bool SolvingCaptcha { get; set; }
         public LogModel Log { get; set; }
         public string ExpPerHour => ExpPerHourMunger.GetValue(Bot).ToString();
 
@@ -43,8 +44,7 @@ namespace Goman_Plugin.Wrapper
                 }
             }
         }
-        
-
+       
         public List<Log> Logs
         {
             get
@@ -85,6 +85,15 @@ namespace Goman_Plugin.Wrapper
             _changeTimer = new Timer(10000);
             _changeTimer.Elapsed += _changeTimer_Elapsed;
             _changeTimer.Enabled = true;
+
+            bot.OnCaptcha += OnCaptcha;
+        }
+
+        public event Action<object, CaptchaRequiredEventArgs> OnCaptchaEvent;
+
+        private void OnCaptcha(object sender, CaptchaRequiredEventArgs captchaRequiredEventArgs)
+        {
+            OnOnCaptchaEvent(this, captchaRequiredEventArgs);
         }
 
         private void _changeTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -106,12 +115,12 @@ namespace Goman_Plugin.Wrapper
 
         private bool StateChanged()
         {
-
             return !(_lastName.Equals(Bot.AccountName) && _lastAccountState.Equals(Bot.AccountState) &&
                     _lasBotState.Equals(Bot.State) && _lastExpPerHour.Equals(ExpPerHour) && _lastLastLog.Equals(LastLog) && _lastRunTime.Equals(RunTime) &&
                     _lastTillLevelUp.Equals(TillLevelUp) &&
                     _lastLevel.Equals(Level));
         }
+
         public void AddLog(LoggerTypes type, string message, Exception ex = null)
         {
             LogModel newLog = new LogModel(type, message, ex);
@@ -156,6 +165,10 @@ namespace Goman_Plugin.Wrapper
         protected void OnManagerChanged(object arg1)
         {
             ManagerChanged?.Invoke(arg1, EventArgs.Empty);
+        }
+        protected virtual void OnOnCaptchaEvent(object arg1, CaptchaRequiredEventArgs arg2)
+        {
+            OnCaptchaEvent?.Invoke(arg1, arg2);
         }
     }
 }

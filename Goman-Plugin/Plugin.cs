@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Goman_Plugin.Modules;
 using Goman_Plugin.Modules.AccountFeeder;
 using Goman_Plugin.Modules.Authentication;
+using Goman_Plugin.Modules.Captcha;
 using Goman_Plugin.Modules.PokemonFeeder;
 using Goman_Plugin.Wrapper;
 using GoPlugin;
@@ -18,6 +19,8 @@ namespace Goman_Plugin
         private readonly AccountFeederModule _accountFeederModule = new AccountFeederModule();
         private readonly AuthenticationModule _authenticationModule = new AuthenticationModule();
         private readonly PokemonFeederModule _pokemonFeederModule = new PokemonFeederModule();
+        private readonly CaptchaModule _captchaModule = new CaptchaModule();
+
         private const String AppId = "Goman_Plugin";
         static Plugin()
         {
@@ -41,6 +44,7 @@ namespace Goman_Plugin
             _authenticationModule.ModuleEvent += AuthenticationModuleEvent;
             _pokemonFeederModule.ModuleEvent += OnModuleEvent;
             _accountFeederModule.ModuleEvent += OnModuleEvent;
+            _captchaModule.ModuleEvent += OnModuleEvent;
             var enableResults = await _authenticationModule.Enable();
 
             await base.Load(managers);
@@ -64,7 +68,7 @@ namespace Goman_Plugin
             {
                 await _pokemonFeederModule.Enable();
                 await _accountFeederModule.Enable();
-
+                await _captchaModule.Enable();
                 foreach (var manager in _uniqueManagers)
                 {
                     var wrappedManager = new Manager(manager);
@@ -82,6 +86,7 @@ namespace Goman_Plugin
                 }
                 await _pokemonFeederModule.Disable();
                 await _accountFeederModule.Disable();
+                await _captchaModule.Disable();
             }
         }
         public override void AddManager(IManager manager)

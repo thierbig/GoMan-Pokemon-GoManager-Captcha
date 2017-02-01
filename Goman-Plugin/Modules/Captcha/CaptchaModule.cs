@@ -1,37 +1,117 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Goman_Plugin.Model;
-using Goman_Plugin.Module;
 using Goman_Plugin.Module.Captcha;
+using Goman_Plugin.Wrapper;
+using GoPlugin.Enums;
+using GoPlugin.Events;
+using MethodResult = Goman_Plugin.Model.MethodResult;
 
 namespace Goman_Plugin.Modules.Captcha
 {
     public class CaptchaModule : AbstractModule
     {
+        public CaptchaModule()
+        {
+            Settings = new BaseSettings<CaptchaSettings> { Enabled = true };
+        }
+
         public new BaseSettings<CaptchaSettings> Settings { get; }
 
-        public Task<MethodResult> Execute()
+        public override async Task<MethodResult> Enable()
         {
-            throw new NotImplementedException();
+            var loadSettingsResult = await LoadSettings();
+
+            if (!loadSettingsResult.Success)
+            {
+                Settings.Extra = new CaptchaSettings();
+                await SaveSettings();
+            }
+
+            if (Settings.Enabled)
+            {
+
+                Plugin.ManagerAdded += PluginOnManagerAdded;
+                Plugin.ManagerRemoved += PluginOnManagerRemoved;
+                OnModuleEvent(this, Modules.ModuleEvent.Enabled);
+            }
+
+            return new MethodResult { Success = Settings.Enabled };
         }
 
-        public override Task<MethodResult> Enable()
+        public override async Task<MethodResult> Disable()
         {
-            throw new NotImplementedException();
+            Plugin.ManagerAdded -= PluginOnManagerAdded;
+            Plugin.ManagerRemoved -= PluginOnManagerRemoved;
+
+            var saveSettingsResult = await Settings.Save(ModuleName);
+            OnModuleEvent(this, Modules.ModuleEvent.Disabled);
+            return new MethodResult { Success = true };
         }
 
-        public override Task<MethodResult> Disable()
+        private void PluginOnManagerAdded(object o, Manager manager)
         {
-            throw new NotImplementedException();
+            manager.ManagerChanged += OnManagerChange;
+            manager.OnCaptchaEvent += OnCaptcha;
         }
 
-        public Task<MethodResult> LoadSettings()
+        private void PluginOnManagerRemoved(object o, Manager manager)
         {
-            throw new NotImplementedException();
+            manager.ManagerChanged -= OnManagerChange;
+            manager.OnCaptchaEvent -= OnCaptcha;
         }
-    }
 
-    public class CaptchaEventArgs
-    {
+        public async Task<MethodResult> LoadSettings()
+        {
+            return await Settings.Load(ModuleName);
+        }
+
+        public async Task<MethodResult> SaveSettings()
+        {
+            var saveSettingsResult = await Settings.Save(ModuleName);
+            return saveSettingsResult;
+        }
+
+         private void OnManagerChange(object sender, EventArgs e)
+        {
+            var manager = (Manager)sender;
+            if (manager.Bot.AccountState == AccountState.CaptchaRequired &&
+                    manager.Bot.State == BotState.Stopped)
+            {
+                StoppedSolveCaptcha(manager);
+            }
+        }
+        public async void StoppedSolveCaptcha(Manager manager)
+        {
+            if (manager.SolvingCaptcha || !ApplicationModel.Settings.Enabled) return;
+
+            await Task.Run(delegate
+            {
+                manager.Bot.Login();
+                manager.Bot.LoginWait();
+            });
+        }
+
+        private static async void OnCaptcha(object sender, CaptchaRequiredEventArgs captchaRequiredEventArgs)
+        {
+            var managerWrapper = (Manager)sender;
+            var manager = managerWrapper.Bot;
+
+            if (managerWrapper.SolvingCaptcha || !manager.CaptchaRequired && !string.IsNullOrEmpty(manager.CaptchaURL)) return;
+
+            if (!ApplicationModel.Settings.Enabled)
+            {
+                manager.Stop();
+                return;
+            }
+
+            managerWrapper.SolvingCaptcha = true;
+
+            var results = await CaptchaHandler.Handle(managerWrapper);
+
+            if (!results.Success) manager.Stop();
+
+            managerWrapper.SolvingCaptcha = false;
+        }
     }
 }

@@ -4,11 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Goman_Plugin.Model;
 using Goman_Plugin.Wrapper;
+using GoMan.Captcha;
 using GoPlugin;
 using GoPlugin.Enums;
 using MethodResult = GoPlugin.MethodResult;
 
-namespace GoMan.Captcha
+namespace Goman_Plugin.Modules.Captcha
 {
     class CaptchaHandler
     {
