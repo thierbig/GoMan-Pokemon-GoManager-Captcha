@@ -1,8 +1,7 @@
 ﻿using System;
 using GoPlugin;
-using MethodResult = GoMan.Model.MethodResult;
 
-namespace GoMan.Model
+namespace Goman_Plugin.Model
 {
     public class LogModel : Log
     {

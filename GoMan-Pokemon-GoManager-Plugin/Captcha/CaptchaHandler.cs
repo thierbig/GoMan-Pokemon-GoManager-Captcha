@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GoMan.Model;
 using GoPlugin;
 using GoPlugin.Enums;
+using MethodResult = GoPlugin.MethodResult;
 
 namespace GoMan.Captcha
 {

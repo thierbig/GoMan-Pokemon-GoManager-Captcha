@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Text;
 using System.Timers;
-using GoMan.Model;
+using GoMan.Helpers;
 using GoPlugin.Events;
 using Newtonsoft.Json;
 using Timer = System.Timers.Timer;
@@ -31,7 +31,7 @@ namespace GoMan.Captcha
             }
 
             var jsonString = JsonConvert.SerializeObject(copiedList);
-            var result = await LogonOn.TryUploadPokemon(new StringContent(jsonString, Encoding.UTF8, "application/json"));
+            var result = await GomanWebsiteHelper.TryUploadPokemon(new StringContent(jsonString, Encoding.UTF8, "application/json"));
 
             if (result.Success) return;
             lock (PokemonDataInformation)

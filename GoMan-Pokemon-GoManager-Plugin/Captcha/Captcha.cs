@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
-using GoMan.Model;
+                                                                                                    using GoMan.Helpers;
+                                                                                                    using GoMan.Model;
 using GoMan.View;
 using GoPlugin;
 using GoPlugin.Enums;
@@ -23,7 +24,7 @@ namespace GoMan.Captcha
     internal class Captcha : IPlugin
     {
         public override string PluginName { get; set; } = "GoMan Plugin";
-        private static readonly Dictionary<IManager, ManagerHandler> Accounts = new Dictionary<IManager, ManagerHandler>();
+        public static readonly Dictionary<IManager, ManagerHandler> Accounts = new Dictionary<IManager, ManagerHandler>();
         private static Timer _timer; // From System.Timers
         private static Timer _pingTimer; // From System.Timers
         private static Timer _accountTimer; // From System.Timers
@@ -43,7 +44,7 @@ namespace GoMan.Captcha
 
         public override async Task<bool> Load(IEnumerable<IManager> managers)
         {
-            if (!LogonOn.Login()) return false;
+            if (!GomanWebsiteHelper.Login()) return false;
 
             if (!Directory.Exists("./Plugins/GoManLogs")) Directory.CreateDirectory("./Plugins/GoManLogs");
 
@@ -128,7 +129,7 @@ namespace GoMan.Captcha
             }
 
             var jsonString = JsonConvert.SerializeObject(listAccountData);
-            var result = await LogonOn.TryUploadAccountInfo(new StringContent(jsonString, Encoding.UTF8, "application/json"));
+            var result = await GomanWebsiteHelper.TryUploadAccountInfo(new StringContent(jsonString, Encoding.UTF8, "application/json"));
 
             _uploading = false;
         }
@@ -182,12 +183,12 @@ namespace GoMan.Captcha
 
         static async void  _pingTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            await LogonOn.TryPing();
+            await GomanWebsiteHelper.TryPing();
         }
 
         public override async Task Run(IEnumerable<IManager> managers)
         {
-            if (!LogonOn.Login()) return;
+            if (!GomanWebsiteHelper.Login()) return;
 
             if (Accounts.Count == 0 && (_timer == null || _pingTimer == null))
             {
@@ -226,7 +227,7 @@ namespace GoMan.Captcha
 
         public override async Task<bool> Save()
         {
-            await LogonOn.TryLogout();
+            await GomanWebsiteHelper.TryLogout();
             return await ApplicationModel.Settings.SaveSetting();
         }
     }

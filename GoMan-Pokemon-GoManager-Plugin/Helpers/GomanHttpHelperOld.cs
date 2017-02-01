@@ -2,43 +2,29 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using GoMan.Model;
 using GoMan.View;
 
-namespace GoMan.Model
+namespace GoMan.Helpers
 {
-    public class MethodResults
-    {
-        public bool Success { get; set; }
-        public string Data { get; set; }
-        public string Html { get; set; }
-        public Exception Error { get; set; }
-
-        public override string ToString()
-        {
-            return $"{nameof(Success)}: {Success}, {nameof(Data)}: {Data}, {nameof(Html)}: {Html}, {nameof(Error)}: {Error?.Message}";
-        }
-    }
-
-    internal class LogonOn
+    internal class GomanWebsiteHelper
     {
         private static bool LoggedIn { get; set; } = false;
         private static HttpClient HttpClient { get; set; }
         public static bool Login()
         {
             if (LoggedIn) return true;
-            var loginForm = new LoginForm();
+            var loginForm = new AuthenticationUi();
             if (loginForm.ShowDialog() != DialogResult.OK) return false;
 
             LoggedIn = true;
             return true;
         }
-
-        private static async Task<MethodResults> InitHttpClientNLogin()
+        private static async Task<MethodResult<string>> InitHttpClientNLogin()
         {
-            var methodResults = new MethodResults();
+            var methodResults = new MethodResult<string>();
             if (HttpClient != null)
             {
                 methodResults.Success = true;
@@ -57,17 +43,6 @@ namespace GoMan.Model
                 new Uri("https://goman.io/api/login/"))
 
             {
-                Headers =
-                {
-                    UserAgent =
-                    {
-                        new ProductInfoHeaderValue("GoManPlugin", "1.0")
-                    },
-                    Accept =
-                    {
-                        new MediaTypeWithQualityHeaderValue("*/*")
-                    }
-                },
                 Content = new FormUrlEncodedContent(loginKeyValuePairArray)
             };
 
@@ -77,7 +52,7 @@ namespace GoMan.Model
                 {
                     if (httpResponseMessage.IsSuccessStatusCode)
                     {
-                        methodResults.Html = await httpResponseMessage.Content.ReadAsStringAsync();
+                        methodResults.Data = await httpResponseMessage.Content.ReadAsStringAsync();
                         methodResults.Success = true;
                     }
                     else
@@ -102,7 +77,7 @@ namespace GoMan.Model
             return methodResults;
         }
 
-        public static async Task<MethodResults> TryPing()
+        public static async Task<MethodResult<string>> TryPing()
         {
             var methodResults = await InitHttpClientNLogin();
 
@@ -117,17 +92,6 @@ namespace GoMan.Model
                 new Uri("https://goman.io/api/ping/"))
 
             {
-                Headers =
-                {
-                    UserAgent =
-                    {
-                        new ProductInfoHeaderValue("GoManPlugin", "1.0")
-                    },
-                    Accept =
-                    {
-                        new MediaTypeWithQualityHeaderValue("*/*")
-                    }
-                },
                 Content = new FormUrlEncodedContent(pingKeyValuePairArray)
             };
 
@@ -138,7 +102,7 @@ namespace GoMan.Model
                     {
                         if (httpResponseMessage.IsSuccessStatusCode)
                         {
-                            methodResults.Html = await httpResponseMessage.Content.ReadAsStringAsync();
+                            methodResults.Data = await httpResponseMessage.Content.ReadAsStringAsync();
                             methodResults.Success = true;
                         }
                         else
@@ -161,9 +125,9 @@ namespace GoMan.Model
             return methodResults;
         }
 
-        public static async Task<MethodResults> TryLogout()
+        public static async Task<MethodResult<string>> TryLogout()
         {
-            var methodResults = new MethodResults();
+            var methodResults = new MethodResult<string>();
             if (!LoggedIn) return methodResults;
             methodResults = await InitHttpClientNLogin();
             if (!methodResults.Success) return methodResults;
@@ -177,17 +141,6 @@ namespace GoMan.Model
                 new Uri("https://goman.io/api/logout/"))
 
             {
-                Headers =
-                {
-                    UserAgent =
-                    {
-                        new ProductInfoHeaderValue("GoManPlugin", "1.0")
-                    },
-                    Accept =
-                    {
-                        new MediaTypeWithQualityHeaderValue("*/*")
-                    }
-                },
                 Content = new FormUrlEncodedContent(pingKeyValuePairArray)
             };
             try
@@ -197,7 +150,7 @@ namespace GoMan.Model
                 {
                     if (httpResponseMessage.IsSuccessStatusCode)
                     {
-                        methodResults.Html = await httpResponseMessage.Content.ReadAsStringAsync();
+                        methodResults.Data = await httpResponseMessage.Content.ReadAsStringAsync();
                         methodResults.Success = true;
                     }
                     else
@@ -219,9 +172,9 @@ namespace GoMan.Model
 
             return methodResults;
         }
-        public static async Task<MethodResults> TryUploadAccountInfo(HttpContent accountData)
+        public static async Task<MethodResult<string>> TryUploadAccountInfo(HttpContent accountData)
         {
-            var methodResults = new MethodResults();
+            var methodResults = new MethodResult<string>();
             if (!LoggedIn) return methodResults;
             methodResults = await InitHttpClientNLogin();
             if (!methodResults.Success) return methodResults;
@@ -231,17 +184,6 @@ namespace GoMan.Model
                 new Uri("https://goman.io/api/accounts/"))
 
             {
-                Headers =
-                {
-                    UserAgent =
-                    {
-                        new ProductInfoHeaderValue("GoManPlugin", "1.0")
-                    },
-                    Accept =
-                    {
-                        new MediaTypeWithQualityHeaderValue("*/*")
-                    }
-                },
                 Content = accountData
             };
             try
@@ -251,7 +193,7 @@ namespace GoMan.Model
                     {
                         if (httpResponseMessage.IsSuccessStatusCode)
                         {
-                            methodResults.Html = await httpResponseMessage.Content.ReadAsStringAsync();
+                            methodResults.Data = await httpResponseMessage.Content.ReadAsStringAsync();
                             methodResults.Success = true;
                         }
                         else
@@ -274,9 +216,9 @@ namespace GoMan.Model
             return methodResults;
         }
 
-        public static async Task<MethodResults> TryUploadPokemon(HttpContent pokemonData)
+        public static async Task<MethodResult<string>> TryUploadPokemon(HttpContent pokemonData)
         {
-            var methodResults = new MethodResults();
+            var methodResults = new MethodResult<string>();
             if (!LoggedIn) return methodResults;
             methodResults = await InitHttpClientNLogin();
             if (!methodResults.Success) return methodResults;
@@ -284,19 +226,7 @@ namespace GoMan.Model
 
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post,
                 new Uri("https://goman.io/api/pokemon/"))
-
             {
-                Headers =
-                {
-                    UserAgent =
-                    {
-                        new ProductInfoHeaderValue("GoManPlugin", "1.0")
-                    },
-                    Accept =
-                    {
-                        new MediaTypeWithQualityHeaderValue("*/*")
-                    }
-                },
                 Content = pokemonData
             };
             try
@@ -306,7 +236,7 @@ namespace GoMan.Model
                 {
                     if (httpResponseMessage.IsSuccessStatusCode)
                     {
-                        methodResults.Html = await httpResponseMessage.Content.ReadAsStringAsync();
+                        methodResults.Data = await httpResponseMessage.Content.ReadAsStringAsync();
                         methodResults.Success = true;
                     }
                     else

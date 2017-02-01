@@ -34,31 +34,9 @@ namespace GoMan.Captcha
 
         public delegate void SolvedCaptcha(object sender, EventArgs e);
         public static event SolvedCaptcha SolvedCaptchaEvent;
-        public static ConcurrentDictionary<string, int> CaptchaRateLog = new ConcurrentDictionary<string, int>();
         private readonly PokemonFeeder _pokemonFeeder = new PokemonFeeder();
 
-        public static double GetCaptchasRate()
-        {
-            if (CaptchaRateLog.IsEmpty) return 0;
 
-            var data = CaptchaRateLog.ToDictionary(d => DateTime.Parse(d.Key, CultureInfo.InvariantCulture), d => d.Value);
-
-            var result = from kvp in data
-                let key = RoundToNearestInterval(kvp.Key, TimeSpan.FromMinutes(ApplicationModel.Settings.CaptchaSamplingTimeMinutes))
-                group kvp by key into g
-                select new { g.Key, Value = g.Average(x => x.Value) };
-
-            var results = result.ToDictionary(r => r.Key, v => v.Value).OrderBy(x => x.Key).ToDictionary(pair => pair.Key, pair => pair.Value);
-
-            return results.Average(g => g.Value);
-        }
-        private static DateTime RoundToNearestInterval(DateTime dt, TimeSpan d)
-        {
-            var f = 0;
-            var m = (double)(dt.Ticks % d.Ticks) / d.Ticks;
-            if (m >= 0.5) f = 1;
-            return new DateTime(((dt.Ticks / d.Ticks) + f) * d.Ticks);
-        }
 
         public ManagerHandler(IManager manager)
         {

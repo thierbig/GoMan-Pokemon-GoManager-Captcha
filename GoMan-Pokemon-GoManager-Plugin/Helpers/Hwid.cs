@@ -1,10 +1,10 @@
-﻿using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Management;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.VisualBasic;
 
-namespace GoMan.Model
+namespace GoMan.Helpers
 {
     public class Hwid
     {

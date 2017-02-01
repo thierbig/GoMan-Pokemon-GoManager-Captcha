@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace GoMan.Model
+namespace Goman_Plugin.Model
 {
     class ApplicationModel
     {
