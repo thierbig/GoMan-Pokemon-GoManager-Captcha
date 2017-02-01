@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Timers;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
+using Goman_Plugin.Model;
 using GoPlugin;
 using GoPlugin.Enums;
 using Timer = System.Timers.Timer;
@@ -20,7 +22,10 @@ namespace Goman_Plugin.Wrapper
         private static readonly Munger RunTimeMunger = new Munger("RunningTime");
         private static readonly Munger TillLevelUpMunger = new Munger("TillLevelUp");
         public event Action<object, EventArgs> ManagerChanged;
-
+        public int SuccessCount { get; set; }
+        public int FailedCount { get; set; }
+        private bool SolvingCaptcha { get; set; }
+        public LogModel Log { get; set; }
         public string ExpPerHour => ExpPerHourMunger.GetValue(Bot).ToString();
 
         public string Level
@@ -106,6 +111,30 @@ namespace Goman_Plugin.Wrapper
                     _lasBotState.Equals(Bot.State) && _lastExpPerHour.Equals(ExpPerHour) && _lastLastLog.Equals(LastLog) && _lastRunTime.Equals(RunTime) &&
                     _lastTillLevelUp.Equals(TillLevelUp) &&
                     _lastLevel.Equals(Level));
+        }
+        public void AddLog(LoggerTypes type, string message, Exception ex = null)
+        {
+            LogModel newLog = new LogModel(type, message, ex);
+            this.Log = newLog;
+            Bot.LogCallerPlugin(new LoggerEventArgs(newLog));
+
+            if (ApplicationModel.Settings.SaveLogs)
+                LogMessageToFile($"./Plugins/GoManLogs/{Bot.AccountName}_log.txt", message);
+        }
+
+        private static void LogMessageToFile(string path, string msg)
+        {
+            if (!Directory.Exists("./Plugins/GoManLogs")) Directory.CreateDirectory("./Plugins/GoManLogs");
+
+            try
+            {
+                using (var sw = File.AppendText(path))
+                    sw.WriteLine($"{DateTime.Now:G}: {msg}.");
+            }
+            catch (Exception)
+            {
+                //ignore
+            }
         }
         private bool Equals(Manager other)
         {

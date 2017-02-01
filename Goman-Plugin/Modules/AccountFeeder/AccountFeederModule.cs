@@ -69,6 +69,7 @@ namespace Goman_Plugin.Modules.AccountFeeder
         }
         public override async Task<MethodResult> Disable()
         {
+            if (!_accountTimer.Enabled) return new MethodResult { Success = true };
             Plugin.ManagerAdded -= PluginOnManagerAdded;
             Plugin.ManagerRemoved -= PluginOnManagerRemoved;
 
@@ -85,7 +86,6 @@ namespace Goman_Plugin.Modules.AccountFeeder
         }
         private void PluginOnManagerRemoved(object o, Manager manager)
         {
-            MessageBox.Show("PluginOnManagerRemoved:" + manager.Bot.AccountName);
             manager.ManagerChanged -= OnManagerChange;
         }
         public async Task<MethodResult> LoadSettings()

@@ -2,6 +2,7 @@
 using System.Timers;
 using System.Windows.Forms;
 using Goman_Plugin.Helpers;
+using Goman_Plugin.Model;
 using Goman_Plugin.Module;
 using MethodResult = Goman_Plugin.Model.MethodResult;
 using Timer = System.Timers.Timer;
@@ -27,7 +28,7 @@ namespace Goman_Plugin.Modules.Authentication
         public override async Task<MethodResult> Enable()
         {
             var loadSettingsResult = await LoadSettings();
-
+            if(!Settings.Enabled) return new MethodResult() {Success = true};
             if (!loadSettingsResult.Success)
             {
                 Settings.Extra = new AuthenticationSettings();

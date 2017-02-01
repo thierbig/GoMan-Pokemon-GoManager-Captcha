@@ -4,7 +4,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using Goman_Plugin.Helpers;
-using Goman_Plugin.Module;
 using Goman_Plugin.Wrapper;
 using GoPlugin;
 using GoPlugin.Events;
@@ -76,6 +75,7 @@ namespace Goman_Plugin.Modules.PokemonFeeder
 
         public override async Task<MethodResult> Disable()
         {
+            if (!_pokemonTimer.Enabled) return new MethodResult { Success = true };
             Plugin.ManagerAdded -= PluginOnManagerAdded;
             Plugin.ManagerRemoved -= PluginOnManagerRemoved;
             _pokemonTimer.Elapsed -= _pokemonTimer_Elapsed;
