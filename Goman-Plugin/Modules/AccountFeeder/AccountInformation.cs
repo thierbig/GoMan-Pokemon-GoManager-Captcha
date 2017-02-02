@@ -8,7 +8,7 @@ namespace Goman_Plugin.Modules.AccountFeeder
     public class AccountInformation
     {
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name { get; }
         [JsonProperty("account_state")]
         public string AccountState { get; set; }
         [JsonProperty("level")]
@@ -32,9 +32,9 @@ namespace Goman_Plugin.Modules.AccountFeeder
 
             Name = manager.AccountName;
             AccountState = ((int)manager.AccountState).ToString();
-            Level = wrappedManager.Level.ToString();
+            Level = wrappedManager.Level;
             BotState = ((int)manager.State).ToString();
-            ExpPerHour = wrappedManager.ExpPerHour.ToString();
+            ExpPerHour = wrappedManager.ExpPerHour;
             TillLevelUp = wrappedManager.TillLevelUp;
             RunningTime = wrappedManager.RunTime;
             LastLog = wrappedManager.LastLog;
@@ -44,6 +44,24 @@ namespace Goman_Plugin.Modules.AccountFeeder
 
             var log = logs.Last();
             LogType = ((int)log.LoggerType).ToString();
+        }
+
+        protected bool Equals(AccountInformation other)
+        {
+            return string.Equals(Name, other.Name);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((AccountInformation) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Name?.GetHashCode() ?? 0;
         }
     }
 }

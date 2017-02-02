@@ -81,7 +81,7 @@ namespace Goman_Plugin.Modules.PokemonFeeder
             _pokemonTimer.Elapsed -= _pokemonTimer_Elapsed;
 
             _pokemonTimer.Enabled = false;
-            var saveSettingsResult = await Settings.Save(ModuleName);
+            await Settings.Save(ModuleName);
             OnModuleEvent(this, Modules.ModuleEvent.Disabled);
             return new MethodResult {Success = true};
         }

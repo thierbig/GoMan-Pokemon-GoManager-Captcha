@@ -2,7 +2,7 @@
 {
     public class PokemonFeederSettings
     {
-        public int IntervalMilliseconds { get; set; } = 2000;
+        public int IntervalMilliseconds { get; set; } = 15000;
 
     }
 }

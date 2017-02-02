@@ -140,8 +140,17 @@
     <Compile Include="Wrapper\Manager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Modules\AccountFeeder\AccountFeederUserControl.resx">
+      <DependentUpon>AccountFeederUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modules\Authentication\AuthenticationUI.resx">
       <DependentUpon>AuthenticationUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\Captcha\CaptchaUserControl.resx">
+      <DependentUpon>CaptchaUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\PokemonFeeder\PokemonFeederUserControl.resx">
+      <DependentUpon>PokemonFeederUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

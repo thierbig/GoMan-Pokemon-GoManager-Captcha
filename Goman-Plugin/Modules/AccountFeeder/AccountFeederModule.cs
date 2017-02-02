@@ -4,9 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
-using System.Windows.Forms;
 using Goman_Plugin.Helpers;
-using Goman_Plugin.Module;
 using Goman_Plugin.Wrapper;
 using Newtonsoft.Json;
 using MethodResult = Goman_Plugin.Model.MethodResult;
@@ -100,10 +98,14 @@ namespace Goman_Plugin.Modules.AccountFeeder
         private void OnManagerChange(object sender, EventArgs e)
         {
             var manager = (Manager)sender;
+            var accountInformation = new AccountInformation(manager);
 
             lock (AccountDataInformation)
             {
-                AccountDataInformation.Add(new AccountInformation(manager));
+                if (AccountDataInformation.Contains(accountInformation))
+                    AccountDataInformation.Remove(accountInformation);
+
+                AccountDataInformation.Add(accountInformation);
             }
         }
         private async void _accountTimer_Elapsed(object sender, ElapsedEventArgs e)

@@ -8,6 +8,7 @@ using Goman_Plugin.Modules.AccountFeeder;
 using Goman_Plugin.Modules.Authentication;
 using Goman_Plugin.Modules.Captcha;
 using Goman_Plugin.Modules.PokemonFeeder;
+using Goman_Plugin.View;
 using Goman_Plugin.Wrapper;
 using GoPlugin;
 
@@ -30,9 +31,11 @@ namespace Goman_Plugin
         public override IEnumerable<PluginDropDownItem> MenuItems { get; set; }
         public static event Action<object, Manager> ManagerAdded;
         public static event Action<object, Manager> ManagerRemoved;
-        public override Task Run(IEnumerable<IManager> managers)
+        public override async Task Run(IEnumerable<IManager> managers)
         {
-            throw new NotImplementedException();
+            var captchaSettingsFrom = new MainForm(Accounts, _captchaModule, _pokemonFeederModule, _accountFeederModule);
+            captchaSettingsFrom.Show();
+            return;
         }
         public override async Task<bool> Save()
         {
@@ -52,14 +55,28 @@ namespace Goman_Plugin
         }
         private void OnModuleEvent(object o, ModuleEvent moduleEvent)
         {
-            // Get a toast XML template
-            XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText04);
-            // Fill in the text elements
-            XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
-            stringElements[0].AppendChild(toastXml.CreateTextNode(o.GetType().Name + ": " + moduleEvent));
-            // Create the toast and attach event listeners
+            // Using the ToastText02 toast template.
+            ToastTemplateType toastTemplate = ToastTemplateType.ToastText02;
+
+            // Retrieve the content part of the toast so we can change the text.
+            XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(toastTemplate);
+
+            //Find the text component of the content
+            XmlNodeList toastTextElements = toastXml.GetElementsByTagName("text");
+
+            // Set the text on the toast. 
+            // The first line of text in the ToastText02 template is treated as header text, and will be bold.
+            toastTextElements[0].AppendChild(toastXml.CreateTextNode(o.GetType().Name));
+            toastTextElements[1].AppendChild(toastXml.CreateTextNode(moduleEvent.ToString()));
+
+            // Create the actual toast object using this toast specification.
             ToastNotification toast = new ToastNotification(toastXml);
-            // Show the toast. Be sure to specify the AppUserModelId on your application's shortcut!
+
+            // Set SuppressPopup = true on the toast in order to send it directly to action center without 
+            // producing a popup on the user's phone.
+            toast.SuppressPopup = false;
+
+            // Send the toast.
             ToastNotificationManager.CreateToastNotifier(AppId).Show(toast);
         }
         private async void AuthenticationModuleEvent(object o, ModuleEvent moduleEvent)

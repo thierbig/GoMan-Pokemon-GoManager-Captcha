@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Timers;
-using System.Windows.Forms;
 using BrightIdeasSoftware;
 using Goman_Plugin.Model;
 using GoPlugin;
@@ -28,7 +27,6 @@ namespace Goman_Plugin.Wrapper
         public bool SolvingCaptcha { get; set; }
         public LogModel Log { get; set; }
         public string ExpPerHour => ExpPerHourMunger.GetValue(Bot).ToString();
-
         public string Level
         {
             get
@@ -44,7 +42,6 @@ namespace Goman_Plugin.Wrapper
                 }
             }
         }
-       
         public List<Log> Logs
         {
             get
@@ -54,7 +51,6 @@ namespace Goman_Plugin.Wrapper
                 return logs;
             }
         }
-
         public string LastLog => LastLogMessageMunger.GetValue(Bot).ToString();
         public string RunTime => RunTimeMunger.GetValue(Bot).ToString();
         public string TillLevelUp => TillLevelUpMunger.GetValue(Bot).ToString();
@@ -82,45 +78,44 @@ namespace Goman_Plugin.Wrapper
             _lastTillLevelUp = TillLevelUp;
             _lastLevel = Level;
 
-            _changeTimer = new Timer(10000);
+            _changeTimer = new Timer(1000);
             _changeTimer.Elapsed += _changeTimer_Elapsed;
             _changeTimer.Enabled = true;
 
             bot.OnCaptcha += OnCaptcha;
         }
-
         public event Action<object, CaptchaRequiredEventArgs> OnCaptchaEvent;
-
         private void OnCaptcha(object sender, CaptchaRequiredEventArgs captchaRequiredEventArgs)
         {
             OnOnCaptchaEvent(this, captchaRequiredEventArgs);
         }
-
         private void _changeTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            if (StateChanged())
-            {
-                OnManagerChanged(this);
-                _lastName = Bot.AccountName;
-                _lastAccountState = Bot.AccountState;
-                _lasBotState = Bot.State;
-                _lastExpPerHour = ExpPerHour;
-                _lastLastLog = LastLog;
-                _lastRunTime = RunTime;
-                _lastTillLevelUp = TillLevelUp;
-                _lastLevel = Level;
+            if(Bot.State == BotState.Stopped && Bot.AccountState == AccountState.CaptchaRequired)
+                OnOnCaptchaEvent(this, null);
 
-            }
+            if (!StateChanged()) return;
+            OnManagerChanged(this);
+            _lastName = Bot.AccountName;
+            _lastAccountState = Bot.AccountState;
+            _lasBotState = Bot.State;
+            _lastExpPerHour = ExpPerHour;
+            _lastLastLog = LastLog;
+            _lastRunTime = RunTime;
+            _lastTillLevelUp = TillLevelUp;
+            _lastLevel = Level;
         }
-
         private bool StateChanged()
         {
-            return !(_lastName.Equals(Bot.AccountName) && _lastAccountState.Equals(Bot.AccountState) &&
-                    _lasBotState.Equals(Bot.State) && _lastExpPerHour.Equals(ExpPerHour) && _lastLastLog.Equals(LastLog) && _lastRunTime.Equals(RunTime) &&
-                    _lastTillLevelUp.Equals(TillLevelUp) &&
-                    _lastLevel.Equals(Level));
+            return !_lastName.Equals(Bot.AccountName) ||
+                   !_lastAccountState.Equals(Bot.AccountState) ||
+                   !_lasBotState.Equals(Bot.State) ||
+                   !_lastExpPerHour.Equals(ExpPerHour) ||
+                   !_lastLastLog.Equals(LastLog) ||
+                   !_lastRunTime.Equals(RunTime) ||
+                   !_lastTillLevelUp.Equals(TillLevelUp) ||
+                   !_lastLevel.Equals(Level);
         }
-
         public void AddLog(LoggerTypes type, string message, Exception ex = null)
         {
             LogModel newLog = new LogModel(type, message, ex);
@@ -130,7 +125,6 @@ namespace Goman_Plugin.Wrapper
             if (ApplicationModel.Settings.SaveLogs)
                 LogMessageToFile($"./Plugins/GoManLogs/{Bot.AccountName}_log.txt", message);
         }
-
         private static void LogMessageToFile(string path, string msg)
         {
             if (!Directory.Exists("./Plugins/GoManLogs")) Directory.CreateDirectory("./Plugins/GoManLogs");
@@ -149,19 +143,16 @@ namespace Goman_Plugin.Wrapper
         {
             return Bot.Username.Equals(other.Bot.Username);
         }
-
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             return obj.GetType() == this.GetType() && Equals((Manager) obj);
         }
-
         public override int GetHashCode()
         {
             return Bot?.Username.GetHashCode() ?? 0;
         }
-
         protected void OnManagerChanged(object arg1)
         {
             ManagerChanged?.Invoke(arg1, EventArgs.Empty);

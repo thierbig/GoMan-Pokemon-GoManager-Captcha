@@ -2,22 +2,35 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
+using System.Timers;
 using System.Windows.Forms;
 using Goman_Plugin.Model;
+using Goman_Plugin.Modules;
+using Goman_Plugin.Modules.AccountFeeder;
+using Goman_Plugin.Modules.Captcha;
+using Goman_Plugin.Modules.PokemonFeeder;
 using Goman_Plugin.Wrapper;
 using GoMan.View;
-using GoPlugin;
 using GoPlugin.Enums;
+using Timer = System.Timers.Timer;
 
 namespace Goman_Plugin.View
 {
     public partial class MainForm : Form
     {
+        private readonly AccountFeederModule _accountFeederModule;
+        private readonly PokemonFeederModule _pokemonFeederModule;
+        private readonly CaptchaModule _captchaModule;
+        private readonly HashSet<Manager> _accounts;
         private readonly System.Timers.Timer _timer;
-        public MainForm()
+        public MainForm(HashSet<Manager> managers, CaptchaModule captchaModule, PokemonFeederModule pokemonFeederModule, AccountFeederModule accountFeederModule)
         {
-            
             InitializeComponent();
+            _accounts = managers;
+            _captchaModule = captchaModule;
+            _pokemonFeederModule = pokemonFeederModule;
+            _accountFeederModule = accountFeederModule;
 
             this.fastObjecttListView1.PrimarySortColumn = this.olvBotState;
             this.fastObjecttListView1.PrimarySortOrder = SortOrder.Descending;
@@ -33,14 +46,21 @@ namespace Goman_Plugin.View
 
            // ManagerHandler.SolvedCaptchaEvent += UpdateCounters_Event;
 
-           // foreach (var keyValuePair in accounts)
-           //     _accounts.Add(keyValuePair.Value);
+            fastObjecttListView1.SetObjects(managers);
 
-            
-            //fastObjecttListView1.SetObjects(_accounts);
 
+            _timer = new Timer(1000);
+            _timer.Elapsed += _timer_Elapsed;
+            _timer.Enabled = true;
 
         }
+
+
+        private void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            fastObjecttListView1.RefreshObject(_accounts.First());
+        }
+
         private void UpdateCounters_Event(object sender, EventArgs e)
         {
             //toolStripStatusLabelSuccessfulCaptchas.Text = string.Format(toolStripStatusLabelSuccessfulCaptchas.Tag.ToString(), ManagerHandler.TotalSuccessCount);
@@ -123,22 +143,22 @@ namespace Goman_Plugin.View
             }
         }
 
-        private void textBox2CaptchaApiKey_TextChanged(object sender, EventArgs e)
+        private async void textBox2CaptchaApiKey_TextChanged(object sender, EventArgs e)
         {
-            ApplicationModel.Settings.CaptchaKey = textBox2CaptchaApiKey.Text;
-            ApplicationModel.Settings.SaveSetting();
+            _captchaModule.Settings.Extra.CaptchaKey = textBox2CaptchaApiKey.Text;
+            await _captchaModule.SaveSettings();
         }
 
-        private void numericUpDownSolveAttempts_ValueChanged(object sender, EventArgs e)
+        private async void numericUpDownSolveAttempts_ValueChanged(object sender, EventArgs e)
         {
-            ApplicationModel.Settings.SolveAttemptsBeforeStop = (int) numericUpDownSolveAttempts.Value;
-            ApplicationModel.Settings.SaveSetting();
+            _captchaModule.Settings.Extra.SolveAttemptsBeforeStop = (int)numericUpDownSolveAttempts.Value;
+            await _captchaModule.SaveSettings();
         }
 
-        private void cbkEnabled_CheckedChanged(object sender, EventArgs e)
+        private async void cbkEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            ApplicationModel.Settings.Enabled = cbkEnabled.Checked;
-            ApplicationModel.Settings.SaveSetting();
+            _captchaModule.Settings.Enabled = cbkEnabled.Checked;
+            await _captchaModule.SaveSettings();
         }
         
         private void cbkSaveLogs_CheckedChanged(object sender, EventArgs e)
@@ -151,6 +171,7 @@ namespace Goman_Plugin.View
             ApplicationModel.Settings.AutoUpdate = cbkAutoUpdate.Checked;
             ApplicationModel.Settings.SaveSetting();
         }
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.Text = "GoMan Plugin - v" + VersionModel.CurrentVersion;
@@ -160,7 +181,6 @@ namespace Goman_Plugin.View
                 textBox2CaptchaApiKey.BackColor = Color.Red;
                 tabControlMain.SelectedTab = tpCaptcha;
                 tabControlCaptcha.SelectedTab = tpSettings;
-
             }
         }
 
@@ -204,26 +224,6 @@ namespace Goman_Plugin.View
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
         {
             Process.Start("https://goman.io");
-        }
-
-        private string _stringCaptchaRate = "1 Minute";
-
-        private void minute1ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _stringCaptchaRate = "1 Minute";
-           // toolStripStatusLabelCaptchaRate.Text = string.Format(toolStripStatusLabelCaptchaRate.Tag.ToString(), _stringCaptchaRate, ManagerHandler.GetCaptchasRate());
-        }
-
-        private void minutes30ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _stringCaptchaRate = "30 Minute";
-          //  toolStripStatusLabelCaptchaRate.Text = string.Format(toolStripStatusLabelCaptchaRate.Tag.ToString(), _stringCaptchaRate, ManagerHandler.GetCaptchasRate());
-        }
-
-        private void hour1ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _stringCaptchaRate = "1 Hour";
-         //   toolStripStatusLabelCaptchaRate.Text = string.Format(toolStripStatusLabelCaptchaRate.Tag.ToString(), _stringCaptchaRate, ManagerHandler.GetCaptchasRate());
         }
     }
 }

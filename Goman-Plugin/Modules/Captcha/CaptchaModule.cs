@@ -15,9 +15,7 @@ namespace Goman_Plugin.Modules.Captcha
         {
             Settings = new BaseSettings<CaptchaSettings> { Enabled = true };
         }
-
         public new BaseSettings<CaptchaSettings> Settings { get; }
-
         public override async Task<MethodResult> Enable()
         {
             var loadSettingsResult = await LoadSettings();
@@ -38,48 +36,31 @@ namespace Goman_Plugin.Modules.Captcha
 
             return new MethodResult { Success = Settings.Enabled };
         }
-
         public override async Task<MethodResult> Disable()
         {
             Plugin.ManagerAdded -= PluginOnManagerAdded;
             Plugin.ManagerRemoved -= PluginOnManagerRemoved;
 
-            var saveSettingsResult = await Settings.Save(ModuleName);
+            await Settings.Save(ModuleName);
             OnModuleEvent(this, Modules.ModuleEvent.Disabled);
             return new MethodResult { Success = true };
         }
-
         private void PluginOnManagerAdded(object o, Manager manager)
         {
-            manager.ManagerChanged += OnManagerChange;
             manager.OnCaptchaEvent += OnCaptcha;
         }
-
         private void PluginOnManagerRemoved(object o, Manager manager)
         {
-            manager.ManagerChanged -= OnManagerChange;
             manager.OnCaptchaEvent -= OnCaptcha;
         }
-
         public async Task<MethodResult> LoadSettings()
         {
             return await Settings.Load(ModuleName);
         }
-
         public async Task<MethodResult> SaveSettings()
         {
             var saveSettingsResult = await Settings.Save(ModuleName);
             return saveSettingsResult;
-        }
-
-         private void OnManagerChange(object sender, EventArgs e)
-        {
-            var manager = (Manager)sender;
-            if (manager.Bot.AccountState == AccountState.CaptchaRequired &&
-                    manager.Bot.State == BotState.Stopped)
-            {
-                StoppedSolveCaptcha(manager);
-            }
         }
         public async void StoppedSolveCaptcha(Manager manager)
         {
@@ -91,11 +72,16 @@ namespace Goman_Plugin.Modules.Captcha
                 manager.Bot.LoginWait();
             });
         }
-
-        private static async void OnCaptcha(object sender, CaptchaRequiredEventArgs captchaRequiredEventArgs)
+        private async void OnCaptcha(object sender, CaptchaRequiredEventArgs captchaRequiredEventArgs)
         {
             var managerWrapper = (Manager)sender;
             var manager = managerWrapper.Bot;
+
+            if (manager.AccountState == AccountState.CaptchaRequired && manager.State == BotState.Stopped)
+            {
+                StoppedSolveCaptcha(managerWrapper);
+                return;
+            }
 
             if (managerWrapper.SolvingCaptcha || !manager.CaptchaRequired && !string.IsNullOrEmpty(manager.CaptchaURL)) return;
 

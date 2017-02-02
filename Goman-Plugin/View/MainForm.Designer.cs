@@ -39,16 +39,11 @@ namespace Goman_Plugin.View
             this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.contextMenuStripRate = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.minute1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.minutes30ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hour1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControlMain = new GoMan.View.BorderlessTabControl();
             this.tpCaptcha = new GoMan.View.BorderlessTabPage();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelSuccessfulCaptchas = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelFailedCaptchas = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelCaptchaRate = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControlCaptcha = new GoMan.View.BorderlessTabControl();
             this.tpAccounts = new GoMan.View.BorderlessTabPage();
             this.fastObjecttListView1 = new BrightIdeasSoftware.FastObjectListView();
@@ -73,12 +68,15 @@ namespace Goman_Plugin.View
             this.label2CaptchaApiKey = new System.Windows.Forms.Label();
             this.textBox2CaptchaApiKey = new System.Windows.Forms.TextBox();
             this.cbkEnabled = new System.Windows.Forms.CheckBox();
+            this.tpPokemonFeeder = new System.Windows.Forms.TabPage();
+            this.pokemonFeederUserControl1 = new Goman_Plugin.Modules.PokemonFeeder.PokemonFeederUserControl();
+            this.tpAccountFeeder = new System.Windows.Forms.TabPage();
+            this.accountFeederUserControl1 = new Goman_Plugin.Modules.AccountFeeder.AccountFeederUserControl();
             this.tpGlobalSettings = new GoMan.View.BorderlessTabPage();
             this.cbkSaveLogs = new System.Windows.Forms.CheckBox();
             this.cbkAutoUpdate = new System.Windows.Forms.CheckBox();
             this.contextMenuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
-            this.contextMenuStripRate.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tpCaptcha.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -87,6 +85,8 @@ namespace Goman_Plugin.View
             ((System.ComponentModel.ISupportInitialize)(this.fastObjecttListView1)).BeginInit();
             this.tpSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSolveAttempts)).BeginInit();
+            this.tpPokemonFeeder.SuspendLayout();
+            this.tpAccountFeeder.SuspendLayout();
             this.tpGlobalSettings.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -150,36 +150,6 @@ namespace Goman_Plugin.View
             this.toolStripStatusLabel1.Text = "Cheap Pokemon Go Proxy Services!";
             this.toolStripStatusLabel1.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
             // 
-            // contextMenuStripRate
-            // 
-            this.contextMenuStripRate.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.minute1ToolStripMenuItem,
-            this.minutes30ToolStripMenuItem,
-            this.hour1ToolStripMenuItem});
-            this.contextMenuStripRate.Name = "contextMenuStripRate";
-            this.contextMenuStripRate.Size = new System.Drawing.Size(133, 70);
-            // 
-            // minute1ToolStripMenuItem
-            // 
-            this.minute1ToolStripMenuItem.Name = "minute1ToolStripMenuItem";
-            this.minute1ToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
-            this.minute1ToolStripMenuItem.Text = "1 Minute";
-            this.minute1ToolStripMenuItem.Click += new System.EventHandler(this.minute1ToolStripMenuItem_Click);
-            // 
-            // minutes30ToolStripMenuItem
-            // 
-            this.minutes30ToolStripMenuItem.Name = "minutes30ToolStripMenuItem";
-            this.minutes30ToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
-            this.minutes30ToolStripMenuItem.Text = "30 Minutes";
-            this.minutes30ToolStripMenuItem.Click += new System.EventHandler(this.minutes30ToolStripMenuItem_Click);
-            // 
-            // hour1ToolStripMenuItem
-            // 
-            this.hour1ToolStripMenuItem.Name = "hour1ToolStripMenuItem";
-            this.hour1ToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
-            this.hour1ToolStripMenuItem.Text = "1 Hour";
-            this.hour1ToolStripMenuItem.Click += new System.EventHandler(this.hour1ToolStripMenuItem_Click);
-            // 
             // tabControlMain
             // 
             this.tabControlMain.Alignment = System.Windows.Forms.TabAlignment.Left;
@@ -187,10 +157,12 @@ namespace Goman_Plugin.View
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlMain.Controls.Add(this.tpCaptcha);
+            this.tabControlMain.Controls.Add(this.tpPokemonFeeder);
+            this.tabControlMain.Controls.Add(this.tpAccountFeeder);
             this.tabControlMain.Controls.Add(this.tpGlobalSettings);
             this.tabControlMain.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
-            this.tabControlMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabControlMain.ItemSize = new System.Drawing.Size(30, 100);
+            this.tabControlMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabControlMain.ItemSize = new System.Drawing.Size(30, 115);
             this.tabControlMain.Location = new System.Drawing.Point(0, 0);
             this.tabControlMain.Multiline = true;
             this.tabControlMain.Name = "tabControlMain";
@@ -206,10 +178,10 @@ namespace Goman_Plugin.View
             this.tpCaptcha.Controls.Add(this.statusStrip);
             this.tpCaptcha.Controls.Add(this.tabControlCaptcha);
             this.tpCaptcha.ForeColor = System.Drawing.Color.LightGray;
-            this.tpCaptcha.Location = new System.Drawing.Point(101, 1);
+            this.tpCaptcha.Location = new System.Drawing.Point(116, 1);
             this.tpCaptcha.Name = "tpCaptcha";
             this.tpCaptcha.Padding = new System.Windows.Forms.Padding(3);
-            this.tpCaptcha.Size = new System.Drawing.Size(1016, 300);
+            this.tpCaptcha.Size = new System.Drawing.Size(1001, 300);
             this.tpCaptcha.TabIndex = 0;
             this.tpCaptcha.Text = "Captcha";
             // 
@@ -218,11 +190,10 @@ namespace Goman_Plugin.View
             this.statusStrip.BackColor = System.Drawing.Color.Transparent;
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelSuccessfulCaptchas,
-            this.toolStripStatusLabelFailedCaptchas,
-            this.toolStripStatusLabelCaptchaRate});
+            this.toolStripStatusLabelFailedCaptchas});
             this.statusStrip.Location = new System.Drawing.Point(3, 275);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1010, 22);
+            this.statusStrip.Size = new System.Drawing.Size(995, 22);
             this.statusStrip.SizingGrip = false;
             this.statusStrip.TabIndex = 1;
             this.statusStrip.Text = "statusStrip1";
@@ -241,27 +212,17 @@ namespace Goman_Plugin.View
             this.toolStripStatusLabelFailedCaptchas.Tag = "Total Failed Captchas: {0}";
             this.toolStripStatusLabelFailedCaptchas.Text = "Total Failed Captchas: 0";
             // 
-            // toolStripStatusLabelCaptchaRate
-            // 
-            this.toolStripStatusLabelCaptchaRate.Name = "toolStripStatusLabelCaptchaRate";
-            this.toolStripStatusLabelCaptchaRate.Size = new System.Drawing.Size(129, 17);
-            this.toolStripStatusLabelCaptchaRate.Tag = "Captchas Per {0}: {1}";
-            this.toolStripStatusLabelCaptchaRate.Text = "Captchas Per Minute: 0";
-            this.toolStripStatusLabelCaptchaRate.Visible = false;
-            // 
             // tabControlCaptcha
             // 
-            this.tabControlCaptcha.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlCaptcha.Controls.Add(this.tpAccounts);
             this.tabControlCaptcha.Controls.Add(this.tpSettings);
+            this.tabControlCaptcha.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlCaptcha.ItemSize = new System.Drawing.Size(26, 30);
-            this.tabControlCaptcha.Location = new System.Drawing.Point(0, 0);
+            this.tabControlCaptcha.Location = new System.Drawing.Point(3, 3);
             this.tabControlCaptcha.Multiline = true;
             this.tabControlCaptcha.Name = "tabControlCaptcha";
             this.tabControlCaptcha.SelectedIndex = 0;
-            this.tabControlCaptcha.Size = new System.Drawing.Size(1016, 272);
+            this.tabControlCaptcha.Size = new System.Drawing.Size(995, 294);
             this.tabControlCaptcha.TabIndex = 1;
             this.tabControlCaptcha.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabControl1_DrawItem);
             // 
@@ -272,7 +233,7 @@ namespace Goman_Plugin.View
             this.tpAccounts.Location = new System.Drawing.Point(1, 31);
             this.tpAccounts.Name = "tpAccounts";
             this.tpAccounts.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAccounts.Size = new System.Drawing.Size(1014, 240);
+            this.tpAccounts.Size = new System.Drawing.Size(993, 262);
             this.tpAccounts.TabIndex = 0;
             this.tpAccounts.Text = "Accounts";
             // 
@@ -319,7 +280,7 @@ namespace Goman_Plugin.View
             this.fastObjecttListView1.Margin = new System.Windows.Forms.Padding(2);
             this.fastObjecttListView1.Name = "fastObjecttListView1";
             this.fastObjecttListView1.ShowGroups = false;
-            this.fastObjecttListView1.Size = new System.Drawing.Size(1008, 234);
+            this.fastObjecttListView1.Size = new System.Drawing.Size(987, 256);
             this.fastObjecttListView1.TabIndex = 0;
             this.fastObjecttListView1.TintSortColumn = true;
             this.fastObjecttListView1.UseCellFormatEvents = true;
@@ -427,7 +388,7 @@ namespace Goman_Plugin.View
             this.tpSettings.Location = new System.Drawing.Point(1, 31);
             this.tpSettings.Name = "tpSettings";
             this.tpSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSettings.Size = new System.Drawing.Size(1014, 240);
+            this.tpSettings.Size = new System.Drawing.Size(1049, 240);
             this.tpSettings.TabIndex = 2;
             this.tpSettings.Text = "Settings";
             // 
@@ -450,7 +411,7 @@ namespace Goman_Plugin.View
             0,
             0});
             this.numericUpDownSolveAttempts.Name = "numericUpDownSolveAttempts";
-            this.numericUpDownSolveAttempts.Size = new System.Drawing.Size(120, 26);
+            this.numericUpDownSolveAttempts.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownSolveAttempts.TabIndex = 16;
             this.numericUpDownSolveAttempts.Value = new decimal(new int[] {
             5,
@@ -464,7 +425,7 @@ namespace Goman_Plugin.View
             this.labelSolveAttempts.AutoSize = true;
             this.labelSolveAttempts.Location = new System.Drawing.Point(35, 89);
             this.labelSolveAttempts.Name = "labelSolveAttempts";
-            this.labelSolveAttempts.Size = new System.Drawing.Size(121, 20);
+            this.labelSolveAttempts.Size = new System.Drawing.Size(81, 13);
             this.labelSolveAttempts.TabIndex = 15;
             this.labelSolveAttempts.Text = "Solve Attempts:";
             // 
@@ -473,7 +434,7 @@ namespace Goman_Plugin.View
             this.label2CaptchaApiKey.AutoSize = true;
             this.label2CaptchaApiKey.Location = new System.Drawing.Point(14, 52);
             this.label2CaptchaApiKey.Name = "label2CaptchaApiKey";
-            this.label2CaptchaApiKey.Size = new System.Drawing.Size(142, 20);
+            this.label2CaptchaApiKey.Size = new System.Drawing.Size(97, 13);
             this.label2CaptchaApiKey.TabIndex = 14;
             this.label2CaptchaApiKey.Text = "2Captcha API Key:";
             // 
@@ -481,7 +442,7 @@ namespace Goman_Plugin.View
             // 
             this.textBox2CaptchaApiKey.Location = new System.Drawing.Point(162, 49);
             this.textBox2CaptchaApiKey.Name = "textBox2CaptchaApiKey";
-            this.textBox2CaptchaApiKey.Size = new System.Drawing.Size(487, 26);
+            this.textBox2CaptchaApiKey.Size = new System.Drawing.Size(487, 20);
             this.textBox2CaptchaApiKey.TabIndex = 13;
             this.textBox2CaptchaApiKey.TextChanged += new System.EventHandler(this.textBox2CaptchaApiKey_TextChanged);
             // 
@@ -492,11 +453,51 @@ namespace Goman_Plugin.View
             this.cbkEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbkEnabled.Location = new System.Drawing.Point(18, 25);
             this.cbkEnabled.Name = "cbkEnabled";
-            this.cbkEnabled.Size = new System.Drawing.Size(87, 24);
+            this.cbkEnabled.Size = new System.Drawing.Size(65, 17);
             this.cbkEnabled.TabIndex = 12;
             this.cbkEnabled.Text = "Enabled";
             this.cbkEnabled.UseVisualStyleBackColor = true;
             this.cbkEnabled.CheckedChanged += new System.EventHandler(this.cbkEnabled_CheckedChanged);
+            // 
+            // tpPokemonFeeder
+            // 
+            this.tpPokemonFeeder.Controls.Add(this.pokemonFeederUserControl1);
+            this.tpPokemonFeeder.Location = new System.Drawing.Point(116, 1);
+            this.tpPokemonFeeder.Name = "tpPokemonFeeder";
+            this.tpPokemonFeeder.Size = new System.Drawing.Size(1001, 300);
+            this.tpPokemonFeeder.TabIndex = 2;
+            this.tpPokemonFeeder.Text = "Pokemon Feeder";
+            this.tpPokemonFeeder.UseVisualStyleBackColor = true;
+            // 
+            // pokemonFeederUserControl1
+            // 
+            this.pokemonFeederUserControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.pokemonFeederUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pokemonFeederUserControl1.Location = new System.Drawing.Point(0, 0);
+            this.pokemonFeederUserControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pokemonFeederUserControl1.Name = "pokemonFeederUserControl1";
+            this.pokemonFeederUserControl1.Size = new System.Drawing.Size(1001, 300);
+            this.pokemonFeederUserControl1.TabIndex = 0;
+            // 
+            // tpAccountFeeder
+            // 
+            this.tpAccountFeeder.Controls.Add(this.accountFeederUserControl1);
+            this.tpAccountFeeder.Location = new System.Drawing.Point(116, 1);
+            this.tpAccountFeeder.Name = "tpAccountFeeder";
+            this.tpAccountFeeder.Size = new System.Drawing.Size(1001, 300);
+            this.tpAccountFeeder.TabIndex = 3;
+            this.tpAccountFeeder.Text = "Account Feeder";
+            this.tpAccountFeeder.UseVisualStyleBackColor = true;
+            // 
+            // accountFeederUserControl1
+            // 
+            this.accountFeederUserControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.accountFeederUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.accountFeederUserControl1.Location = new System.Drawing.Point(0, 0);
+            this.accountFeederUserControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.accountFeederUserControl1.Name = "accountFeederUserControl1";
+            this.accountFeederUserControl1.Size = new System.Drawing.Size(1001, 300);
+            this.accountFeederUserControl1.TabIndex = 0;
             // 
             // tpGlobalSettings
             // 
@@ -504,10 +505,10 @@ namespace Goman_Plugin.View
             this.tpGlobalSettings.Controls.Add(this.cbkSaveLogs);
             this.tpGlobalSettings.Controls.Add(this.cbkAutoUpdate);
             this.tpGlobalSettings.ForeColor = System.Drawing.Color.LightGray;
-            this.tpGlobalSettings.Location = new System.Drawing.Point(101, 1);
+            this.tpGlobalSettings.Location = new System.Drawing.Point(116, 1);
             this.tpGlobalSettings.Name = "tpGlobalSettings";
             this.tpGlobalSettings.Padding = new System.Windows.Forms.Padding(3);
-            this.tpGlobalSettings.Size = new System.Drawing.Size(1016, 300);
+            this.tpGlobalSettings.Size = new System.Drawing.Size(1001, 300);
             this.tpGlobalSettings.TabIndex = 1;
             this.tpGlobalSettings.Text = "Settings";
             // 
@@ -518,7 +519,7 @@ namespace Goman_Plugin.View
             this.cbkSaveLogs.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbkSaveLogs.Location = new System.Drawing.Point(6, 38);
             this.cbkSaveLogs.Name = "cbkSaveLogs";
-            this.cbkSaveLogs.Size = new System.Drawing.Size(103, 24);
+            this.cbkSaveLogs.Size = new System.Drawing.Size(77, 17);
             this.cbkSaveLogs.TabIndex = 22;
             this.cbkSaveLogs.Text = "Save Logs";
             this.cbkSaveLogs.UseVisualStyleBackColor = true;
@@ -531,7 +532,7 @@ namespace Goman_Plugin.View
             this.cbkAutoUpdate.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbkAutoUpdate.Location = new System.Drawing.Point(6, 8);
             this.cbkAutoUpdate.Name = "cbkAutoUpdate";
-            this.cbkAutoUpdate.Size = new System.Drawing.Size(119, 24);
+            this.cbkAutoUpdate.Size = new System.Drawing.Size(86, 17);
             this.cbkAutoUpdate.TabIndex = 21;
             this.cbkAutoUpdate.Text = "Auto Update";
             this.cbkAutoUpdate.UseVisualStyleBackColor = true;
@@ -555,7 +556,6 @@ namespace Goman_Plugin.View
             this.contextMenuStrip.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.contextMenuStripRate.ResumeLayout(false);
             this.tabControlMain.ResumeLayout(false);
             this.tpCaptcha.ResumeLayout(false);
             this.tpCaptcha.PerformLayout();
@@ -567,6 +567,8 @@ namespace Goman_Plugin.View
             this.tpSettings.ResumeLayout(false);
             this.tpSettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSolveAttempts)).EndInit();
+            this.tpPokemonFeeder.ResumeLayout(false);
+            this.tpAccountFeeder.ResumeLayout(false);
             this.tpGlobalSettings.ResumeLayout(false);
             this.tpGlobalSettings.PerformLayout();
             this.ResumeLayout(false);
@@ -615,10 +617,9 @@ namespace Goman_Plugin.View
         private System.Windows.Forms.CheckBox cbkSaveLogs;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelCaptchaRate;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStripRate;
-        private System.Windows.Forms.ToolStripMenuItem minute1ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem minutes30ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem hour1ToolStripMenuItem;
+        private System.Windows.Forms.TabPage tpPokemonFeeder;
+        private System.Windows.Forms.TabPage tpAccountFeeder;
+        private Modules.PokemonFeeder.PokemonFeederUserControl pokemonFeederUserControl1;
+        private Modules.AccountFeeder.AccountFeederUserControl accountFeederUserControl1;
     }
 }

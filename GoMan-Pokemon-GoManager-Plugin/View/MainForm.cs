@@ -43,7 +43,18 @@ namespace GoMan.View
             fastObjecttListView1.SetObjects(_accounts);
 
 
+            _timer = new Timer(1000);
+            _timer.Elapsed += _timer_Elapsed;
+            _timer.Enabled = true;
+
         }
+
+
+        private void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            fastObjecttListView1.RefreshObject(_accounts.First());
+        }
+
         private void UpdateCounters_Event(object sender, EventArgs e)
         {
             toolStripStatusLabelSuccessfulCaptchas.Text = string.Format(toolStripStatusLabelSuccessfulCaptchas.Tag.ToString(), ManagerHandler.TotalSuccessCount);
