@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Weavers>
-	<Costura>
-		<IncludeAssemblies>
-			GMap.NET.WindowsForms
-			GMap.NET.Core
-		</IncludeAssemblies>
+  <Costura>
+    <IncludeAssemblies>
+      GMap.NET.Core
+      GMap.NET.WindowsForms
+    </IncludeAssemblies>
 	</Costura>
-  
 </Weavers>

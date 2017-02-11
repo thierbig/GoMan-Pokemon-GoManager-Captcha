@@ -51,11 +51,11 @@ namespace Goman_Plugin.Modules.AccountFeeder
                     foreach (var account in Plugin.Accounts)
                     {
                         if (!account.Bot.IsRunning) continue;
-                
+
                         GMarkerGoogle marker = new GMarkerGoogle(
                             new PointLatLng(account.Bot.CurrentLocation.Latitude, account.Bot.CurrentLocation.Longitude),
                             GMarkerGoogleType.green);
-                
+
                         marker.ToolTipMode = MarkerTooltipMode.Always;
                         marker.ToolTipText = account.Bot.AccountName;
                         accountMarkersOverlay.Markers.Add(marker);

@@ -82,7 +82,7 @@ namespace Goman_Plugin.Modules.Captcha
             //OnLogEvent(this, new LogModel(LoggerTypes.Info, $"Unsubscribing to account {manager.Bot.AccountName}"));
             manager.OnCaptchaEvent -= OnCaptcha;
         }
-        public async void StoppedSolveCaptcha(Manager manager)
+        public async Task StoppedSolveCaptcha(Manager manager)
         {
             if (manager.SolvingCaptcha) return;
 
@@ -105,7 +105,7 @@ namespace Goman_Plugin.Modules.Captcha
 
             if (manager.AccountState == AccountState.CaptchaRequired && manager.State == BotState.Stopped)
             {
-                StoppedSolveCaptcha(managerWrapper);
+                await StoppedSolveCaptcha(managerWrapper);
                 return;
             }
 

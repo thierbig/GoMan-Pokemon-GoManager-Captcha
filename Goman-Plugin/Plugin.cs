@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using Windows.UI.Notifications;
-using Windows.Data.Xml.Dom;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Goman_Plugin.Model;
@@ -26,7 +24,6 @@ namespace Goman_Plugin
         internal static readonly AuthenticationModule AuthenticationModule;
         internal static readonly PokemonFeederModule PokemonFeederModule;
         internal static readonly CaptchaModule CaptchaModule;
-        private const string AppId = "Goman_Plugin";
         public override string PluginName { get; set; } = "Goman Plugin";
         public override IEnumerable<PluginDropDownItem> MenuItems { get; set; }
         public static event Action<object, Manager> ManagerAdded;
@@ -66,9 +63,6 @@ namespace Goman_Plugin
                 await Update();
 
             AuthenticationModule.ModuleEvent += AuthenticationModuleEvent;
-            PokemonFeederModule.ModuleEvent += OnModuleEvent;
-            AccountFeederModule.ModuleEvent += OnModuleEvent;
-            CaptchaModule.ModuleEvent += OnModuleEvent;
             var enableResults = await AuthenticationModule.Enable();
 
             await base.Load(managers);
@@ -94,33 +88,6 @@ namespace Goman_Plugin
                     }
                 }
             }
-        }
-        private void OnModuleEvent(object o, ModuleEvent moduleEvent)
-        {
-            if (!GlobalSettings.Extra.ToastNotifications) return;
-            // Using the ToastText02 toast template.
-            ToastTemplateType toastTemplate = ToastTemplateType.ToastText02;
-
-            // Retrieve the content part of the toast so we can change the text.
-            XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(toastTemplate);
-
-            //Find the text component of the content
-            XmlNodeList toastTextElements = toastXml.GetElementsByTagName("text");
-
-            // Set the text on the toast. 
-            // The first line of text in the ToastText02 template is treated as header text, and will be bold.
-            toastTextElements[0].AppendChild(toastXml.CreateTextNode(o.GetType().Name));
-            toastTextElements[1].AppendChild(toastXml.CreateTextNode(moduleEvent.ToString()));
-
-            // Create the actual toast object using this toast specification.
-            ToastNotification toast = new ToastNotification(toastXml);
-
-            // Set SuppressPopup = true on the toast in order to send it directly to action center without 
-            // producing a popup on the user's phone.
-            toast.SuppressPopup = false;
-
-            // Send the toast.
-            ToastNotificationManager.CreateToastNotifier(AppId).Show(toast);
         }
         private async void AuthenticationModuleEvent(object o, ModuleEvent moduleEvent)
         {
