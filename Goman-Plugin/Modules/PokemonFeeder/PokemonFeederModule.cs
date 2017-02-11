@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using Goman_Plugin.Helpers;
+using Goman_Plugin.Model;
 using Goman_Plugin.Wrapper;
 using GoPlugin;
 using GoPlugin.Events;
@@ -46,10 +47,12 @@ namespace Goman_Plugin.Modules.PokemonFeeder
                     copiedList.ForEach(x => PokemonDataInformation.Add(x));
                 }
 
+            result.MethodName = "Execute Uploading";
+            OnLogEvent(this, GetLog(result));
             return result;
         }
 
-        public override async Task<MethodResult> Enable()
+        public override async Task<MethodResult> Enable(bool forceSubscribe = false)
         {
             var loadSettingsResult = await LoadSettings();
 
@@ -61,8 +64,15 @@ namespace Goman_Plugin.Modules.PokemonFeeder
 
             if (Settings.Enabled)
             {
-                _pokemonTimer.Interval = Settings.Extra.IntervalMilliseconds;
 
+                if (forceSubscribe)
+                {
+                    foreach (var account in Plugin.Accounts)
+                    {
+                        PluginOnManagerAdded(this, account);
+                    }
+                }
+                _pokemonTimer.Interval = Settings.Extra.IntervalMilliseconds;
                 Plugin.ManagerAdded += PluginOnManagerAdded;
                 Plugin.ManagerRemoved += PluginOnManagerRemoved;
                 _pokemonTimer.Elapsed += _pokemonTimer_Elapsed;
@@ -73,7 +83,7 @@ namespace Goman_Plugin.Modules.PokemonFeeder
             return new MethodResult {Success = Settings.Enabled};
         }
 
-        public override async Task<MethodResult> Disable()
+        public override async Task<MethodResult> Disable(bool forceUnsubscribe = false)
         {
             if (!_pokemonTimer.Enabled) return new MethodResult { Success = true };
             Plugin.ManagerAdded -= PluginOnManagerAdded;
@@ -82,35 +92,44 @@ namespace Goman_Plugin.Modules.PokemonFeeder
 
             _pokemonTimer.Enabled = false;
             await Settings.Save(ModuleName);
+            if (forceUnsubscribe)
+            {
+                foreach (var account in Plugin.Accounts)
+                {
+                    PluginOnManagerRemoved(this,account);
+                }
+            }
             OnModuleEvent(this, Modules.ModuleEvent.Disabled);
             return new MethodResult {Success = true};
         }
-
+        private  async Task<MethodResult> LoadSettings()
+        {
+            var loadSettingsResult = await Settings.Load(ModuleName);
+            loadSettingsResult.MethodName = "LoadSettings";
+            OnLogEvent(this, GetLog(loadSettingsResult));
+            return loadSettingsResult;
+        }
+        private  async Task<MethodResult> SaveSettings()
+        {
+            var saveSettingsResult = await Settings.Save(ModuleName);
+            saveSettingsResult.MethodName = "SaveSettings";
+            OnLogEvent(this, GetLog(saveSettingsResult));
+            return saveSettingsResult;
+        }
         private void PluginOnManagerAdded(object o, Manager manager)
         {
+           // OnLogEvent(this, new LogModel(LoggerTypes.Info, $"Subscribing to account {manager.Bot.AccountName}"));
             manager.Bot.OnPokemonCaught += OnPokemonCaught;
         }
 
         private void PluginOnManagerRemoved(object o, Manager manager)
         {
+           // OnLogEvent(this, new LogModel(LoggerTypes.Info, $"Unsubscribing to account {manager.Bot.AccountName}"));
             manager.Bot.OnPokemonCaught -= OnPokemonCaught;
         }
-
-        public async Task<MethodResult> LoadSettings()
-        {
-            return await Settings.Load(ModuleName);
-        }
-
-        public async Task<MethodResult> SaveSettings()
-        {
-            var saveSettingsResult = await Settings.Save(ModuleName);
-            return saveSettingsResult;
-        }
-
         private void OnPokemonCaught(object sender, PokemonCaughtEventArgs e)
         {
             var manager = (IManager) sender;
-
             lock (PokemonDataInformation)
             {
                 var iv = manager.CalculateIVPerfection(e.Pokemon).Data;
@@ -121,7 +140,7 @@ namespace Goman_Plugin.Modules.PokemonFeeder
         private async void _pokemonTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (PokemonDataInformation.Count == 0) return;
-            await Execute();
+            var results = await Execute();
         }
     }
 }

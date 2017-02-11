@@ -12,11 +12,11 @@ namespace Goman_Plugin.Modules.PokemonFeeder
         [JsonProperty("cp")]
         private int Cp { get; set; }
         [JsonProperty("lat")]
-        private double Latitude { get; set; }
+        public double Latitude { get; set; }
         [JsonProperty("lon")]
-        private double Longitude { get; set; }
+        public double Longitude { get; set; }
         [JsonProperty("name")]
-        private int PokemonName { get; set; }
+        public int PokemonName { get; set; }
         [JsonProperty("move1")]
         private int Move1 { get; set; }
         [JsonProperty("move2")]
@@ -24,6 +24,10 @@ namespace Goman_Plugin.Modules.PokemonFeeder
         [JsonProperty("expiration")]
         private long ExpirationTime { get; set; }
 
+        [JsonConstructor]
+        public PokemonLocationInformation()
+        {
+        }
         public PokemonLocationInformation(PokemonCaughtEventArgs e, double iv)
         {
             EncounterId = (long)e.MapPokemon.EncounterId;

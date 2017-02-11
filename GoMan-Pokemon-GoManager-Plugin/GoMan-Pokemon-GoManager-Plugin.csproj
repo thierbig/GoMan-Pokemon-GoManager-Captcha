@@ -51,6 +51,9 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoSniper">
+      <HintPath>..\..\..\..\Desktop\AutoSniper.dll</HintPath>
+    </Reference>
     <Reference Include="C5">
       <HintPath>..\packages\C5.dll</HintPath>
     </Reference>
@@ -152,9 +155,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="version.json" />
     <None Include="View\PROCESS_PROCESSING.gif" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 
 namespace Goman_Plugin.Model
 {
-    public class ConcurrentHashSet<T> : IDisposable
+    public class ConcurrentHashSet<T> : IEnumerable<T>, IDisposable
     {
         private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
         private readonly HashSet<T> _hashSet = new HashSet<T>();
 
         #region Implementation of ICollection<T> ...ish
+
         public bool Add(T item)
         {
             _lock.EnterWriteLock();
@@ -95,6 +97,25 @@ namespace Goman_Plugin.Model
         {
             Dispose(false);
         }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                return GetEnumerator();
+            }
+            finally
+            {
+                if (_lock.IsWriteLockHeld) _lock.ExitWriteLock();
+            }
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return _hashSet.GetEnumerator();
+        }
+
         #endregion
     }
 }

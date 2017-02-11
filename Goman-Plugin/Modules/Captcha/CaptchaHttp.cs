@@ -3,9 +3,10 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using GoPlugin;
+using Goman_Plugin.Model;
+using MethodResult = Goman_Plugin.Model.MethodResult;
 
-namespace GoMan.Captcha
+namespace Goman_Plugin.Modules.Captcha
 {
     public class CaptchaHttp
     {
@@ -45,7 +46,7 @@ namespace GoMan.Captcha
             }
             catch (Exception ex)
             {
-                methodResult.Message = ex.ToString() + "\n\t" + ex.StackTrace;
+                methodResult.Message = ex + "\n\t" + ex.StackTrace;
                 methodResult.Success = false;
             }
 
@@ -79,7 +80,7 @@ namespace GoMan.Captcha
             }
             catch (Exception ex)
             {
-                methodResult.Message = ex.ToString() + "\n\t" + ex.StackTrace;
+                methodResult.Message = ex + "\n\t" + ex.StackTrace;
                 methodResult.Success = false;
             }
 

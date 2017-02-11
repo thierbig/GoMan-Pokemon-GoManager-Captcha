@@ -2,6 +2,6 @@
 {
     public class AccountFeederSettings
     {
-        public int IntervalMilliseconds { get; set; } = 1000;
+        public int IntervalMilliseconds { get; set; } = 15000;
     }
 }

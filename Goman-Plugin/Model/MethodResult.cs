@@ -7,6 +7,7 @@ namespace Goman_Plugin.Model
         public bool Success { get; set; }
         public Exception Error { get; set; }
         public string MethodName { get; set; }
+        public string Message { get; set; }
     }
 
     public class MethodResult<T> : MethodResult

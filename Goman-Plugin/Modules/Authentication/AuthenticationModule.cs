@@ -2,8 +2,6 @@
 using System.Timers;
 using System.Windows.Forms;
 using Goman_Plugin.Helpers;
-using Goman_Plugin.Model;
-using Goman_Plugin.Module;
 using MethodResult = Goman_Plugin.Model.MethodResult;
 using Timer = System.Timers.Timer;
 
@@ -25,7 +23,7 @@ namespace Goman_Plugin.Modules.Authentication
             pingMethodResult.MethodName = "AuthenticationModule._pingTimer_Elapsed";
             OnLogEvent(this,GetLog(pingMethodResult));
         }
-        public override async Task<MethodResult> Enable()
+        public override async Task<MethodResult> Enable(bool forceSubscribe = false)
         {
             var loadSettingsResult = await LoadSettings();
             if(!Settings.Enabled) return new MethodResult() {Success = true};
@@ -42,21 +40,35 @@ namespace Goman_Plugin.Modules.Authentication
                 _pingTimer.Enabled = true;
                 OnModuleEvent(this, Modules.ModuleEvent.Enabled);
             }
-            loginMethodResult.MethodName = "AuthenticationModule.Enable";
+
+            loginMethodResult.MethodName = "Login";
             OnLogEvent(this, GetLog(loginMethodResult));
             return loginMethodResult;
         }
 
-        public override async Task<MethodResult> Disable()
+        public override async Task<MethodResult> Disable(bool forceUnsubscribe = false)
         {
-            var methodResults = new MethodResult() { Success = true, MethodName = "AuthenticationModule.Disable" };
+            var methodResults = new MethodResult();
             _pingTimer.Elapsed -= _pingTimer_Elapsed;
             _pingTimer.Enabled = false;
             await Logout();
             await SaveSettings();
             OnModuleEvent(this, Modules.ModuleEvent.Disabled);
-            OnLogEvent(this, GetLog(methodResults));
             return methodResults;
+        }
+        private async Task<MethodResult> LoadSettings()
+        {
+            var loadSettingsResult = await Settings.Load(ModuleName);
+            loadSettingsResult.MethodName = "LoadSettings";
+            OnLogEvent(this, GetLog(loadSettingsResult));
+            return loadSettingsResult;
+        }
+        private async Task<MethodResult> SaveSettings()
+        {
+            var saveSettingsResult = await Settings.Save(ModuleName);
+            saveSettingsResult.MethodName = "SaveSettings";
+            OnLogEvent(this, GetLog(saveSettingsResult));
+            return saveSettingsResult;
         }
         private async Task<MethodResult> Logout()
         {
@@ -79,18 +91,6 @@ namespace Goman_Plugin.Modules.Authentication
 
             OnLogEvent(this, GetLog(methodResult));
             return methodResult;
-        }
-        public  async Task<MethodResult> LoadSettings()
-        {
-            var loadSettingsResult = await Settings.Load(ModuleName);
-            OnLogEvent(this, GetLog(loadSettingsResult));
-            return loadSettingsResult;
-        }
-        public  async Task<MethodResult> SaveSettings()
-        {
-            var saveSettingsResult = await Settings.Save(ModuleName);
-            OnLogEvent(this, GetLog(saveSettingsResult));
-            return saveSettingsResult;
         }
     }
 }

@@ -4,10 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Goman_Plugin.Model;
 using Goman_Plugin.Wrapper;
-using GoMan.Captcha;
 using GoPlugin;
 using GoPlugin.Enums;
-using MethodResult = GoPlugin.MethodResult;
+using MethodResult = Goman_Plugin.Model.MethodResult;
 
 namespace Goman_Plugin.Modules.Captcha
 {
@@ -38,28 +37,26 @@ namespace Goman_Plugin.Modules.Captcha
         {
             var manager = managerHandler.Bot;
 
-            managerHandler.AddLog(LoggerTypes.Info, $"Solving captcha at URL: {manager.CaptchaURL}");
-
             while (manager.State == BotState.Pausing)
                 await Task.Delay(250);
 
             var solveCaptchaRetryActionResults = await RetryAction(
                 SolveCaptchaAction,
-                ApplicationModel.Settings.CaptchaKey,
+                Plugin.CaptchaModule.Settings.Extra.CaptchaKey,
                 manager.CaptchaURL,
-                manager, ApplicationModel.Settings.SolveAttemptsBeforeStop);
+                manager, Plugin.CaptchaModule.Settings.Extra.SolveAttemptsBeforeStop);
 
             if (!solveCaptchaRetryActionResults.Success)
             {
                 var captchaError = CaptchaExceptions.Any(x => x.Contains(x));
                 if (captchaError)
                 {
-                    ApplicationModel.Settings.Enabled = false;
+                    Plugin.CaptchaModule.Settings.Enabled = false;
                     solveCaptchaRetryActionResults.Message = $"2Captcha {solveCaptchaRetryActionResults.Message}";
                 }
             }
 
-            managerHandler.AddLog(solveCaptchaRetryActionResults.Success ? LoggerTypes.Success : LoggerTypes.Exception, $"{solveCaptchaRetryActionResults.Message}");
+            if (solveCaptchaRetryActionResults.Success) solveCaptchaRetryActionResults.Message = "Success";
 
             return solveCaptchaRetryActionResults;
         }
@@ -68,8 +65,9 @@ namespace Goman_Plugin.Modules.Captcha
         {
             var captchaResponse = await CaptchaHttp.GetCaptchaResponse(captchaKey, captchaUrl);
             if (!captchaResponse.Success) return captchaResponse;
+            var result = await manager.VerifyCaptcha(captchaResponse.Data);
 
-            return await manager.VerifyCaptcha(captchaResponse.Data);
+            return new MethodResult() {Message = result.Message, Success = result.Success};
         }
 
         private static async Task<MethodResult> RetryAction(Func<string, string, IManager, Task<MethodResult>> action,

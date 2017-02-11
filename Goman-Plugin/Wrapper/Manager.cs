@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Timers;
 using BrightIdeasSoftware;
 using Goman_Plugin.Model;
@@ -14,7 +13,6 @@ namespace Goman_Plugin.Wrapper
     public class Manager
     {
         public IManager Bot { get; }
-
         private static readonly Munger LevelMunger = new Munger("Level");
         private static readonly Munger LogMunger = new Munger("Logs");
         private static readonly Munger LastLogMessageMunger = new Munger("LastLogMessage");
@@ -64,7 +62,7 @@ namespace Goman_Plugin.Wrapper
         private string _lastRunTime;
         private string _lastTillLevelUp;
 
-        public Timer _changeTimer;
+        public Timer ChangeTimer;
         public Manager(IManager bot)
         {
             Bot = bot;
@@ -78,9 +76,9 @@ namespace Goman_Plugin.Wrapper
             _lastTillLevelUp = TillLevelUp;
             _lastLevel = Level;
 
-            _changeTimer = new Timer(1000);
-            _changeTimer.Elapsed += _changeTimer_Elapsed;
-            _changeTimer.Enabled = true;
+            ChangeTimer = new Timer(1000);
+            ChangeTimer.Elapsed += _changeTimer_Elapsed;
+            ChangeTimer.Enabled = true;
 
             bot.OnCaptcha += OnCaptcha;
         }
@@ -89,6 +87,7 @@ namespace Goman_Plugin.Wrapper
         {
             OnOnCaptchaEvent(this, captchaRequiredEventArgs);
         }
+
         private void _changeTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if(Bot.State == BotState.Stopped && Bot.AccountState == AccountState.CaptchaRequired)
@@ -115,29 +114,6 @@ namespace Goman_Plugin.Wrapper
                    !_lastRunTime.Equals(RunTime) ||
                    !_lastTillLevelUp.Equals(TillLevelUp) ||
                    !_lastLevel.Equals(Level);
-        }
-        public void AddLog(LoggerTypes type, string message, Exception ex = null)
-        {
-            LogModel newLog = new LogModel(type, message, ex);
-            this.Log = newLog;
-            Bot.LogCallerPlugin(new LoggerEventArgs(newLog));
-
-            if (ApplicationModel.Settings.SaveLogs)
-                LogMessageToFile($"./Plugins/GoManLogs/{Bot.AccountName}_log.txt", message);
-        }
-        private static void LogMessageToFile(string path, string msg)
-        {
-            if (!Directory.Exists("./Plugins/GoManLogs")) Directory.CreateDirectory("./Plugins/GoManLogs");
-
-            try
-            {
-                using (var sw = File.AppendText(path))
-                    sw.WriteLine($"{DateTime.Now:G}: {msg}.");
-            }
-            catch (Exception)
-            {
-                //ignore
-            }
         }
         private bool Equals(Manager other)
         {

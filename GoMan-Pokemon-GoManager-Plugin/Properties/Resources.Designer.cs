@@ -59,15 +59,5 @@ namespace GoMan.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap PROCESS_PROCESSING {
-            get {
-                object obj = ResourceManager.GetObject("PROCESS_PROCESSING", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
     }
 }

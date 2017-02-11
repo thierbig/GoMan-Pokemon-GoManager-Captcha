@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Windows.UI.Notifications;
 using Windows.Data.Xml.Dom;
 using System.Threading.Tasks;
+using Goman_Plugin.Model;
 using Goman_Plugin.Modules;
 using Goman_Plugin.Modules.AccountFeeder;
 using Goman_Plugin.Modules.Authentication;
@@ -16,45 +17,59 @@ namespace Goman_Plugin
 {
     public class Plugin : IPlugin
     {
-        public static readonly HashSet<Manager> Accounts;
-        private readonly AccountFeederModule _accountFeederModule = new AccountFeederModule();
-        private readonly AuthenticationModule _authenticationModule = new AuthenticationModule();
-        private readonly PokemonFeederModule _pokemonFeederModule = new PokemonFeederModule();
-        private readonly CaptchaModule _captchaModule = new CaptchaModule();
-
-        private const String AppId = "Goman_Plugin";
-        static Plugin()
-        {
-            Accounts = new HashSet<Manager>();
-        }
-        public override string PluginName { get; set; } = "New Plugin";
+        public static readonly ConcurrentHashSet<Manager> Accounts;
+        internal static readonly BaseSettings<GlobalSettings> GlobalSettings;
+        internal static readonly AccountFeederModule AccountFeederModule;
+        internal static readonly AuthenticationModule AuthenticationModule;
+        internal static readonly PokemonFeederModule PokemonFeederModule;
+        internal static readonly CaptchaModule CaptchaModule;
+        private const string AppId = "Goman_Plugin";
+        public override string PluginName { get; set; } = "Goman Plugin";
         public override IEnumerable<PluginDropDownItem> MenuItems { get; set; }
         public static event Action<object, Manager> ManagerAdded;
         public static event Action<object, Manager> ManagerRemoved;
+        static Plugin()
+        {
+            Accounts = new ConcurrentHashSet<Manager>();
+            GlobalSettings = new BaseSettings<GlobalSettings>();
+
+            var globalSettingsLoadResult = GlobalSettings.Load("PluginModule").Result;
+            if (!globalSettingsLoadResult.Success)
+            {
+                GlobalSettings.Extra = new GlobalSettings();
+                var globalSettingsSaveResult = GlobalSettings.Save("PluginModule").Result;
+            }
+
+            AuthenticationModule = new AuthenticationModule();
+            AccountFeederModule = new AccountFeederModule();
+            CaptchaModule = new CaptchaModule();
+            PokemonFeederModule = new PokemonFeederModule();
+        }
+
         public override async Task Run(IEnumerable<IManager> managers)
         {
-            var captchaSettingsFrom = new MainForm(Accounts, _captchaModule, _pokemonFeederModule, _accountFeederModule);
+            var captchaSettingsFrom = new MainForm(Accounts);
             captchaSettingsFrom.Show();
-            return;
         }
         public override async Task<bool> Save()
         {
-            var disableResult = await _authenticationModule.Disable();
+            var disableResult = await AuthenticationModule.Disable();
             return disableResult.Success;
         }
         public override async Task<bool> Load(IEnumerable<IManager> managers)
         {
-            _authenticationModule.ModuleEvent += AuthenticationModuleEvent;
-            _pokemonFeederModule.ModuleEvent += OnModuleEvent;
-            _accountFeederModule.ModuleEvent += OnModuleEvent;
-            _captchaModule.ModuleEvent += OnModuleEvent;
-            var enableResults = await _authenticationModule.Enable();
+            AuthenticationModule.ModuleEvent += AuthenticationModuleEvent;
+            PokemonFeederModule.ModuleEvent += OnModuleEvent;
+            AccountFeederModule.ModuleEvent += OnModuleEvent;
+            CaptchaModule.ModuleEvent += OnModuleEvent;
+            var enableResults = await AuthenticationModule.Enable();
 
             await base.Load(managers);
             return enableResults.Success;
         }
         private void OnModuleEvent(object o, ModuleEvent moduleEvent)
         {
+            if (!GlobalSettings.Extra.ToastNotifications) return;
             // Using the ToastText02 toast template.
             ToastTemplateType toastTemplate = ToastTemplateType.ToastText02;
 
@@ -83,9 +98,10 @@ namespace Goman_Plugin
         {
             if (moduleEvent == ModuleEvent.Enabled)
             {
-                await _pokemonFeederModule.Enable();
-                await _accountFeederModule.Enable();
-                await _captchaModule.Enable();
+                await PokemonFeederModule.Enable();
+                await AccountFeederModule.Enable();
+                await CaptchaModule.Enable();
+
                 foreach (var manager in _uniqueManagers)
                 {
                     var wrappedManager = new Manager(manager);
@@ -101,9 +117,10 @@ namespace Goman_Plugin
                     Accounts.Add(wrappedManager);
                     OnManagerRemoved(this, wrappedManager);
                 }
-                await _pokemonFeederModule.Disable();
-                await _accountFeederModule.Disable();
-                await _captchaModule.Disable();
+
+                await PokemonFeederModule.Disable();
+                await AccountFeederModule.Disable();
+                await CaptchaModule.Disable();
             }
         }
         public override void AddManager(IManager manager)

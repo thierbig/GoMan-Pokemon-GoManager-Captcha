@@ -38,10 +38,10 @@ namespace Goman_Plugin.Helpers
                         {
                             methodResults.Data = await httpResponseMessage.Content.ReadAsStringAsync();
                             methodResults.Success = true;
-                            using (var sw = new StreamWriter("accounts.txt"))
-                            {
-                                await sw.WriteLineAsync(methodResults.Data);
-                            }
+                            //using (var sw = new StreamWriter("accounts.txt"))
+                            //{
+                            //    await sw.WriteLineAsync(methodResults.Data);
+                            //}
                         }
                         else
                         {
@@ -87,10 +87,10 @@ namespace Goman_Plugin.Helpers
                             methodResults.Data = await httpResponseMessage.Content.ReadAsStringAsync();
                             methodResults.Success = true;
                             AuthenticationSettings.LoggedIn = true;
-                            using (var sw = new StreamWriter("login.txt"))
-                            {
-                                await sw.WriteLineAsync(methodResults.Data);
-                            }
+                            //using (var sw = new StreamWriter("login.txt"))
+                            //{
+                            //    await sw.WriteLineAsync(methodResults.Data);
+                            //}
                         }
                         else
                         {
@@ -141,10 +141,10 @@ namespace Goman_Plugin.Helpers
                         {
                             methodResults.Data = await httpResponseMessage.Content.ReadAsStringAsync();
                             methodResults.Success = true;
-                            using (var sw = new StreamWriter("ping.txt"))
-                            {
-                                await sw.WriteLineAsync(methodResults.Data);
-                            }
+                            //using (var sw = new StreamWriter("ping.txt"))
+                            //{
+                            //    await sw.WriteLineAsync(methodResults.Data);
+                            //}
                         }
                         else
                         {
@@ -187,10 +187,10 @@ namespace Goman_Plugin.Helpers
                         {
                             methodResults.Data = await httpResponseMessage.Content.ReadAsStringAsync();
                             methodResults.Success = true;
-                            using (var sw = new StreamWriter("logout.txt"))
-                            {
-                                await sw.WriteLineAsync(methodResults.Data);
-                            }
+                            //using (var sw = new StreamWriter("logout.txt"))
+                            //{
+                            //    await sw.WriteLineAsync(methodResults.Data);
+                            //}
                         }
                         else
                         {
@@ -258,10 +258,10 @@ namespace Goman_Plugin.Helpers
                         {
                             methodResults.Data = await httpResponseMessage.Content.ReadAsStringAsync();
                             methodResults.Success = true;
-                            using (var sw = new StreamWriter("pokemon.txt"))
-                            {
-                                await sw.WriteLineAsync(methodResults.Data);
-                            }
+                            //using (var sw = new StreamWriter("pokemon.txt"))
+                            //{
+                            //    await sw.WriteLineAsync(methodResults.Data);
+                            //}
                         }
                         else
                         {
