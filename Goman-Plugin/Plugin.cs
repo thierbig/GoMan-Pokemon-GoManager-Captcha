@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using Windows.UI.Notifications;
 using Windows.Data.Xml.Dom;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Goman_Plugin.Model;
 using Goman_Plugin.Modules;
 using Goman_Plugin.Modules.AccountFeeder;
@@ -12,6 +14,7 @@ using Goman_Plugin.Modules.PokemonFeeder;
 using Goman_Plugin.View;
 using Goman_Plugin.Wrapper;
 using GoPlugin;
+using Newtonsoft.Json;
 
 namespace Goman_Plugin
 {
@@ -40,6 +43,7 @@ namespace Goman_Plugin
                 var globalSettingsSaveResult = GlobalSettings.Save("PluginModule").Result;
             }
 
+
             AuthenticationModule = new AuthenticationModule();
             AccountFeederModule = new AccountFeederModule();
             CaptchaModule = new CaptchaModule();
@@ -58,6 +62,9 @@ namespace Goman_Plugin
         }
         public override async Task<bool> Load(IEnumerable<IManager> managers)
         {
+            if (GlobalSettings.Extra.AutoUpdate)
+                await Update();
+
             AuthenticationModule.ModuleEvent += AuthenticationModuleEvent;
             PokemonFeederModule.ModuleEvent += OnModuleEvent;
             AccountFeederModule.ModuleEvent += OnModuleEvent;
@@ -66,6 +73,27 @@ namespace Goman_Plugin
 
             await base.Load(managers);
             return enableResults.Success;
+        }
+        private static async Task Update()
+        {
+            using (var wc = new WebClient())
+            {
+                var result = await wc.DownloadStringTaskAsync(VersionModel.Uri);
+                var version = JsonConvert.DeserializeObject<VersionModel>(result);
+
+                if (!version.Version.Equals(VersionModel.CurrentVersion))
+                {
+                    var updateQuestionResults =
+                        MessageBox.Show("GoMan Plugin has been updated! Would you like to download the update?",
+                            "GoMan Plugin Updated!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (updateQuestionResults == DialogResult.Yes)
+                    {
+                        await wc.DownloadFileTaskAsync(version.UpdateUrl, VersionModel.SavePath);
+                        MessageBox.Show("GoMan Plugin has been updated! Restart to use updated version!",
+                            "GoMan Plugin Updated!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
         }
         private void OnModuleEvent(object o, ModuleEvent moduleEvent)
         {
