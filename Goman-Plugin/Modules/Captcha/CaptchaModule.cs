@@ -85,10 +85,9 @@ namespace Goman_Plugin.Modules.Captcha
         public async Task StoppedSolveCaptcha(Manager manager)
         {
             if (manager.SolvingCaptcha) return;
-
+            manager.SolvingCaptcha = true;
             await manager.Bot.Login();
-            manager.Bot.LoginWait();
-            await Task.Delay(5000);
+            manager.SolvingCaptcha = false;
 
         }
         private async void OnCaptcha(object sender, CaptchaRequiredEventArgs captchaRequiredEventArgs)
@@ -103,7 +102,7 @@ namespace Goman_Plugin.Modules.Captcha
                 return;
             }
 
-            if (manager.AccountState == AccountState.CaptchaRequired && manager.State == BotState.Stopped)
+            if (manager.AccountState == AccountState.CaptchaRequired && manager.State == BotState.Stopped && !manager.LoggedIn)
             {
                 await StoppedSolveCaptcha(managerWrapper);
                 return;
