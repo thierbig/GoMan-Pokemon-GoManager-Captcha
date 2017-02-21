@@ -38,7 +38,7 @@ namespace Goman_Plugin.Modules.AccountFeeder
         {
             cbkEnabled.Checked = Plugin.AccountFeederModule.Settings.Enabled;
             fastObjectListViewLogs.SetObjects(Plugin.AccountFeederModule.Logs);
-            Plugin.AccountFeederModule.LogEvent += (o, model) => fastObjectListViewLogs.AddObject(model);
+            //Plugin.AccountFeederModule.LogEvent += (o, model) => fastObjectListViewLogs.AddObject(model);
         }
 
         private void _accountTimer_Elapsed(object o, EventArgs e)

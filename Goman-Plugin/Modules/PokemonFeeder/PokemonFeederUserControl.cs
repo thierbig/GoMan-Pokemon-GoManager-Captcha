@@ -20,7 +20,7 @@ namespace Goman_Plugin.Modules.PokemonFeeder
         {
             cbkEnabled.Checked = Plugin.PokemonFeederModule.Settings.Enabled;
             fastObjectListViewLogs.SetObjects(Plugin.PokemonFeederModule.Logs);
-            Plugin.PokemonFeederModule.LogEvent += (o, model) => fastObjectListViewLogs.AddObject(model);
+           // Plugin.PokemonFeederModule.LogEvent += (o, model) => fastObjectListViewLogs.AddObject(model);
         }
 
         private async void cbkEnabled_CheckedChanged(object sender, EventArgs e)

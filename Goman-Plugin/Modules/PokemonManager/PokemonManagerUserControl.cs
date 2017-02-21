@@ -24,7 +24,7 @@ namespace Goman_Plugin.Modules.PokemonManager
             cbkEnabled.Checked = Plugin.PokemonManagerModule.Settings.Enabled;
             fastObjectListViewLogs.SetObjects(Plugin.PokemonManagerModule.Logs);
             fastObjectListViewPokemon.SetObjects(Plugin.PokemonManagerModule.Settings.Extra.Pokemons.Values.ToList());
-            Plugin.PokemonManagerModule.LogEvent += (o, model) => fastObjectListViewLogs.AddObject(model);
+           // Plugin.PokemonManagerModule.LogEvent += (o, model) => fastObjectListViewLogs.AddObject(model);
         }
 
         private async void cbkEnabled_CheckedChanged(object sender, EventArgs e)

@@ -2,17 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Timers;
 using System.Windows.Forms;
 using Goman_Plugin.Model;
 using Goman_Plugin.Modules;
-using Goman_Plugin.Modules.AccountFeeder;
-using Goman_Plugin.Modules.Captcha;
-using Goman_Plugin.Modules.PokemonFeeder;
 using Goman_Plugin.Wrapper;
-using GoPlugin.Enums;
-using Timer = System.Timers.Timer;
 
 namespace Goman_Plugin.View
 {
