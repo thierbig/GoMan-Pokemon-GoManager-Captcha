@@ -93,21 +93,23 @@ namespace Goman_Plugin.Modules.PokemonManager
             return pokemonToHandle;
         }
 
-        public void EvolvePokemon(Manager manager, List<PokemonData> pokesToEvolve)
+        public async void EvolvePokemon(Manager manager, List<PokemonData> pokesToEvolve)
         {
             if (pokesToEvolve.Count == 0 || manager.AutoEvolving) return;
             manager.AutoEvolving = true;
-            manager.Bot.EvolvePokemon(pokesToEvolve).ContinueWith(r =>
+           // MessageBox.Show("Start AutoEvolving");
+            await manager.Bot.EvolvePokemon(pokesToEvolve).ContinueWith(r =>
             {
                 var results = r.Result;
 
-                            OnLogEvent(this,
-                GetLog(new MethodResult()
-                {
-                    Success = results.Success,
-                    Message = results.Message,
-                    MethodName = "EvolvePokemon",
-                }));
+                OnLogEvent(this,
+                    GetLog(new MethodResult()
+                    {
+                        Success = results.Success,
+                        Message = results.Message,
+                        MethodName = "EvolvePokemon",
+                    }));
+               // MessageBox.Show("End AutoEvolving");
                 manager.AutoEvolving = false;
             });
 
@@ -118,6 +120,7 @@ namespace Goman_Plugin.Modules.PokemonManager
         {
             if (pokesToUpgrade.Count == 0 || manager.AutoUpgrading) return;
             manager.AutoUpgrading = true;
+            //MessageBox.Show("Start AutoUpgrading");
             manager.Bot.UpgradePokemon(pokesToUpgrade, 100).ContinueWith(r =>
             {
                 var results = r.Result;
@@ -129,6 +132,7 @@ namespace Goman_Plugin.Modules.PokemonManager
                     Message = results.Message,
                     MethodName = "UpgradePokemon",
                 }));
+                //MessageBox.Show("End AutoUpgrading");
                 manager.AutoUpgrading = false;
             });
         }
@@ -137,7 +141,7 @@ namespace Goman_Plugin.Modules.PokemonManager
         {
             if (pokesToFavorite.Count == 0 || manager.AutoFavoriting) return;
             manager.AutoFavoriting = true;
-
+           // MessageBox.Show("Start SetFavorites");
             manager.Bot.FavoritePokemon(pokesToFavorite).ContinueWith(r =>
             {
                 var results = r.Result;
@@ -149,7 +153,7 @@ namespace Goman_Plugin.Modules.PokemonManager
                         Message = results.Message,
                         MethodName = "FavoritePokemon",
                     }));
-
+               // MessageBox.Show("End SetFavorites");
                 manager.AutoFavoriting = false;
             });
         }

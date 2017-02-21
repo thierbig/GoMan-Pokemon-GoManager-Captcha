@@ -4,5 +4,8 @@
     {
         public int IntervalMilliseconds { get; set; } = 15000;
 
+        public PokemonFeederSettings()
+        {
+        }
     }
 }

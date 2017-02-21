@@ -49,14 +49,14 @@ namespace Goman_Plugin.Modules
             return methodResult;
         }
 
-        public static async Task<MethodResult> Load<T>(this ISettings<T> settings, string moduleName)
+        public static async Task<MethodResult> Load<T>(this ISettings<T > settings, string moduleName) where T : new()
         {
             var methodResult = new MethodResult {MethodName = "SettingExtension.Load<T>"};
             try
             {
                 var content = await GetFileContent($"{settings.PluginSettingsBaseDirectory}/{moduleName}.json");
                 var loadedSettings = JsonConvert.DeserializeObject<BaseSettings<T>>(content);
-                settings.Extra = loadedSettings.Extra;
+                settings.Extra = (loadedSettings.Extra != null) ? loadedSettings.Extra : new T();
                 settings.Enabled = loadedSettings.Enabled;
                 methodResult.Success = true;
             }

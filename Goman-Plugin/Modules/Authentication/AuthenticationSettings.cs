@@ -20,5 +20,9 @@ namespace Goman_Plugin.Modules.Authentication
         public static string NonStaticUsername => Username;
         [JsonIgnore]
         public static string NonStaticPassword => Password;
+
+        public AuthenticationSettings()
+        {
+        }
     }
 }

@@ -6,6 +6,7 @@ using Goman_Plugin.Wrapper;
 using GoPlugin;
 using GoPlugin.Enums;
 using GoPlugin.Events;
+using GoPlugin.Extensions;
 using MethodResult = Goman_Plugin.Model.MethodResult;
 
 namespace Goman_Plugin.Modules.Captcha
@@ -20,7 +21,8 @@ namespace Goman_Plugin.Modules.Captcha
         public override async Task<MethodResult> Enable(bool forceSubscribe = false)
         {
            await LoadSettings();
-
+            if (string.IsNullOrEmpty(Settings.Extra.CaptchaKey))
+                Settings.Extra.CaptchaKey = Prompt.ShowDialog("Enter your 2Captcha API key", "2Captcha");
             if (Settings.Enabled)
             {
                 if (forceSubscribe)

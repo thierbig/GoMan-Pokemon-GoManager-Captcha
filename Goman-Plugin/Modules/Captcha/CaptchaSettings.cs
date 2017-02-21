@@ -6,5 +6,9 @@
         public int SolveAttemptsBeforeStop { get; set; } = 5;
         public string ProxyDomain { get; set; } = "chancity.hopto.org";
         public int ProxyPort { get; set; } = 1080;
+
+        public CaptchaSettings()
+        {
+        }
     }
 }
