@@ -48,9 +48,8 @@ namespace Goman_Plugin.Modules.PokemonManager
                     var pokemonSettings = imanager.GetPokemonSetting(pokemonData.PokemonId).Data;
 
                     var totalCandy =
-                        imanager.PokemonCandy.Where(x => x.FamilyId == pokemonSettings.FamilyId)
-                            .ElementAt(0)
-                            .Candy_;
+                        imanager.PokemonCandy
+                            .FirstOrDefault(x => x.FamilyId == pokemonSettings.FamilyId)?.Candy_;
 
                     var candyToEvolve = pokemonSettings.CandyToEvolve;
 
@@ -61,11 +60,8 @@ namespace Goman_Plugin.Modules.PokemonManager
                     }
                     else
                     {
-                        if (pokeSetting.AutoFavorite && pokemonData.Favorite == 0)
-                            pokesToFavorite.Add(pokemonData);
-
-                        if (pokeSetting.AutoUpgrade && totalCandy > 3)
-                            pokesToUpgrade.Add(pokemonData);
+                        if (pokeSetting.AutoFavorite && pokemonData.Favorite == 0) pokesToFavorite.Add(pokemonData);
+                        if (pokeSetting.AutoUpgrade && totalCandy > 3) pokesToUpgrade.Add(pokemonData);
                     }
                 }
 
@@ -129,8 +125,8 @@ namespace Goman_Plugin.Modules.PokemonManager
         {
             if (pokesToFavorite.Count == 0) return;
 
-            var results = await manager.FavoritePokemon(pokesToFavorite, true);
-
+            var results = await manager.FavoritePokemon(pokesToFavorite);
+            
             OnLogEvent(this,
                 GetLog(new MethodResult()
                 {
