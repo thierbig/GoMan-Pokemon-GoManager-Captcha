@@ -234,7 +234,7 @@ namespace Goman_Plugin.Helpers
 
         public class PokemonFeeder
         {
-            //private static readonly Uri PokemonUri = new Uri("http://144.217.215.59:8080/api/pokeadd_chancey.php");
+            //private static readonly Uri PokemonUri = new Uri("http://144.217.215.59:8080/api/pokeadd.php");
             private static readonly Uri PokemonUri = new Uri("https://goman.io/api/pokemonnew/");
             private static HttpRequestMessage PokemonRequestMessage(HttpContent httpContent)
             {
@@ -258,10 +258,10 @@ namespace Goman_Plugin.Helpers
                         {
                             methodResults.Data = await httpResponseMessage.Content.ReadAsStringAsync();
                             methodResults.Success = true;
-                            using (var sw = new StreamWriter("pokemon.txt"))
-                            {
-                                await sw.WriteLineAsync(methodResults.Data);
-                            }
+                            //using (var sw = new StreamWriter("pokemon.txt"))
+                            //{
+                            //    await sw.WriteLineAsync(methodResults.Data);
+                            //}
                         }
                         else
                         {
