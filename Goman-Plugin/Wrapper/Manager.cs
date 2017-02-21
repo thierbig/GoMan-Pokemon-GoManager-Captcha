@@ -19,6 +19,7 @@ namespace Goman_Plugin.Wrapper
         private static readonly Munger ExpPerHourMunger = new Munger("ExpPerHour");
         private static readonly Munger RunTimeMunger = new Munger("RunningTime");
         private static readonly Munger TillLevelUpMunger = new Munger("TillLevelUp");
+
         public event Action<object, EventArgs> ManagerChanged;
         public int SuccessCount { get; set; }
         public int FailedCount { get; set; }

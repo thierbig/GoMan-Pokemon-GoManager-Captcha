@@ -294,7 +294,7 @@ namespace Goman_Plugin.Modules.Captcha
             // 
             // numericUpDownSolveAttempts
             // 
-            this.numericUpDownSolveAttempts.Location = new System.Drawing.Point(109, 67);
+            this.numericUpDownSolveAttempts.Location = new System.Drawing.Point(106, 57);
             this.numericUpDownSolveAttempts.Minimum = new decimal(new int[] {
             1,
             0,
@@ -313,7 +313,7 @@ namespace Goman_Plugin.Modules.Captcha
             // labelSolveAttempts
             // 
             this.labelSolveAttempts.AutoSize = true;
-            this.labelSolveAttempts.Location = new System.Drawing.Point(6, 67);
+            this.labelSolveAttempts.Location = new System.Drawing.Point(3, 57);
             this.labelSolveAttempts.Name = "labelSolveAttempts";
             this.labelSolveAttempts.Size = new System.Drawing.Size(81, 13);
             this.labelSolveAttempts.TabIndex = 15;
@@ -322,7 +322,7 @@ namespace Goman_Plugin.Modules.Captcha
             // label2CaptchaApiKey
             // 
             this.label2CaptchaApiKey.AutoSize = true;
-            this.label2CaptchaApiKey.Location = new System.Drawing.Point(6, 35);
+            this.label2CaptchaApiKey.Location = new System.Drawing.Point(3, 34);
             this.label2CaptchaApiKey.Name = "label2CaptchaApiKey";
             this.label2CaptchaApiKey.Size = new System.Drawing.Size(97, 13);
             this.label2CaptchaApiKey.TabIndex = 14;
@@ -330,7 +330,7 @@ namespace Goman_Plugin.Modules.Captcha
             // 
             // textBox2CaptchaApiKey
             // 
-            this.textBox2CaptchaApiKey.Location = new System.Drawing.Point(109, 35);
+            this.textBox2CaptchaApiKey.Location = new System.Drawing.Point(106, 31);
             this.textBox2CaptchaApiKey.Name = "textBox2CaptchaApiKey";
             this.textBox2CaptchaApiKey.Size = new System.Drawing.Size(487, 20);
             this.textBox2CaptchaApiKey.TabIndex = 13;

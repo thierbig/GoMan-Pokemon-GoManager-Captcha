@@ -146,19 +146,19 @@ namespace Goman_Plugin.Modules.Captcha
         private async void textBox2CaptchaApiKey_TextChanged(object sender, EventArgs e)
         {
             Plugin.CaptchaModule.Settings.Extra.CaptchaKey = textBox2CaptchaApiKey.Text;
-            await Plugin.CaptchaModule.Settings.Save(Plugin.CaptchaModule.ModuleName);
+            await Plugin.CaptchaModule.SaveSettings();
         }
 
         private async void numericUpDownSolveAttempts_ValueChanged(object sender, EventArgs e)
         {
             Plugin.CaptchaModule.Settings.Extra.SolveAttemptsBeforeStop = (int)numericUpDownSolveAttempts.Value;
-            await Plugin.CaptchaModule.Settings.Save(Plugin.CaptchaModule.ModuleName);
+            await Plugin.CaptchaModule.SaveSettings();
         }
 
         private async void cbkEnabled_CheckedChanged(object sender, EventArgs e)
         {
             Plugin.CaptchaModule.Settings.Enabled = cbkEnabled.Checked;
-            await Plugin.CaptchaModule.Settings.Save(Plugin.CaptchaModule.ModuleName);
+            await Plugin.CaptchaModule.SaveSettings();
             if (!Plugin.CaptchaModule.Settings.Enabled)
                 await Plugin.CaptchaModule.Disable(true);
             else if (!Plugin.CaptchaModule.IsEnabled)

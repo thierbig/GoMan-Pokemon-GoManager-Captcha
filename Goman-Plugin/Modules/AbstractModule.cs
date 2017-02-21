@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,21 +18,40 @@ namespace Goman_Plugin.Modules
         }
         protected async void OnLogEvent(object arg1, LogModel log, IManager manager = null)
         {
-            Logs.Add(log);
-            await AddLog(log, manager);
             LogEvent?.Invoke(arg1, log);
+            if (!GetType().Name.Equals("AuthenticationModule"))
+            {
+                
+                lock (Logs)
+                {
+                    if (Logs.Count > Plugin.GlobalSettings.Extra.MaximumLogs)
+                    {
+                        var topRange = Logs.Count - Plugin.GlobalSettings.Extra.MaximumLogs;
+                        Logs.RemoveRange(0, topRange);
+                    }
+
+                    Logs.Add(log);
+                }
+            }
+
+            await AddLog(log, manager);
         }
         public async Task AddLog(LogModel log, IManager manager = null)
         {
             if (!Plugin.GlobalSettings.Extra.SaveLogs) return;
+
+            var error = "";
+            if(log.ExceptionMessage != null && log.StackTrace != null)
+                error = "\n\t" + log.ExceptionMessage + "\n\t" + log.StackTrace;
+
             if (manager != null)
             {
                 manager.LogCallerPlugin(new LoggerEventArgs(log));
-                await LogMessageToFile($"./Plugins/Goman/Logs/Accounts/", $"{manager.AccountName}.log", log.Message);
+                await LogMessageToFile($"./Plugins/Goman/Logs/Accounts/", $"{manager.AccountName}.log", log.Message + error);
             }
             else
             {
-                await LogMessageToFile($"./Plugins/Goman/Logs/Modules/", $"{this.ModuleName}.log", log.Message);
+                await LogMessageToFile($"./Plugins/Goman/Logs/Modules/", $"{this.ModuleName}.log", log.Message + error);
             }
         }
         private static async Task LogMessageToFile(string path, string filename, string msg)
@@ -66,7 +86,7 @@ namespace Goman_Plugin.Modules
         public bool IsEnabled { get; set; }
         public event Action<object, ModuleEvent> ModuleEvent;
         public event Action<object, LogModel> LogEvent;
-        public ConcurrentHashSet<LogModel> Logs { get; } = new ConcurrentHashSet<LogModel>();
+        public List<LogModel> Logs { get; } = new List<LogModel>();
         public abstract Task<MethodResult> Enable(bool forceSubscribe = false);
         public abstract Task<MethodResult> Disable(bool forceUnubscribe = false);
     }

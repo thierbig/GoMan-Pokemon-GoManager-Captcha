@@ -26,7 +26,7 @@ namespace Goman_Plugin.Modules.PokemonFeeder
         private async void cbkEnabled_CheckedChanged(object sender, EventArgs e)
         {
             Plugin.PokemonFeederModule.Settings.Enabled = cbkEnabled.Checked;
-            await Plugin.PokemonFeederModule.Settings.Save(Plugin.PokemonFeederModule.ModuleName);
+            await Plugin.PokemonFeederModule.SaveSettings();
             if (!Plugin.PokemonFeederModule.Settings.Enabled)
                 await Plugin.PokemonFeederModule.Disable(true);
             else if(!Plugin.PokemonFeederModule.IsEnabled)

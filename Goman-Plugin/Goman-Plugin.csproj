@@ -93,6 +93,14 @@
       <DependentUpon>AccountFeederUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\AccountFeeder\AccountInformation.cs" />
+    <Compile Include="Modules\PokemonManager\PokemonManagerUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Modules\PokemonManager\PokemonManagerUserControl.Designer.cs">
+      <DependentUpon>PokemonManagerUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\PokemonManager\PokemonManagerModule.cs" />
+    <Compile Include="Modules\PokemonManager\PokemonManagerSettings.cs" />
     <Compile Include="Modules\Authentication\AuthenticationModule.cs" />
     <Compile Include="Modules\Authentication\AuthenticationSettings.cs" />
     <Compile Include="Modules\Authentication\AuthenticationUI.cs">
@@ -156,6 +164,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\PokemonFeeder\PokemonFeederUserControl.resx">
       <DependentUpon>PokemonFeederUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\PokemonManager\PokemonManagerUserControl.resx">
+      <DependentUpon>PokemonManagerUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

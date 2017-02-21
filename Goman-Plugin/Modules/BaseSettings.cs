@@ -1,5 +1,4 @@
-﻿using Goman_Plugin.Module;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Goman_Plugin.Modules
 {

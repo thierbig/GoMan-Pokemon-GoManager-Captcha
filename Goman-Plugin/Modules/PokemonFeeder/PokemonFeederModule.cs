@@ -54,13 +54,7 @@ namespace Goman_Plugin.Modules.PokemonFeeder
 
         public override async Task<MethodResult> Enable(bool forceSubscribe = false)
         {
-            var loadSettingsResult = await LoadSettings();
-
-            if (!loadSettingsResult.Success)
-            {
-                Settings.Extra = new PokemonFeederSettings();
-                await SaveSettings();
-            }
+            await LoadSettings();
 
             if (Settings.Enabled)
             {
@@ -91,7 +85,7 @@ namespace Goman_Plugin.Modules.PokemonFeeder
             _pokemonTimer.Elapsed -= _pokemonTimer_Elapsed;
 
             _pokemonTimer.Enabled = false;
-            await Settings.Save(ModuleName);
+            await SaveSettings();
             if (forceUnsubscribe)
             {
                 foreach (var account in Plugin.Accounts)
@@ -102,14 +96,21 @@ namespace Goman_Plugin.Modules.PokemonFeeder
             OnModuleEvent(this, Modules.ModuleEvent.Disabled);
             return new MethodResult {Success = true};
         }
-        private  async Task<MethodResult> LoadSettings()
+        public async Task<MethodResult> LoadSettings()
         {
             var loadSettingsResult = await Settings.Load(ModuleName);
+
+            if (!loadSettingsResult.Success)
+            {
+                Settings.Extra = new PokemonFeederSettings();
+                await SaveSettings();
+            }
+
             loadSettingsResult.MethodName = "LoadSettings";
             OnLogEvent(this, GetLog(loadSettingsResult));
             return loadSettingsResult;
         }
-        private  async Task<MethodResult> SaveSettings()
+        public async Task<MethodResult> SaveSettings()
         {
             var saveSettingsResult = await Settings.Save(ModuleName);
             saveSettingsResult.MethodName = "SaveSettings";
@@ -119,21 +120,22 @@ namespace Goman_Plugin.Modules.PokemonFeeder
         private void PluginOnManagerAdded(object o, Manager manager)
         {
            // OnLogEvent(this, new LogModel(LoggerTypes.Info, $"Subscribing to account {manager.Bot.AccountName}"));
-            manager.Bot.OnPokemonCaught += OnPokemonCaught;
+            manager.Bot.OnPokemonEncounter += OnPokemonEncounter;
         }
 
         private void PluginOnManagerRemoved(object o, Manager manager)
         {
            // OnLogEvent(this, new LogModel(LoggerTypes.Info, $"Unsubscribing to account {manager.Bot.AccountName}"));
-            manager.Bot.OnPokemonCaught -= OnPokemonCaught;
+            manager.Bot.OnPokemonEncounter -= OnPokemonEncounter;
         }
-        private void OnPokemonCaught(object sender, PokemonCaughtEventArgs e)
+        private void OnPokemonEncounter(object sender, PokemonEncounteredEventArgs e)
         {
             var manager = (IManager) sender;
             lock (PokemonDataInformation)
             {
-                var iv = manager.CalculateIVPerfection(e.Pokemon).Data;
+                var iv = manager.CalculateIVPerfection(e.WildPokemon.PokemonData).Data;
                 PokemonDataInformation.Add(new PokemonLocationInformation(e, iv));
+                
             }
         }
 

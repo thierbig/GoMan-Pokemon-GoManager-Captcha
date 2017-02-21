@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7BCCCDD5-18F4-445B-B321-5513917690AD}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GoMan</RootNamespace>
     <AssemblyName>GoMan-Pokemon-GoManager-Plugin</AssemblyName>
@@ -47,8 +47,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>GoMan.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoSniper">

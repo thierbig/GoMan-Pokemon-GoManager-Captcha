@@ -4,10 +4,9 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Forms;
 using Goman_Plugin.Helpers;
-using Goman_Plugin.Model;
 using Goman_Plugin.Wrapper;
-using GoPlugin;
 using GoPlugin.Events;
 using Newtonsoft.Json;
 using MethodResult = Goman_Plugin.Model.MethodResult;
@@ -50,13 +49,7 @@ namespace Goman_Plugin.Modules.AccountFeeder
         }
         public override async Task<MethodResult> Enable(bool forceSubscribe = false)
         {
-            var loadSettingsResult = await LoadSettings();
-
-            if (!loadSettingsResult.Success)
-            {
-                Settings.Extra = new AccountFeederSettings();
-                await SaveSettings();
-            }
+            await LoadSettings();
 
             if (Settings.Enabled)
             {
@@ -98,14 +91,21 @@ namespace Goman_Plugin.Modules.AccountFeeder
             OnModuleEvent(this, Modules.ModuleEvent.Disabled);
             return new MethodResult() { Success = true };
         }
-        private async Task<MethodResult> LoadSettings()
+        public async Task<MethodResult> LoadSettings()
         {
             var loadSettingsResult = await Settings.Load(ModuleName);
+          
+            if (!loadSettingsResult.Success)
+            {
+                Settings.Extra = new AccountFeederSettings();
+                await SaveSettings();
+            }
+
             loadSettingsResult.MethodName = "LoadSettings";
             OnLogEvent(this, GetLog(loadSettingsResult));
             return loadSettingsResult;
         }
-        private async Task<MethodResult> SaveSettings()
+        public async Task<MethodResult> SaveSettings()
         {
             var saveSettingsResult = await Settings.Save(ModuleName);
             saveSettingsResult.MethodName = "SaveSettings";

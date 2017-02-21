@@ -10,7 +10,7 @@ namespace Goman_Plugin.Modules
     {
         event Action<object, ModuleEvent> ModuleEvent;
         event Action<object, LogModel> LogEvent;
-        ConcurrentHashSet<LogModel> Logs { get; }
+        List<LogModel> Logs { get; }
         Task<MethodResult> Enable(bool forceSubscribe = false);
         Task<MethodResult> Disable(bool forceUnsubscribe = false);
         BaseSettings Settings { get; }

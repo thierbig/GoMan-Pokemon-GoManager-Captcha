@@ -9,6 +9,7 @@ using Goman_Plugin.Modules.AccountFeeder;
 using Goman_Plugin.Modules.Authentication;
 using Goman_Plugin.Modules.Captcha;
 using Goman_Plugin.Modules.PokemonFeeder;
+using Goman_Plugin.Modules.PokemonManager;
 using Goman_Plugin.View;
 using Goman_Plugin.Wrapper;
 using GoPlugin;
@@ -24,6 +25,7 @@ namespace Goman_Plugin
         internal static readonly AuthenticationModule AuthenticationModule;
         internal static readonly PokemonFeederModule PokemonFeederModule;
         internal static readonly CaptchaModule CaptchaModule;
+        internal static readonly PokemonManagerModule PokemonManagerModule;
         public override string PluginName { get; set; } = "Goman Plugin";
         public override IEnumerable<PluginDropDownItem> MenuItems { get; set; }
         public static event Action<object, Manager> ManagerAdded;
@@ -45,6 +47,7 @@ namespace Goman_Plugin
             AccountFeederModule = new AccountFeederModule();
             CaptchaModule = new CaptchaModule();
             PokemonFeederModule = new PokemonFeederModule();
+            PokemonManagerModule = new PokemonManagerModule();
         }
 
         public override async Task Run(IEnumerable<IManager> managers)
@@ -68,7 +71,7 @@ namespace Goman_Plugin
             await base.Load(managers);
             return enableResults.Success;
         }
-        private static async Task Update()
+        private async Task Update()
         {
             using (var wc = new WebClient())
             {
@@ -96,6 +99,7 @@ namespace Goman_Plugin
                 await PokemonFeederModule.Enable();
                 await AccountFeederModule.Enable();
                 await CaptchaModule.Enable();
+                await PokemonManagerModule.Enable();
 
                 foreach (var manager in _uniqueManagers)
                 {
@@ -116,6 +120,7 @@ namespace Goman_Plugin
                 await PokemonFeederModule.Disable();
                 await AccountFeederModule.Disable();
                 await CaptchaModule.Disable();
+                await PokemonManagerModule.Disable();
             }
         }
         public override void AddManager(IManager manager)
@@ -125,7 +130,7 @@ namespace Goman_Plugin
             OnManagerAdded(this, wrappedManager);
             base.AddManager(manager);
         }
-        private static void OnManagerAdded(object arg1, Manager arg2)
+        private void OnManagerAdded(object arg1, Manager arg2)
         {
             ManagerAdded?.Invoke(arg1, arg2);
         }
@@ -136,7 +141,7 @@ namespace Goman_Plugin
             OnManagerRemoved(this, wrappedManager);
             base.RemoveManager(manager);
         }
-        private static void OnManagerRemoved(object arg1, Manager arg2)
+        private void OnManagerRemoved(object arg1, Manager arg2)
         {
             ManagerRemoved?.Invoke(arg1, arg2);
         }

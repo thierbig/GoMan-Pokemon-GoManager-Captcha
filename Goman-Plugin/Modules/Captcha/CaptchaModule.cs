@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Windows.Forms;
 using Goman_Plugin.Model;
 using Goman_Plugin.Module.Captcha;
 using Goman_Plugin.Wrapper;
@@ -18,13 +19,7 @@ namespace Goman_Plugin.Modules.Captcha
         public new BaseSettings<CaptchaSettings> Settings { get; }
         public override async Task<MethodResult> Enable(bool forceSubscribe = false)
         {
-            var loadSettingsResult = await LoadSettings();
-
-            if (!loadSettingsResult.Success)
-            {
-                Settings.Extra = new CaptchaSettings();
-                await SaveSettings();
-            }
+           await LoadSettings();
 
             if (Settings.Enabled)
             {
@@ -58,14 +53,21 @@ namespace Goman_Plugin.Modules.Captcha
             OnModuleEvent(this, Modules.ModuleEvent.Disabled);
             return new MethodResult { Success = true };
         }
-        private async Task<MethodResult> LoadSettings()
+        public async Task<MethodResult> LoadSettings()
         {
             var loadSettingsResult = await Settings.Load(ModuleName);
+
+            if (!loadSettingsResult.Success)
+            {
+                Settings.Extra = new CaptchaSettings();
+                await SaveSettings();
+            }
+
             loadSettingsResult.MethodName = "LoadSettings";
             OnLogEvent(this, GetLog(loadSettingsResult));
             return loadSettingsResult;
         }
-        private async Task<MethodResult> SaveSettings()
+        public async Task<MethodResult> SaveSettings()
         {
             var saveSettingsResult = await Settings.Save(ModuleName);
             saveSettingsResult.MethodName = "SaveSettings";

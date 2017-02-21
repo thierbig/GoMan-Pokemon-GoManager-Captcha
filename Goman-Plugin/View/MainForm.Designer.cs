@@ -1,4 +1,7 @@
-﻿namespace Goman_Plugin.View
+﻿using Goman_Plugin.Modules.PokemonFeeder;
+using Goman_Plugin.Modules.PokemonManager;
+
+namespace Goman_Plugin.View
 {
     partial class MainForm
     {
@@ -39,15 +42,20 @@
             this.tpAccountFeeder = new System.Windows.Forms.TabPage();
             this.accountFeederUserControl1 = new Goman_Plugin.Modules.AccountFeeder.AccountFeederUserControl();
             this.tpGlobalSettings = new Goman_Plugin.View.BorderlessTabPage();
+            this.numericUpDownMaximumLogs = new System.Windows.Forms.NumericUpDown();
+            this.labelMaximumLogs = new System.Windows.Forms.Label();
             this.cbkSaveLogs = new System.Windows.Forms.CheckBox();
             this.cbkAutoUpdate = new System.Windows.Forms.CheckBox();
-            this.cbkToastNotifications = new System.Windows.Forms.CheckBox();
+            this.tpPokemonManager = new System.Windows.Forms.TabPage();
+            this.pokemonManagerUserControl1 = new Goman_Plugin.Modules.PokemonManager.PokemonManagerUserControl();
             this.statusStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tpCaptcha.SuspendLayout();
             this.tpPokemonFeeder.SuspendLayout();
             this.tpAccountFeeder.SuspendLayout();
             this.tpGlobalSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaximumLogs)).BeginInit();
+            this.tpPokemonManager.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -79,6 +87,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlMain.Controls.Add(this.tpCaptcha);
+            this.tabControlMain.Controls.Add(this.tpPokemonManager);
             this.tabControlMain.Controls.Add(this.tpPokemonFeeder);
             this.tabControlMain.Controls.Add(this.tpAccountFeeder);
             this.tabControlMain.Controls.Add(this.tpGlobalSettings);
@@ -156,7 +165,8 @@
             // tpGlobalSettings
             // 
             this.tpGlobalSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
-            this.tpGlobalSettings.Controls.Add(this.cbkToastNotifications);
+            this.tpGlobalSettings.Controls.Add(this.numericUpDownMaximumLogs);
+            this.tpGlobalSettings.Controls.Add(this.labelMaximumLogs);
             this.tpGlobalSettings.Controls.Add(this.cbkSaveLogs);
             this.tpGlobalSettings.Controls.Add(this.cbkAutoUpdate);
             this.tpGlobalSettings.ForeColor = System.Drawing.Color.LightGray;
@@ -166,6 +176,38 @@
             this.tpGlobalSettings.Size = new System.Drawing.Size(1001, 300);
             this.tpGlobalSettings.TabIndex = 1;
             this.tpGlobalSettings.Text = "Settings";
+            // 
+            // numericUpDownMaximumLogs
+            // 
+            this.numericUpDownMaximumLogs.Location = new System.Drawing.Point(6, 52);
+            this.numericUpDownMaximumLogs.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownMaximumLogs.Minimum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.numericUpDownMaximumLogs.Name = "numericUpDownMaximumLogs";
+            this.numericUpDownMaximumLogs.Size = new System.Drawing.Size(54, 20);
+            this.numericUpDownMaximumLogs.TabIndex = 25;
+            this.numericUpDownMaximumLogs.Value = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            this.numericUpDownMaximumLogs.ValueChanged += new System.EventHandler(this.numericUpDownMaximumLogs_ValueChanged);
+            // 
+            // labelMaximumLogs
+            // 
+            this.labelMaximumLogs.AutoSize = true;
+            this.labelMaximumLogs.Location = new System.Drawing.Point(66, 59);
+            this.labelMaximumLogs.Name = "labelMaximumLogs";
+            this.labelMaximumLogs.Size = new System.Drawing.Size(77, 13);
+            this.labelMaximumLogs.TabIndex = 24;
+            this.labelMaximumLogs.Text = "Maximum Logs";
             // 
             // cbkSaveLogs
             // 
@@ -193,18 +235,23 @@
             this.cbkAutoUpdate.UseVisualStyleBackColor = true;
             this.cbkAutoUpdate.CheckedChanged += new System.EventHandler(this.ckAutoUpdate_CheckedChanged);
             // 
-            // cbkToastNotifications
+            // tpPokemonManager
             // 
-            this.cbkToastNotifications.AutoSize = true;
-            this.cbkToastNotifications.Checked = true;
-            this.cbkToastNotifications.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbkToastNotifications.Location = new System.Drawing.Point(6, 52);
-            this.cbkToastNotifications.Name = "cbkToastNotifications";
-            this.cbkToastNotifications.Size = new System.Drawing.Size(114, 17);
-            this.cbkToastNotifications.TabIndex = 23;
-            this.cbkToastNotifications.Text = "Toast Notifications";
-            this.cbkToastNotifications.UseVisualStyleBackColor = true;
-            this.cbkToastNotifications.CheckedChanged += new System.EventHandler(this.cbkToastNotifications_CheckedChanged);
+            this.tpPokemonManager.Controls.Add(this.pokemonManagerUserControl1);
+            this.tpPokemonManager.Location = new System.Drawing.Point(116, 1);
+            this.tpPokemonManager.Name = "tpPokemonManager";
+            this.tpPokemonManager.Size = new System.Drawing.Size(1001, 300);
+            this.tpPokemonManager.TabIndex = 4;
+            this.tpPokemonManager.Text = "Pokemon Manager";
+            this.tpPokemonManager.UseVisualStyleBackColor = true;
+            // 
+            // pokemonManagerUserControl1
+            // 
+            this.pokemonManagerUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pokemonManagerUserControl1.Location = new System.Drawing.Point(0, 0);
+            this.pokemonManagerUserControl1.Name = "pokemonManagerUserControl1";
+            this.pokemonManagerUserControl1.Size = new System.Drawing.Size(1001, 300);
+            this.pokemonManagerUserControl1.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -228,6 +275,8 @@
             this.tpAccountFeeder.ResumeLayout(false);
             this.tpGlobalSettings.ResumeLayout(false);
             this.tpGlobalSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaximumLogs)).EndInit();
+            this.tpPokemonManager.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -244,9 +293,12 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.TabPage tpPokemonFeeder;
         private System.Windows.Forms.TabPage tpAccountFeeder;
-        private Modules.PokemonFeeder.PokemonFeederUserControl pokemonFeederUserControl1;
+        private PokemonFeederUserControl pokemonFeederUserControl1;
         private Modules.AccountFeeder.AccountFeederUserControl accountFeederUserControl1;
         private Modules.Captcha.CaptchaUserControl captchaUserControl1;
-        private System.Windows.Forms.CheckBox cbkToastNotifications;
+        private System.Windows.Forms.NumericUpDown numericUpDownMaximumLogs;
+        private System.Windows.Forms.Label labelMaximumLogs;
+        private System.Windows.Forms.TabPage tpPokemonManager;
+        private PokemonManagerUserControl pokemonManagerUserControl1;
     }
 }

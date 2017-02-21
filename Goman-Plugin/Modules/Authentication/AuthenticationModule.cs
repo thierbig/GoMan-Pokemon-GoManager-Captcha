@@ -25,13 +25,9 @@ namespace Goman_Plugin.Modules.Authentication
         }
         public override async Task<MethodResult> Enable(bool forceSubscribe = false)
         {
-            var loadSettingsResult = await LoadSettings();
+            await LoadSettings();
+
             if(!Settings.Enabled) return new MethodResult() {Success = true};
-            if (!loadSettingsResult.Success)
-            {
-                Settings.Extra = new AuthenticationSettings();
-                await SaveSettings();
-            }
 
             var loginMethodResult = Login();
 
@@ -56,14 +52,21 @@ namespace Goman_Plugin.Modules.Authentication
             OnModuleEvent(this, Modules.ModuleEvent.Disabled);
             return methodResults;
         }
-        private async Task<MethodResult> LoadSettings()
+        public async Task<MethodResult> LoadSettings()
         {
             var loadSettingsResult = await Settings.Load(ModuleName);
+
+            if (!loadSettingsResult.Success)
+            {
+                Settings.Extra = new AuthenticationSettings();
+                await SaveSettings();
+            }
+
             loadSettingsResult.MethodName = "LoadSettings";
             OnLogEvent(this, GetLog(loadSettingsResult));
             return loadSettingsResult;
         }
-        private async Task<MethodResult> SaveSettings()
+        public async Task<MethodResult> SaveSettings()
         {
             var saveSettingsResult = await Settings.Save(ModuleName);
             saveSettingsResult.MethodName = "SaveSettings";

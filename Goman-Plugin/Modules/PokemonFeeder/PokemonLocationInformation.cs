@@ -1,4 +1,7 @@
-﻿using GoPlugin.Events;
+﻿using System;
+using System.Globalization;
+using System.Windows.Forms;
+using GoPlugin.Events;
 using Newtonsoft.Json;
 
 namespace Goman_Plugin.Modules.PokemonFeeder
@@ -6,39 +9,73 @@ namespace Goman_Plugin.Modules.PokemonFeeder
     public class PokemonLocationInformation
     {
         [JsonProperty("encounter_id")]
-        private long EncounterId { get; set; }
+        private string EncounterId { get; set; }
+        [JsonProperty("spawnpoint_id")]
+        private string SpawnPointId { get; set; }
         [JsonProperty("iv")]
         private double Iv { get; set; }
         [JsonProperty("cp")]
         private int Cp { get; set; }
-        [JsonProperty("lat")]
+        [JsonProperty("latitude")]
         public double Latitude { get; set; }
-        [JsonProperty("lon")]
+        [JsonProperty("longitude")]
         public double Longitude { get; set; }
-        [JsonProperty("name")]
+        [JsonProperty("individual_attack")]
+        public int Attack { get; set; }
+        [JsonProperty("individual_defense")]
+        private int Defense { get; set; }
+        [JsonProperty("individual_stamina")]
+        private int Stamina { get; set; }
+        [JsonProperty("pokemon_id")]
         public int PokemonName { get; set; }
-        [JsonProperty("move1")]
+        [JsonProperty("move_1")]
         private int Move1 { get; set; }
-        [JsonProperty("move2")]
+        [JsonProperty("move_2")]
         private int Move2 { get; set; }
-        [JsonProperty("expiration")]
-        private long ExpirationTime { get; set; }
+        [JsonProperty("disappear_time")]
+        private string DisappearTime { get; set; }
+        [JsonProperty("last_modified")]
+        private string LastModified { get; set; }
 
         [JsonConstructor]
         public PokemonLocationInformation()
         {
         }
-        public PokemonLocationInformation(PokemonCaughtEventArgs e, double iv)
+        public PokemonLocationInformation(PokemonEncounteredEventArgs e, double iv)
         {
-            EncounterId = (long)e.MapPokemon.EncounterId;
+            EncounterId = Base64Encode(e.WildPokemon.EncounterId.ToString());
+            SpawnPointId = e.WildPokemon.SpawnPointId;
             Iv = iv;
-            Cp = e.Pokemon.Cp;
-            Latitude = e.MapPokemon.Latitude;
-            Longitude = e.MapPokemon.Longitude;
-            PokemonName = (int)e.Pokemon.PokemonId;
-            Move1 = (int)e.Pokemon.Move1;
-            Move2 = (int)e.Pokemon.Move2;
-            ExpirationTime = e.MapPokemon.ExpirationTimestampMs;
+            Cp = e.WildPokemon.PokemonData.Cp;
+            Latitude = e.WildPokemon.Latitude;
+            Longitude = e.WildPokemon.Longitude;
+            PokemonName = (int)e.WildPokemon.PokemonData.PokemonId;
+            Move1 = (int)e.WildPokemon.PokemonData.Move1;
+            Move2 = (int)e.WildPokemon.PokemonData.Move2;
+            LastModified = UnixTimeStampToDateTime(e.WildPokemon.LastModifiedTimestampMs / 1000).ToString("yyyy-M-d HH:mm:ss", CultureInfo.InvariantCulture);
+
+            DisappearTime = 
+                e.WildPokemon.TimeTillHiddenMs > 0 
+                ?
+                DateTime.UtcNow.AddMilliseconds(e.WildPokemon.TimeTillHiddenMs).ToString("yyyy-M-d HH:mm:ss", CultureInfo.InvariantCulture) 
+                :
+                DateTime.UtcNow.AddMinutes(30).ToString("yyyy-M-d HH:mm:ss", CultureInfo.InvariantCulture);
+
+            Attack = e.WildPokemon.PokemonData.IndividualAttack;
+            Defense = e.WildPokemon.PokemonData.IndividualDefense;
+            Stamina = e.WildPokemon.PokemonData.IndividualStamina;
+        }
+        public static string Base64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
+        }
+        public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
+        {
+            // Unix timestamp is seconds past epoch
+            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp);
+            return dtDateTime;
         }
 
         private bool Equals(PokemonLocationInformation other)

@@ -70,7 +70,7 @@ namespace Goman_Plugin.Modules.AccountFeeder
         private async void cbkEnabled_CheckedChanged(object sender, EventArgs e)
         {
             Plugin.AccountFeederModule.Settings.Enabled = cbkEnabled.Checked;
-            await Plugin.AccountFeederModule.Settings.Save(Plugin.AccountFeederModule.ModuleName);
+            await Plugin.AccountFeederModule.SaveSettings();
             if (!Plugin.AccountFeederModule.Settings.Enabled)
                 await Plugin.AccountFeederModule.Disable(true);
             else if (!Plugin.AccountFeederModule.IsEnabled)

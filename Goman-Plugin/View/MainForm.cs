@@ -31,11 +31,12 @@ namespace Goman_Plugin.View
         {
             cbkSaveLogs.Checked = Plugin.GlobalSettings.Extra.SaveLogs;
             cbkAutoUpdate.Checked = Plugin.GlobalSettings.Extra.AutoUpdate;
-            cbkToastNotifications.Checked = Plugin.GlobalSettings.Extra.ToastNotifications;
+            numericUpDownMaximumLogs.Value = Plugin.GlobalSettings.Extra.MaximumLogs;
 
             captchaUserControl1.SetControls();
             accountFeederUserControl1.SetControls();
             pokemonFeederUserControl1.SetControls();
+            pokemonManagerUserControl1.SetControls();
         }
 
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
@@ -59,15 +60,15 @@ namespace Goman_Plugin.View
             Plugin.GlobalSettings.Extra.AutoUpdate = cbkAutoUpdate.Checked;
             await Plugin.GlobalSettings.Save("PluginModule");
         }
-        private async void cbkToastNotifications_CheckedChanged(object sender, EventArgs e)
-        {
-            Plugin.GlobalSettings.Extra.ToastNotifications = cbkToastNotifications.Checked;
-            await Plugin.GlobalSettings.Save("PluginModule");
-        }
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
         {
             Process.Start("https://goman.io");
         }
 
+        private async void numericUpDownMaximumLogs_ValueChanged(object sender, EventArgs e)
+        {
+            Plugin.GlobalSettings.Extra.MaximumLogs = (int)numericUpDownMaximumLogs.Value;
+            await Plugin.GlobalSettings.Save("PluginModule");
+        }
     }
 }
