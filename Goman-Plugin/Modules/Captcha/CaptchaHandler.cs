@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Goman_Plugin.Model;
 using Goman_Plugin.Wrapper;
 using GoPlugin;
@@ -35,7 +36,8 @@ namespace Goman_Plugin.Modules.Captcha
 
         public static async Task<MethodResult> Handle(Manager managerHandler)
         {
-            if (managerHandler == null) return new MethodResult() {Success = false};
+
+            if (managerHandler?.Bot == null) return new MethodResult() {Success = false};
             var manager = managerHandler.Bot;
 
             while (manager.State == BotState.Pausing)

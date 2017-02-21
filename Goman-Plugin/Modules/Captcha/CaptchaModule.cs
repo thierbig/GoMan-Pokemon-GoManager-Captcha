@@ -111,6 +111,8 @@ namespace Goman_Plugin.Modules.Captcha
                 return;
             }
 
+            if(Plugin.CaptchaModule.Settings.Extra == null) return;
+
             if (managerWrapper.SolvingCaptcha || !manager.CaptchaRequired && !string.IsNullOrEmpty(manager.CaptchaURL)) return;
             OnLogEvent(this, new LogModel(LoggerTypes.Info, $"Solving captcha at URL: {manager.CaptchaURL}"), manager);
 
