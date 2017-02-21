@@ -19,36 +19,17 @@ namespace Goman_Plugin
 {
     public class Plugin : IPlugin
     {
-        public static readonly ConcurrentHashSet<Manager> Accounts;
-        internal static readonly BaseSettings<GlobalSettings> GlobalSettings;
-        internal static readonly AccountFeederModule AccountFeederModule;
-        internal static readonly AuthenticationModule AuthenticationModule;
-        internal static readonly PokemonFeederModule PokemonFeederModule;
-        internal static readonly CaptchaModule CaptchaModule;
-        internal static readonly PokemonManagerModule PokemonManagerModule;
+        public static ConcurrentHashSet<Manager> Accounts = new ConcurrentHashSet<Manager>();
+        internal static BaseSettings<GlobalSettings> GlobalSettings = new BaseSettings<GlobalSettings>();
+        internal static AccountFeederModule AccountFeederModule = new AccountFeederModule();
+        internal static AuthenticationModule AuthenticationModule = new AuthenticationModule();
+        internal static PokemonFeederModule PokemonFeederModule = new PokemonFeederModule();
+        internal static CaptchaModule CaptchaModule = new CaptchaModule();
+        internal static PokemonManagerModule PokemonManagerModule;
         public override string PluginName { get; set; } = "Goman Plugin";
         public override IEnumerable<PluginDropDownItem> MenuItems { get; set; }
         public static event Action<object, Manager> ManagerAdded;
         public static event Action<object, Manager> ManagerRemoved;
-        static Plugin()
-        {
-            Accounts = new ConcurrentHashSet<Manager>();
-            GlobalSettings = new BaseSettings<GlobalSettings>();
-
-            var globalSettingsLoadResult = GlobalSettings.Load("PluginModule").Result;
-            if (!globalSettingsLoadResult.Success)
-            {
-                GlobalSettings.Extra = new GlobalSettings();
-                var globalSettingsSaveResult = GlobalSettings.Save("PluginModule").Result;
-            }
-
-
-            AuthenticationModule = new AuthenticationModule();
-            AccountFeederModule = new AccountFeederModule();
-            CaptchaModule = new CaptchaModule();
-            PokemonFeederModule = new PokemonFeederModule();
-            PokemonManagerModule = new PokemonManagerModule();
-        }
 
         public override async Task Run(IEnumerable<IManager> managers)
         {
@@ -62,6 +43,15 @@ namespace Goman_Plugin
         }
         public override async Task<bool> Load(IEnumerable<IManager> managers)
         {
+            var globalSettingsLoadResult = await GlobalSettings.Load("PluginModule");
+            if (!globalSettingsLoadResult.Success)
+            {
+                GlobalSettings.Extra = new GlobalSettings();
+                var globalSettingsSaveResult = await GlobalSettings.Save("PluginModule");
+            }
+
+            PokemonManagerModule = new PokemonManagerModule(this);
+
             if (GlobalSettings.Extra.AutoUpdate)
                 await Update();
 
@@ -144,6 +134,11 @@ namespace Goman_Plugin
         private void OnManagerRemoved(object arg1, Manager arg2)
         {
             ManagerRemoved?.Invoke(arg1, arg2);
+        }
+
+        public IEnumerable<IManager> GetUniqueManagers()
+        {
+            return _uniqueManagers;
         }
     }
 }
