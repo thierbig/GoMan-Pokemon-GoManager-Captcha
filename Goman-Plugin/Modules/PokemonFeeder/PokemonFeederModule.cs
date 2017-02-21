@@ -22,7 +22,6 @@ namespace Goman_Plugin.Modules.PokemonFeeder
         {
             Settings = new BaseSettings<PokemonFeederSettings> {Enabled = true};
             _pokemonTimer = new Timer();
-            _pokemonTimer.Elapsed += _pokemonTimer_Elapsed;
         }
 
         public new BaseSettings<PokemonFeederSettings> Settings { get; }

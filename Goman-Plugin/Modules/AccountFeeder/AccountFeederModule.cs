@@ -24,7 +24,6 @@ namespace Goman_Plugin.Modules.AccountFeeder
         {
             Settings = new BaseSettings<AccountFeederSettings>() { Enabled = true };
             _accountTimer = new Timer();
-            _accountTimer.Elapsed += _accountTimer_Elapsed;
         }
         public async Task<MethodResult> Execute()
         {

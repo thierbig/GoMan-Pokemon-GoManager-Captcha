@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Forms;
+using Goman_Plugin.Wrapper;
 using GoPlugin;
 using GoPlugin.Enums;
 using POGOProtos.Data;
@@ -21,7 +23,6 @@ namespace Goman_Plugin.Modules.PokemonManager
             _plugin = plugin;
             Settings = new BaseSettings<PokemonManagerSettings>() {Enabled = true};
             _taskTimer = new Timer();
-            _taskTimer.Elapsed += _taskTimer_Elapsed;
         }
 
         private void _taskTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -31,24 +32,24 @@ namespace Goman_Plugin.Modules.PokemonManager
 
         public void Execute()
         {
-            foreach (var imanager in _plugin.GetUniqueManagers())
+            foreach (var manager in Plugin.Accounts)
             {
-                if (imanager.State != BotState.Running) continue;
+                if (manager.Bot.State != BotState.Running) continue;
 
 
                 var pokesToFavorite = new List<PokemonData>();
                 var pokesToUpgrade = new List<PokemonData>();
                 var pokesToEvolve = new List<PokemonData>();
-                var pokemonToHandle = GetPokemonToHandle(imanager);
+                var pokemonToHandle = GetPokemonToHandle(manager.Bot);
 
 
                 foreach (var pokemonData in pokemonToHandle)
                 {
                     var pokeSetting = Settings.Extra.Pokemons[pokemonData.PokemonId];
-                    var pokemonSettings = imanager.GetPokemonSetting(pokemonData.PokemonId).Data;
+                    var pokemonSettings = manager.Bot.GetPokemonSetting(pokemonData.PokemonId).Data;
 
                     var totalCandy =
-                        imanager.PokemonCandy
+                        manager.Bot.PokemonCandy
                             .FirstOrDefault(x => x.FamilyId == pokemonSettings.FamilyId)?.Candy_;
 
                     var candyToEvolve = pokemonSettings.CandyToEvolve;
@@ -65,9 +66,9 @@ namespace Goman_Plugin.Modules.PokemonManager
                     }
                 }
 
-                EvolvePokemon(imanager, pokesToEvolve);
-                UpgradePokemon(imanager, pokesToUpgrade);
-                SetFavorites(imanager, pokesToFavorite);
+                EvolvePokemon(manager, pokesToEvolve);
+                UpgradePokemon(manager, pokesToUpgrade);
+                SetFavorites(manager, pokesToFavorite);
             }
         }
 
@@ -92,48 +93,65 @@ namespace Goman_Plugin.Modules.PokemonManager
             return pokemonToHandle;
         }
 
-        public async void EvolvePokemon(IManager manager, List<PokemonData> pokesToEvolve)
+        public void EvolvePokemon(Manager manager, List<PokemonData> pokesToEvolve)
         {
-            if (pokesToEvolve.Count == 0) return;
+            if (pokesToEvolve.Count == 0 || manager.AutoEvolving) return;
+            manager.AutoEvolving = true;
+            manager.Bot.EvolvePokemon(pokesToEvolve).ContinueWith(r =>
+            {
+                var results = r.Result;
 
-            var results = await manager.EvolvePokemon(pokesToEvolve);
-
-            OnLogEvent(this,
+                            OnLogEvent(this,
                 GetLog(new MethodResult()
                 {
                     Success = results.Success,
                     Message = results.Message,
                     MethodName = "EvolvePokemon",
                 }));
+                manager.AutoEvolving = false;
+            });
+
+
         }
 
-        public async void UpgradePokemon(IManager manager, List<PokemonData> pokesToUpgrade)
+        public void UpgradePokemon(Manager manager, List<PokemonData> pokesToUpgrade)
         {
-            if (pokesToUpgrade.Count == 0) return;
-            var results = await manager.UpgradePokemon(pokesToUpgrade, 100);
+            if (pokesToUpgrade.Count == 0 || manager.AutoUpgrading) return;
+            manager.AutoUpgrading = true;
+            manager.Bot.UpgradePokemon(pokesToUpgrade, 100).ContinueWith(r =>
+            {
+                var results = r.Result;
 
-            OnLogEvent(this,
+                            OnLogEvent(this,
                 GetLog(new MethodResult()
                 {
                     Success = results.Success,
                     Message = results.Message,
                     MethodName = "UpgradePokemon",
                 }));
+                manager.AutoUpgrading = false;
+            });
         }
 
-        public async void SetFavorites(IManager manager, List<PokemonData> pokesToFavorite)
+        public void SetFavorites(Manager manager, List<PokemonData> pokesToFavorite)
         {
-            if (pokesToFavorite.Count == 0) return;
+            if (pokesToFavorite.Count == 0 || manager.AutoFavoriting) return;
+            manager.AutoFavoriting = true;
 
-            var results = await manager.FavoritePokemon(pokesToFavorite);
-            
-            OnLogEvent(this,
-                GetLog(new MethodResult()
-                {
-                    Success = results.Success,
-                    Message = results.Message,
-                    MethodName = "FavoritePokemon",
-                }));
+            manager.Bot.FavoritePokemon(pokesToFavorite).ContinueWith(r =>
+            {
+                var results = r.Result;
+
+                OnLogEvent(this,
+                    GetLog(new MethodResult()
+                    {
+                        Success = results.Success,
+                        Message = results.Message,
+                        MethodName = "FavoritePokemon",
+                    }));
+
+                manager.AutoFavoriting = false;
+            });
         }
 
         public override async Task<MethodResult> Enable(bool forceSubscribe = false)

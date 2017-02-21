@@ -7,7 +7,7 @@ namespace Goman_Plugin.Modules.PokemonManager
 {
     public class PokemonManagerSettings
     {
-        public int IntervalMilliseconds { get; set; } = 60000;
+        public int IntervalMilliseconds { get; set; } = 5000;
         public Dictionary<PokemonId, PokemonManager> Pokemons { get; } = new Dictionary<PokemonId, PokemonManager>();
 
         [JsonConstructor]

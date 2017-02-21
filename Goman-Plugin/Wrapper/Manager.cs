@@ -24,6 +24,9 @@ namespace Goman_Plugin.Wrapper
         public int SuccessCount { get; set; }
         public int FailedCount { get; set; }
         public bool SolvingCaptcha { get; set; }
+        public bool AutoFavoriting { get; set; }
+        public bool AutoUpgrading { get; set; }
+        public bool AutoEvolving { get; set; }
         public LogModel Log { get; set; }
         public string ExpPerHour => ExpPerHourMunger.GetValue(Bot).ToString();
         public string Level
