@@ -96,6 +96,7 @@ namespace Goman_Plugin.Modules.Captcha
         {
             var managerWrapper = (Manager)sender;
             var manager = managerWrapper.Bot;
+            if (manager == null) return;
 
             if (!Plugin.CaptchaModule.Settings.Enabled)
             {

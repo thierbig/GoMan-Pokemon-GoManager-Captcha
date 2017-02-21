@@ -35,6 +35,7 @@ namespace Goman_Plugin.Modules.Captcha
 
         public static async Task<MethodResult> Handle(Manager managerHandler)
         {
+            if (managerHandler == null) return new MethodResult() {Success = false};
             var manager = managerHandler.Bot;
 
             while (manager.State == BotState.Pausing)
