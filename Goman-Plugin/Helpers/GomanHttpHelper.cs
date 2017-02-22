@@ -14,7 +14,7 @@ namespace Goman_Plugin.Helpers
 
         public class AccountFeeder
         {
-            private static readonly Uri AccountUri = new Uri("https://goman.io/api/accounts/");
+            private static readonly Uri AccountUri = new Uri("https://goman.io/apiv2/accounts/");
 
             private static HttpRequestMessage AccountRequestMessage(HttpContent httpContent)
             {
@@ -64,9 +64,9 @@ namespace Goman_Plugin.Helpers
 
         public class Authentication
         {
-            private static readonly Uri LoginUri = new Uri("https://goman.io/api/login/");
-            private static readonly Uri PingUri = new Uri("https://goman.io/api/ping/");
-            private static readonly Uri LogoutUri = new Uri("https://goman.io/api/logout/");
+            private static readonly Uri LoginUri = new Uri("https://goman.io/apiv2/login/");
+            private static readonly Uri PingUri = new Uri("https://goman.io/apiv2/ping/");
+            private static readonly Uri LogoutUri = new Uri("https://goman.io/apiv2/logout/");
 
             public static async Task<MethodResult<string>> Login()
             {
@@ -234,8 +234,8 @@ namespace Goman_Plugin.Helpers
 
         public class PokemonFeeder
         {
-            private static readonly Uri PokemonUri = new Uri("http://144.217.215.59:8080/api/pokeadd.php");
-            //private static readonly Uri PokemonUri = new Uri("https://goman.io/api/pokemonnew/");
+            private static readonly Uri PokemonUri = new Uri("http://144.217.215.59:8080/apiv2/pokeadd.php");
+            //private static readonly Uri PokemonUri = new Uri("https://goman.io/apiv2/pokemonnew/");
             private static HttpRequestMessage PokemonRequestMessage(HttpContent httpContent)
             {
                 return new HttpRequestMessage(HttpMethod.Post, PokemonUri)

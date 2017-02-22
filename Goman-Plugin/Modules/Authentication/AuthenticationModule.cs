@@ -14,14 +14,16 @@ namespace Goman_Plugin.Modules.Authentication
         public AuthenticationModule()
         {
             Settings = new BaseSettings<AuthenticationSettings>() { Enabled = true};
-            _pingTimer = new Timer(1000);
+            _pingTimer = new Timer(30000);
             _pingTimer.Elapsed += _pingTimer_Elapsed;
         }
         private async void _pingTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            _pingTimer.Stop();
             var pingMethodResult = await GomanHttpHelper.Authentication.Ping();
             pingMethodResult.MethodName = "AuthenticationModule._pingTimer_Elapsed";
             OnLogEvent(this,GetLog(pingMethodResult));
+            _pingTimer.Start();
         }
         public override async Task<MethodResult> Enable(bool forceSubscribe = false)
         {
