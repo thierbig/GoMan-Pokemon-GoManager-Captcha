@@ -29,8 +29,9 @@ namespace Goman_Plugin.Modules.PokemonManager
         public PokemonManager(PokemonId pokemonId)
         {
             PokemonId = pokemonId;
+            PokemonName = pokemonId.ToString();
         }
-
+        public string PokemonName { get; set; }
         public PokemonId PokemonId { get; set; }
         public int Quantity { get; set; } = 5;
         public int MinimumIv { get; set; } = 0;
