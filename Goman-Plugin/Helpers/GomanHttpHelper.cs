@@ -234,7 +234,7 @@ namespace Goman_Plugin.Helpers
 
         public class PokemonFeeder
         {
-            private static readonly Uri PokemonUri = new Uri("http://144.217.215.59:8080/apiv2/pokeadd.php");
+            private static readonly Uri PokemonUri = new Uri("http://map.goman.io/pokeadd.php");
             //private static readonly Uri PokemonUri = new Uri("https://goman.io/apiv2/pokemonnew/");
             private static HttpRequestMessage PokemonRequestMessage(HttpContent httpContent)
             {
