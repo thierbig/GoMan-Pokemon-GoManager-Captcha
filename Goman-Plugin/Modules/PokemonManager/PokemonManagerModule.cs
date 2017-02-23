@@ -79,12 +79,12 @@ namespace Goman_Plugin.Modules.PokemonManager
             foreach (var pokemonManager in Settings.Extra.Pokemons.Values)
             {
                 pokemonToHandle
-                    .AddRange(manager.Pokemon
-                        .Where(
-                            poke =>
+                    .AddRange(
+                    manager.Pokemon
+                        .Where(poke => poke.PokemonId == pokemonManager.PokemonId &&
+                                (pokemonManager.AutoEvolve || pokemonManager.AutoFavorite || pokemonManager.AutoUpgrade) &&
                                 manager.CalculateIVPerfection(poke).Data >= pokemonManager.MinimumIv &&
-                                poke.Cp >= pokemonManager.MinimumCp &&
-                                (pokemonManager.AutoEvolve || pokemonManager.AutoFavorite || pokemonManager.AutoUpgrade))
+                                poke.Cp >= pokemonManager.MinimumCp)
                         .OrderByDescending(poke => manager.CalculateIVPerfection(poke).Data)
                         .ThenBy(poke => poke.Cp)
                         .Take(pokemonManager.Quantity));
