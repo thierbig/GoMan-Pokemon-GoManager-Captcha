@@ -112,9 +112,9 @@ namespace Goman_Plugin.View
             this.toolStripStatusLabelCheapProxy.IsLink = true;
             this.toolStripStatusLabelCheapProxy.LinkColor = System.Drawing.Color.Red;
             this.toolStripStatusLabelCheapProxy.Name = "toolStripStatusLabelCheapProxy";
-            this.toolStripStatusLabelCheapProxy.Size = new System.Drawing.Size(193, 17);
+            this.toolStripStatusLabelCheapProxy.Size = new System.Drawing.Size(108, 17);
             this.toolStripStatusLabelCheapProxy.Tag = "";
-            this.toolStripStatusLabelCheapProxy.Text = "Cheap Pokemon Go Proxy Services!";
+            this.toolStripStatusLabelCheapProxy.Text = "Pokemon Go Proxy";
             this.toolStripStatusLabelCheapProxy.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
             // 
             // tabControlMain
