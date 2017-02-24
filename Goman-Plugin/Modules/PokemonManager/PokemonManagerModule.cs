@@ -45,7 +45,7 @@ namespace Goman_Plugin.Modules.PokemonManager
                 var pokemonToHandle = GetPokemonToHandle(manager.Bot);
 
                 if(pokemonToHandle.Count == 0) continue;
-
+                    manager.Bot.UpdateDetails();
 
                     var totalStardust = manager.Bot.PlayerData.Currencies.FirstOrDefault(x => x.Name == "STARDUST")?.Amount;
 
