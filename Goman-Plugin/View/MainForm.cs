@@ -53,15 +53,28 @@ namespace Goman_Plugin.View
             Plugin.GlobalSettings.Extra.AutoUpdate = cbkAutoUpdate.Checked;
             await Plugin.GlobalSettings.Save("PluginModule");
         }
+        private async void numericUpDownMaximumLogs_ValueChanged(object sender, EventArgs e)
+        {
+            Plugin.GlobalSettings.Extra.MaximumLogs = (int)numericUpDownMaximumLogs.Value;
+            await Plugin.GlobalSettings.Save("PluginModule");
+        }
+
+        private void toolStripStatusLabelAccountCreator_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://goman.io/product/goman-account-creator-beta/");
+        }
+        private void toolStripStatusLabelDonate_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://www.paypal.me/GoMan/");
+        }
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
         {
             Process.Start("https://goman.io");
         }
 
-        private async void numericUpDownMaximumLogs_ValueChanged(object sender, EventArgs e)
+        private void toolStripStatusLabelDiscord_Click(object sender, EventArgs e)
         {
-            Plugin.GlobalSettings.Extra.MaximumLogs = (int)numericUpDownMaximumLogs.Value;
-            await Plugin.GlobalSettings.Save("PluginModule");
+            Process.Start("https://discord.gg/2ZBB53e");
         }
     }
 }

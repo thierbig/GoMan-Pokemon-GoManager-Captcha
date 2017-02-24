@@ -36,6 +36,7 @@ namespace Goman_Plugin.Modules.PokemonManager
         public int Quantity { get; set; } = 5;
         public int MinimumIv { get; set; } = 0;
         public int MinimumCp { get; set; } = 0;
+        public bool AutoRenameWithIv { get; set; } = false;
         public bool AutoFavorite { get; set; } = false;
         public bool AutoUpgrade { get; set; } = false;
         public bool AutoEvolve { get; set; } = false;

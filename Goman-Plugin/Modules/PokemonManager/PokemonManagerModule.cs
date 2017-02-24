@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
@@ -38,10 +39,12 @@ namespace Goman_Plugin.Modules.PokemonManager
 
 
                 var pokesToFavorite = new List<PokemonData>();
+                var pokesToRename = new List<PokemonData>();
                 var pokesToUpgrade = new List<PokemonData>();
                 var pokesToEvolve = new List<PokemonData>();
                 var pokemonToHandle = GetPokemonToHandle(manager.Bot);
 
+                if(pokemonToHandle.Count == 0) continue;
 
                 foreach (var pokemonData in pokemonToHandle)
                 {
@@ -62,6 +65,13 @@ namespace Goman_Plugin.Modules.PokemonManager
                     else
                     {
                         if (pokeSetting.AutoFavorite && pokemonData.Favorite == 0) pokesToFavorite.Add(pokemonData);
+                        if (pokeSetting.AutoRenameWithIv)
+                        {
+                            if (string.IsNullOrEmpty(pokemonData.Nickname))
+                            {
+                                pokesToRename.Add(pokemonData);
+                            }
+                        }
                         if (pokeSetting.AutoUpgrade && totalCandy > 3) pokesToUpgrade.Add(pokemonData);
                     }
                 }
@@ -69,6 +79,7 @@ namespace Goman_Plugin.Modules.PokemonManager
                 EvolvePokemon(manager, pokesToEvolve);
                 UpgradePokemon(manager, pokesToUpgrade);
                 SetFavorites(manager, pokesToFavorite);
+                RenameWithIv(manager, pokesToRename);
             }
         }
 
@@ -82,7 +93,7 @@ namespace Goman_Plugin.Modules.PokemonManager
                     .AddRange(
                     manager.Pokemon
                         .Where(poke => poke.PokemonId == pokemonManager.PokemonId &&
-                                (pokemonManager.AutoEvolve || pokemonManager.AutoFavorite || pokemonManager.AutoUpgrade) &&
+                                (pokemonManager.AutoEvolve || pokemonManager.AutoFavorite || pokemonManager.AutoUpgrade || pokemonManager.AutoRenameWithIv) &&
                                 manager.CalculateIVPerfection(poke).Data >= pokemonManager.MinimumIv &&
                                 poke.Cp >= pokemonManager.MinimumCp)
                         .OrderByDescending(poke => manager.CalculateIVPerfection(poke).Data)
@@ -97,7 +108,6 @@ namespace Goman_Plugin.Modules.PokemonManager
         {
             if (pokesToEvolve.Count == 0 || manager.AutoEvolving) return;
             manager.AutoEvolving = true;
-           // MessageBox.Show("Start AutoEvolving");
             await manager.Bot.EvolvePokemon(pokesToEvolve).ContinueWith(r =>
             {
                 var results = r.Result;
@@ -109,7 +119,6 @@ namespace Goman_Plugin.Modules.PokemonManager
                         Message = results.Message,
                         MethodName = "EvolvePokemon",
                     }));
-               // MessageBox.Show("End AutoEvolving");
                 manager.AutoEvolving = false;
             });
 
@@ -120,7 +129,6 @@ namespace Goman_Plugin.Modules.PokemonManager
         {
             if (pokesToUpgrade.Count == 0 || manager.AutoUpgrading) return;
             manager.AutoUpgrading = true;
-            //MessageBox.Show("Start AutoUpgrading");
             manager.Bot.UpgradePokemon(pokesToUpgrade, 100).ContinueWith(r =>
             {
                 var results = r.Result;
@@ -132,7 +140,6 @@ namespace Goman_Plugin.Modules.PokemonManager
                     Message = results.Message,
                     MethodName = "UpgradePokemon",
                 }));
-                //MessageBox.Show("End AutoUpgrading");
                 manager.AutoUpgrading = false;
             });
         }
@@ -141,7 +148,6 @@ namespace Goman_Plugin.Modules.PokemonManager
         {
             if (pokesToFavorite.Count == 0 || manager.AutoFavoriting) return;
             manager.AutoFavoriting = true;
-           // MessageBox.Show("Start SetFavorites");
             manager.Bot.FavoritePokemon(pokesToFavorite).ContinueWith(r =>
             {
                 var results = r.Result;
@@ -153,11 +159,25 @@ namespace Goman_Plugin.Modules.PokemonManager
                         Message = results.Message,
                         MethodName = "FavoritePokemon",
                     }));
-               // MessageBox.Show("End SetFavorites");
                 manager.AutoFavoriting = false;
             });
         }
-
+        public void RenameWithIv(Manager manager, List<PokemonData> pokesToRename)
+        {
+            if (pokesToRename.Count == 0 || manager.AutoNaming) return;
+            manager.AutoNaming = true;
+            manager.Bot.RenameAllPokemonToIV(pokesToRename).ContinueWith(r =>
+            {
+                OnLogEvent(this,
+                    GetLog(new MethodResult()
+                    {
+                        Success = !(r.IsCanceled || r.IsFaulted),
+                        Message = "Renamed Pokemon",
+                        MethodName = "RenameWithIv",
+                    }));
+                manager.AutoNaming = false;
+            });
+        }
         public override async Task<MethodResult> Enable(bool forceSubscribe = false)
         {
             await LoadSettings();

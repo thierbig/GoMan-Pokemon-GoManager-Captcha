@@ -27,6 +27,8 @@ namespace Goman_Plugin.Wrapper
         public bool AutoFavoriting { get; set; }
         public bool AutoUpgrading { get; set; }
         public bool AutoEvolving { get; set; }
+        public bool AutoNaming { get; set; }
+
         public LogModel Log { get; set; }
         public string ExpPerHour => ExpPerHourMunger.GetValue(Bot).ToString();
         public string Level

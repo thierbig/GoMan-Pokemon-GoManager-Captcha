@@ -57,6 +57,8 @@ namespace Goman_Plugin.Modules.PokemonManager
                     e.SubItem.ForeColor = (pokemon.AutoFavorite) ? Color.Green : Color.Red;
                 else if (e.Column == this.olvColumnAutoUpgrade)
                     e.SubItem.ForeColor = (pokemon.AutoUpgrade) ? Color.Green : Color.Red;
+                else if (e.Column == this.olvColumnAutoRenameWithIv)
+                    e.SubItem.ForeColor = (pokemon.AutoRenameWithIv) ? Color.Green : Color.Red;
 
             }
 
@@ -118,6 +120,7 @@ namespace Goman_Plugin.Modules.PokemonManager
             autoEvolveToolStripMenuItem.Checked = contextOptions.AutoEvolveIsEnabled;
             autoFavoriteToolStripMenuItem.Checked = contextOptions.AutoFavoriteIsEnabled;
             autoUpgradeToolStripMenuItem.Checked = contextOptions.AutoUpgradeIsEnabled;
+            autoRenameToIVToolStripMenuItem.Checked = contextOptions.AutoRenameIsEnabled;
 
             blockSaving = false;
         }
@@ -133,6 +136,8 @@ namespace Goman_Plugin.Modules.PokemonManager
                     contextOptions.AutoFavoriteIsEnabled = false;
                 if (!pokemonManager.AutoUpgrade)
                     contextOptions.AutoUpgradeIsEnabled = false;
+                if (!pokemonManager.AutoRenameWithIv)
+                    contextOptions.AutoRenameIsEnabled = false;
             }
 
             return contextOptions;
@@ -167,6 +172,16 @@ namespace Goman_Plugin.Modules.PokemonManager
             fastObjectListViewPokemon.RefreshObjects(Plugin.PokemonManagerModule.Settings.Extra.Pokemons.Values.ToList());
             await Plugin.PokemonManagerModule.SaveSettings();
         }
+
+        private async void autoRenameToIVToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (blockSaving) return;
+            foreach (PokemonManager pokemonManager in fastObjectListViewPokemon.SelectedObjects)
+                Plugin.PokemonManagerModule.Settings.Extra.Pokemons[pokemonManager.PokemonId].AutoRenameWithIv = autoRenameToIVToolStripMenuItem.Checked;
+
+            fastObjectListViewPokemon.RefreshObjects(Plugin.PokemonManagerModule.Settings.Extra.Pokemons.Values.ToList());
+            await Plugin.PokemonManagerModule.SaveSettings();
+        }
     }
 
     public class ContextOptions
@@ -174,5 +189,6 @@ namespace Goman_Plugin.Modules.PokemonManager
         public bool AutoEvolveIsEnabled { get; set; } = true;
         public bool AutoFavoriteIsEnabled { get; set; } = true;
         public bool AutoUpgradeIsEnabled { get; set; } = true;
+        public bool AutoRenameIsEnabled { get; set; } = true;
     }
 }
