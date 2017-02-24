@@ -46,41 +46,52 @@ namespace Goman_Plugin.Modules.PokemonManager
 
                 if(pokemonToHandle.Count == 0) continue;
 
-                foreach (var pokemonData in pokemonToHandle)
-                {
-                    var pokeSetting = Settings.Extra.Pokemons[pokemonData.PokemonId];
-                    var pokemonSettings = manager.Bot.GetPokemonSetting(pokemonData.PokemonId).Data;
 
-                    var totalCandy =
-                        manager.Bot.PokemonCandy
-                            .FirstOrDefault(x => x.FamilyId == pokemonSettings.FamilyId)?.Candy_;
+                    var totalStardust = manager.Bot.PlayerData.Currencies.FirstOrDefault(x => x.Name == "STARDUST")?.Amount;
 
-                    var candyToEvolve = pokemonSettings.CandyToEvolve;
-
-
-                    if (pokeSetting.AutoEvolve && candyToEvolve > 0 && totalCandy >= candyToEvolve)
+                    foreach (var pokemonData in pokemonToHandle)
                     {
-                        pokesToEvolve.Add(pokemonData);
-                    }
-                    else
-                    {
-                        if (pokeSetting.AutoFavorite && pokemonData.Favorite == 0) pokesToFavorite.Add(pokemonData);
-                        if (pokeSetting.AutoRenameWithIv)
+                        var pokeSetting = Settings.Extra.Pokemons[pokemonData.PokemonId];
+                        var pokemonSettings = manager.Bot.GetPokemonSetting(pokemonData.PokemonId).Data;
+
+                        var totalCandy =
+                            manager.Bot.PokemonCandy
+                                .FirstOrDefault(x => x.FamilyId == pokemonSettings.FamilyId)?.Candy_;
+                        var candyToEvolve = pokemonSettings.CandyToEvolve;
+
+                        if (pokeSetting.AutoEvolve && candyToEvolve > 0 && totalCandy >= candyToEvolve)
                         {
-                            if (string.IsNullOrEmpty(pokemonData.Nickname))
-                            {
-                                pokesToRename.Add(pokemonData);
-                            }
+                            pokesToEvolve.Add(pokemonData);
                         }
-                        if (pokeSetting.AutoUpgrade && totalCandy > 3) pokesToUpgrade.Add(pokemonData);
+                        else
+                        {
+                            if (pokeSetting.AutoFavorite && pokemonData.Favorite == 0) pokesToFavorite.Add(pokemonData);
+                            if (pokeSetting.AutoRenameWithIv)
+                            {
+                                if (string.IsNullOrEmpty(pokemonData.Nickname))
+                                {
+                                    pokesToRename.Add(pokemonData);
+                                }
+                            }
+                            if (!pokeSetting.AutoUpgrade || totalStardust == null) continue;
+
+                            var pokeLevel = GetPokemonLevel(manager.Bot, pokemonData);
+                            var powerUpReq = PowerUpTable.Table[pokeLevel];
+
+                            if (totalStardust < powerUpReq.Stardust || totalCandy < powerUpReq.Candy) continue;
+
+                            pokesToUpgrade.Add(pokemonData);
+                            totalStardust -= powerUpReq.Stardust;
+                        }
                     }
-                }
 
                 EvolvePokemon(manager, pokesToEvolve);
                 UpgradePokemon(manager, pokesToUpgrade);
                 SetFavorites(manager, pokesToFavorite);
                 RenameWithIv(manager, pokesToRename);
             }
+
+            
         }
 
         public List<PokemonData> GetPokemonToHandle(IManager manager)
@@ -194,7 +205,28 @@ namespace Goman_Plugin.Modules.PokemonManager
 
             return new MethodResult {Success = Settings.Enabled};
         }
+        public double GetPokemonLevel(IManager manager, PokemonData pokemon)
+        {
 
+            double cp = pokemon.AdditionalCpMultiplier + pokemon.CpMultiplier;
+
+            for (var i = 0; i < manager.LevelSettings.CpMultiplier.Count; i++)
+            {
+                if (cp.Equals(manager.LevelSettings.CpMultiplier[i]))
+                {
+                    return i + 1;
+                }
+
+                if (i <= 0 || !(cp < manager.LevelSettings.CpMultiplier[i])) continue;
+
+                if (cp > manager.LevelSettings.CpMultiplier[i - 1])
+                {
+                    return i + 0.5;
+                }
+            }
+
+            return 0.0;
+        }
         public override async Task<MethodResult> Disable(bool forceUnsubscribe = false)
         {
             if (!_taskTimer.Enabled) return new MethodResult {Success = true};
