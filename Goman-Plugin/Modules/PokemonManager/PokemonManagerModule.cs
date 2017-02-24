@@ -76,6 +76,9 @@ namespace Goman_Plugin.Modules.PokemonManager
                             if (!pokeSetting.AutoUpgrade || totalStardust == null) continue;
 
                             var pokeLevel = GetPokemonLevel(manager.Bot, pokemonData);
+
+                            if(pokeLevel.Equals(double.Parse(manager.Level)+2)) continue;
+
                             var powerUpReq = PowerUpTable.Table[pokeLevel];
 
                             if (totalStardust < powerUpReq.Stardust || totalCandy < powerUpReq.Candy) continue;
