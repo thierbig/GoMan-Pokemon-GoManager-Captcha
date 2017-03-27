@@ -15,7 +15,7 @@ namespace Goman_Plugin.Modules.Authentication
         {
             Settings = new BaseSettings<AuthenticationSettings>() { Enabled = true};
             _pingTimer = new Timer(30000);
-            _pingTimer.Elapsed += _pingTimer_Elapsed;
+            //_pingTimer.Elapsed += _pingTimer_Elapsed;
         }
         private async void _pingTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
@@ -29,13 +29,13 @@ namespace Goman_Plugin.Modules.Authentication
         {
             await LoadSettings();
 
-            if(!Settings.Enabled) return new MethodResult() {Success = true};
+           // if(!Settings.Enabled) return new MethodResult() {Success = true};
 
-            var loginMethodResult = Login();
+            var loginMethodResult = new MethodResult() {Success = true}; //Login();
 
             if (loginMethodResult.Success)
             {
-                _pingTimer.Enabled = true;
+                //_pingTimer.Enabled = true;
                 OnModuleEvent(this, Modules.ModuleEvent.Enabled);
             }
 
@@ -47,9 +47,9 @@ namespace Goman_Plugin.Modules.Authentication
         public override async Task<MethodResult> Disable(bool forceUnsubscribe = false)
         {
             var methodResults = new MethodResult();
-            _pingTimer.Elapsed -= _pingTimer_Elapsed;
-            _pingTimer.Enabled = false;
-            await Logout();
+           // _pingTimer.Elapsed -= _pingTimer_Elapsed;
+           // _pingTimer.Enabled = false;
+           // await Logout();
             await SaveSettings();
             OnModuleEvent(this, Modules.ModuleEvent.Disabled);
             return methodResults;

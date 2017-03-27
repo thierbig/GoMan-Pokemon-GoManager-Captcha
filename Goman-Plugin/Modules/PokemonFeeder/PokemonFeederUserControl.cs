@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using GoPlugin;
+using GoPlugin.Extensions;
 
 namespace Goman_Plugin.Modules.PokemonFeeder
 {
@@ -20,6 +22,7 @@ namespace Goman_Plugin.Modules.PokemonFeeder
         {
             cbkEnabled.Checked = Plugin.PokemonFeederModule.Settings.Enabled;
             fastObjectListViewLogs.SetObjects(Plugin.PokemonFeederModule.Logs);
+
            // Plugin.PokemonFeederModule.LogEvent += (o, model) => fastObjectListViewLogs.AddObject(model);
         }
 

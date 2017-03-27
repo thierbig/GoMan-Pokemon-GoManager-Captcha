@@ -30,6 +30,7 @@ namespace Goman_Plugin.Modules.PokemonFeeder
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.olvLevel = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvAccountState = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvSuccessCount = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -44,6 +45,11 @@ namespace Goman_Plugin.Modules.PokemonFeeder
             this.olvProxy = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.tabControlCaptcha = new Goman_Plugin.View.BorderlessTabControl();
             this.tpSettings = new Goman_Plugin.View.BorderlessTabPage();
+            this.contextMenuStripScraper = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addFromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cbkEnabled = new System.Windows.Forms.CheckBox();
             this.tpLogs = new Goman_Plugin.View.BorderlessTabPage();
             this.fastObjectListViewLogs = new BrightIdeasSoftware.FastObjectListView();
@@ -51,8 +57,10 @@ namespace Goman_Plugin.Modules.PokemonFeeder
             this.olvColumnMessage = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnExceptionMessage = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnStackTrace = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tabControlCaptcha.SuspendLayout();
             this.tpSettings.SuspendLayout();
+            this.contextMenuStripScraper.SuspendLayout();
             this.tpLogs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListViewLogs)).BeginInit();
             this.SuspendLayout();
@@ -165,6 +173,16 @@ namespace Goman_Plugin.Modules.PokemonFeeder
             this.tpSettings.TabIndex = 2;
             this.tpSettings.Text = "Settings";
             // 
+            // contextMenuStripScraper
+            // 
+            this.contextMenuStripScraper.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addToolStripMenuItem,
+            this.addFromFileToolStripMenuItem,
+            this.editToolStripMenuItem,
+            this.removeToolStripMenuItem});
+            this.contextMenuStripScraper.Name = "contextMenuStripScraper";
+            this.contextMenuStripScraper.Size = new System.Drawing.Size(149, 92);
+            // 
             // cbkEnabled
             // 
             this.cbkEnabled.AutoSize = true;
@@ -256,6 +274,7 @@ namespace Goman_Plugin.Modules.PokemonFeeder
             this.tabControlCaptcha.ResumeLayout(false);
             this.tpSettings.ResumeLayout(false);
             this.tpSettings.PerformLayout();
+            this.contextMenuStripScraper.ResumeLayout(false);
             this.tpLogs.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListViewLogs)).EndInit();
             this.ResumeLayout(false);
@@ -285,5 +304,11 @@ namespace Goman_Plugin.Modules.PokemonFeeder
         private BrightIdeasSoftware.OLVColumn olvColumnMessage;
         private BrightIdeasSoftware.OLVColumn olvColumnExceptionMessage;
         private BrightIdeasSoftware.OLVColumn olvColumnStackTrace;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripScraper;
+        private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.ToolStripMenuItem addFromFileToolStripMenuItem;
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows.Forms;
 using GoPlugin.Events;
 using Newtonsoft.Json;
 
@@ -9,34 +8,33 @@ namespace Goman_Plugin.Modules.PokemonFeeder
     public class PokemonLocationInformation
     {
         [JsonProperty("encounter_id")]
-        private string EncounterId { get; set; }
+        public string EncounterId { get; set; }
         [JsonProperty("spawnpoint_id")]
-        private string SpawnPointId { get; set; }
-        [JsonProperty("iv")]
-        private double Iv { get; set; }
+        public string SpawnPointId { get; set; }
         [JsonProperty("cp")]
-        private int Cp { get; set; }
+        public int? Cp { get; set; }
         [JsonProperty("latitude")]
-        public double Latitude { get; set; }
+        public double? Latitude { get; set; }
         [JsonProperty("longitude")]
-        public double Longitude { get; set; }
+        public double? Longitude { get; set; }
         [JsonProperty("individual_attack")]
-        public int Attack { get; set; }
+        public int? Attack { get; set; }
         [JsonProperty("individual_defense")]
-        private int Defense { get; set; }
+        public int? Defense { get; set; }
         [JsonProperty("individual_stamina")]
-        private int Stamina { get; set; }
+        public int? Stamina { get; set; }
         [JsonProperty("pokemon_id")]
-        public int PokemonName { get; set; }
+        public int? PokemonName { get; set; }
         [JsonProperty("move_1")]
-        private int Move1 { get; set; }
+        public int? Move1 { get; set; }
         [JsonProperty("move_2")]
-        private int Move2 { get; set; }
+        public int? Move2 { get; set; }
         [JsonProperty("disappear_time")]
-        private string DisappearTime { get; set; }
+        public string DisappearTime { get; set; }
         [JsonProperty("last_modified")]
-        private string LastModified { get; set; }
-
+        public string LastModified { get; set; }
+        [JsonProperty("iv")]
+        public double? Iv { get; set; }
         [JsonConstructor]
         public PokemonLocationInformation()
         {

@@ -45,7 +45,7 @@ namespace Goman_Plugin.View
             this.tpPokemonFeeder = new System.Windows.Forms.TabPage();
             this.pokemonFeederUserControl1 = new Goman_Plugin.Modules.PokemonFeeder.PokemonFeederUserControl();
             this.tpAccountFeeder = new System.Windows.Forms.TabPage();
-            this.accountFeederUserControl1 = new Goman_Plugin.Modules.AccountFeeder.AccountFeederUserControl();
+            this._accountMapUserControl1 = new Goman_Plugin.Modules.AccountMap.AccountMapUserControl();
             this.tpGlobalSettings = new Goman_Plugin.View.BorderlessTabPage();
             this.numericUpDownMaximumLogs = new System.Windows.Forms.NumericUpDown();
             this.labelMaximumLogs = new System.Windows.Forms.Label();
@@ -205,7 +205,7 @@ namespace Goman_Plugin.View
             // 
             // tpAccountFeeder
             // 
-            this.tpAccountFeeder.Controls.Add(this.accountFeederUserControl1);
+            this.tpAccountFeeder.Controls.Add(this._accountMapUserControl1);
             this.tpAccountFeeder.Location = new System.Drawing.Point(115, 0);
             this.tpAccountFeeder.Margin = new System.Windows.Forms.Padding(4);
             this.tpAccountFeeder.Name = "tpAccountFeeder";
@@ -214,15 +214,15 @@ namespace Goman_Plugin.View
             this.tpAccountFeeder.Text = "Account Feeder";
             this.tpAccountFeeder.UseVisualStyleBackColor = true;
             // 
-            // accountFeederUserControl1
+            // _accountMapUserControl1
             // 
-            this.accountFeederUserControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
-            this.accountFeederUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.accountFeederUserControl1.Location = new System.Drawing.Point(0, 0);
-            this.accountFeederUserControl1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.accountFeederUserControl1.Name = "accountFeederUserControl1";
-            this.accountFeederUserControl1.Size = new System.Drawing.Size(1376, 372);
-            this.accountFeederUserControl1.TabIndex = 0;
+            this._accountMapUserControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this._accountMapUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._accountMapUserControl1.Location = new System.Drawing.Point(0, 0);
+            this._accountMapUserControl1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this._accountMapUserControl1.Name = "_accountMapUserControl1";
+            this._accountMapUserControl1.Size = new System.Drawing.Size(1376, 372);
+            this._accountMapUserControl1.TabIndex = 0;
             // 
             // tpGlobalSettings
             // 
@@ -344,7 +344,7 @@ namespace Goman_Plugin.View
         private System.Windows.Forms.TabPage tpPokemonFeeder;
         private System.Windows.Forms.TabPage tpAccountFeeder;
         private PokemonFeederUserControl pokemonFeederUserControl1;
-        private Modules.AccountFeeder.AccountFeederUserControl accountFeederUserControl1;
+        private Modules.AccountMap.AccountMapUserControl _accountMapUserControl1;
         private Modules.Captcha.CaptchaUserControl captchaUserControl1;
         private System.Windows.Forms.NumericUpDown numericUpDownMaximumLogs;
         private System.Windows.Forms.Label labelMaximumLogs;

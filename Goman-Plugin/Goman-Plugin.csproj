@@ -67,14 +67,17 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Device" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\GomanHttpHelper.cs" />
@@ -84,15 +87,14 @@
     <Compile Include="Model\MethodResult.cs" />
     <Compile Include="Model\VersionModel.cs" />
     <Compile Include="Modules\AbstractModule.cs" />
-    <Compile Include="Modules\AccountFeeder\AccountFeederModule.cs" />
-    <Compile Include="Modules\AccountFeeder\AccountFeederSettings.cs" />
-    <Compile Include="Modules\AccountFeeder\AccountFeederUserControl.cs">
+    <Compile Include="Modules\AccountMap\AccountMapModule.cs" />
+    <Compile Include="Modules\AccountMap\AccountMapSettings.cs" />
+    <Compile Include="Modules\AccountMap\AccountMapUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Modules\AccountFeeder\AccountFeederUserControl.Designer.cs">
-      <DependentUpon>AccountFeederUserControl.cs</DependentUpon>
+    <Compile Include="Modules\AccountMap\AccountMapUserControl.Designer.cs">
+      <DependentUpon>AccountMapUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Modules\AccountFeeder\AccountInformation.cs" />
     <Compile Include="Modules\PokemonManager\PokemonManagerUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -153,8 +155,8 @@
     <Compile Include="Wrapper\Manager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Modules\AccountFeeder\AccountFeederUserControl.resx">
-      <DependentUpon>AccountFeederUserControl.cs</DependentUpon>
+    <EmbeddedResource Include="Modules\AccountMap\AccountMapUserControl.resx">
+      <DependentUpon>AccountMapUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\Authentication\AuthenticationUI.resx">
       <DependentUpon>AuthenticationUI.cs</DependentUpon>
@@ -180,7 +182,6 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Modules\AccountMap\" />
     <Folder Include="Modules\AutoSniper\" />
     <Folder Include="Modules\DownloadManager\" />
     <Folder Include="Resources\" />
@@ -193,7 +194,9 @@
     <None Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FodyWeavers.xml" />
+    <Content Include="FodyWeavers.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.28.3\build\Fody.targets" Condition="Exists('..\packages\Fody.1.28.3\build\Fody.targets')" />

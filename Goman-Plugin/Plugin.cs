@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Goman_Plugin.Model;
 using Goman_Plugin.Modules;
-using Goman_Plugin.Modules.AccountFeeder;
+using Goman_Plugin.Modules.AccountMap;
 using Goman_Plugin.Modules.Authentication;
 using Goman_Plugin.Modules.Captcha;
 using Goman_Plugin.Modules.PokemonFeeder;
@@ -21,7 +21,7 @@ namespace Goman_Plugin
     {
         public static ConcurrentHashSet<Manager> Accounts = new ConcurrentHashSet<Manager>();
         internal static BaseSettings<GlobalSettings> GlobalSettings = new BaseSettings<GlobalSettings>();
-        internal static AccountFeederModule AccountFeederModule = new AccountFeederModule();
+        internal static AccountMapModule AccountMapModule = new AccountMapModule();
         internal static AuthenticationModule AuthenticationModule = new AuthenticationModule();
         internal static PokemonFeederModule PokemonFeederModule = new PokemonFeederModule();
         internal static CaptchaModule CaptchaModule = new CaptchaModule();
@@ -43,6 +43,7 @@ namespace Goman_Plugin
         }
         public override async Task<bool> Load(IEnumerable<IManager> managers)
         {
+            await base.Load(managers);
             var globalSettingsLoadResult = await GlobalSettings.Load("PluginModule");
             if (!globalSettingsLoadResult.Success)
             {
@@ -58,7 +59,7 @@ namespace Goman_Plugin
             AuthenticationModule.ModuleEvent += AuthenticationModuleEvent;
             var enableResults = await AuthenticationModule.Enable();
 
-            await base.Load(managers);
+           
             return enableResults.Success;
         }
         private async Task Update()
@@ -87,7 +88,7 @@ namespace Goman_Plugin
             if (moduleEvent == ModuleEvent.Enabled)
             {
                 await PokemonFeederModule.Enable();
-                await AccountFeederModule.Enable();
+                await AccountMapModule.Enable();
                 await CaptchaModule.Enable();
                 await PokemonManagerModule.Enable();
 
@@ -108,7 +109,7 @@ namespace Goman_Plugin
                 }
 
                 await PokemonFeederModule.Disable();
-                await AccountFeederModule.Disable();
+                await AccountMapModule.Disable();
                 await CaptchaModule.Disable();
                 await PokemonManagerModule.Disable();
             }

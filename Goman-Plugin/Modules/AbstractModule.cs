@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Goman_Plugin.Model;
 using GoPlugin;
+using LoggerTypes = GoPlugin.LoggerTypes;
 using MethodResult = Goman_Plugin.Model.MethodResult;
 
 namespace Goman_Plugin.Modules
@@ -46,7 +46,7 @@ namespace Goman_Plugin.Modules
 
             if (manager != null)
             {
-                manager.LogCallerPlugin(new LoggerEventArgs(log));
+                manager.LogCallerPlugin(new LoggerEventArgs(log.Message, log.LoggerType, new Exception(log.ExceptionMessage)));
                 await LogMessageToFile($"./Plugins/Goman/Logs/Accounts/", $"{manager.AccountName}.log", log.Message + error);
             }
             else
@@ -77,7 +77,7 @@ namespace Goman_Plugin.Modules
         protected LogModel GetLog(MethodResult methodResult)
         {
             var loggerType = methodResult.Success ? LoggerTypes.Success : LoggerTypes.Exception;
-            var newLog = new LogModel(loggerType, $"{ModuleName} : {methodResult.MethodName + " " + methodResult.Message}", methodResult.Error);
+            var newLog = new LogModel(loggerType, $"{ModuleName} : {methodResult.MethodName + " " + methodResult.Message}", "", methodResult.Error);
             return newLog;
         }
 

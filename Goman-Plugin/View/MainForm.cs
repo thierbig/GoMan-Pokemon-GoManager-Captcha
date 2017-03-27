@@ -27,7 +27,7 @@ namespace Goman_Plugin.View
             numericUpDownMaximumLogs.Value = Plugin.GlobalSettings.Extra.MaximumLogs;
 
             captchaUserControl1.SetControls();
-            accountFeederUserControl1.SetControls();
+            _accountMapUserControl1.SetControls();
             pokemonFeederUserControl1.SetControls();
             pokemonManagerUserControl1.SetControls();
         }
