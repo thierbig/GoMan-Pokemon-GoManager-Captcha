@@ -93,14 +93,15 @@ namespace Goman_Plugin.Modules.AutoFavoriteShiny
             manager.Bot.OnPokemonCaught -= OnPokemonCaught;
         }
 
-        private void OnPokemonCaught(object sender, PokemonCaughtEventArgs e)
+        private async void OnPokemonCaught(object sender, PokemonCaughtEventArgs e)
         {
             var manager = (IManager)sender;
             if (e.CatchResponse.Status == POGOProtos.Networking.Responses.CatchPokemonResponse.Types.CatchStatus.CatchSuccess)
             {
                 if (e.Pokemon.PokemonDisplay.Shiny)
                 {
-                    manager.FavoritePokemon(new List<PokemonData>() { e.Pokemon });
+                    GoPlugin.MethodResult result=await manager.FavoritePokemon(new List<PokemonData>() { e.Pokemon });
+                    OnLogEvent(this, new LogModel(LoggerTypes.Success, result.Message+" "+e.Pokemon.ToString() ));
                 }
             }
         }

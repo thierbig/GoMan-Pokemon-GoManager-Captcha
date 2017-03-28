@@ -18,8 +18,6 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
         public AutoEvolveEspeonUmbreonModule()
         {
             Settings = new BaseSettings<AutoEvolveEspeonUmbreonSettings>() { Enabled = true };
-            Plugin.ManagerAdded -= PluginOnManagerAdded;
-            Plugin.ManagerRemoved -= PluginOnManagerRemoved;
         }
 
         public override async Task<MethodResult> Enable(bool forceSubscribe = false)
@@ -34,7 +32,10 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
                     {
                         PluginOnManagerAdded(this, account);
                     }
+
                 }
+                Plugin.ManagerAdded += PluginOnManagerAdded;
+                Plugin.ManagerRemoved += PluginOnManagerRemoved;
 
                 OnModuleEvent(this, Modules.ModuleEvent.Enabled);
             }
@@ -46,6 +47,8 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
         public override async Task<MethodResult> Disable(bool forceUnsubscribe = false)
         {
             await SaveSettings();
+            Plugin.ManagerAdded -= PluginOnManagerAdded;
+            Plugin.ManagerRemoved -= PluginOnManagerRemoved;
             if (forceUnsubscribe)
             {
                 foreach (var account in Plugin.Accounts)
@@ -85,7 +88,6 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
             // OnLogEvent(this, new LogModel(LoggerTypes.Info, $"Subscribing to account {manager.Bot.AccountName}"));
             manager.Bot.OnAccountStart += OnAccountStart;
             manager.Bot.OnAccountStop += OnAccountStop;
-            OnLogEvent(this, new Model.LogModel(LoggerTypes.Debug, "MANAGER ADDED", "", null), manager.Bot);
         }
 
         private void PluginOnManagerRemoved(object o, Manager manager)
@@ -100,12 +102,12 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
         {
             OnLogEvent(this, new Model.LogModel(LoggerTypes.Debug, "START", "", null));
             await Task.Delay(30000);
-            var wrapperManager=Plugin.Accounts.Single(x => x.Bot == (IManager)sender);
+            var wrapperManager = Plugin.Accounts.Single(x => x.Bot == (IManager)sender);
 
             if (!wrapperManager.Bot.IsRunning) return;
 
             Execute(wrapperManager);
-            wrapperManager.RunningTimeTimer = new Timer(Settings.Extra.IntervalMilliseconds) {AutoReset = true};
+            wrapperManager.RunningTimeTimer = new Timer(Settings.Extra.IntervalMilliseconds) { AutoReset = true };
             wrapperManager.RunningTimeTimer.Elapsed += (s, a) => OnTimerElapsed(sender, e, wrapperManager);
             wrapperManager.RunningTimeTimer.Start();
         }
@@ -119,7 +121,6 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
         }
         private void OnTimerElapsed(object sender, EventArgs e, Manager manager)
         {
-            OnLogEvent(this, new Model.LogModel(LoggerTypes.Debug, "ELAPSED", "", null),manager.Bot);
             if (manager.Bot.State != BotState.Running) return;
 
             IEnumerable<PokemonData> eevees = manager.Bot.Pokemon.Where(poke => (int)poke.PokemonId == 133).OrderByDescending(poke => poke.Cp);
@@ -128,7 +129,6 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
         }
         private void Execute(Manager manager)
         {
-            OnLogEvent(this, new Model.LogModel(LoggerTypes.Debug, "EXECUTE", "", null), manager.Bot);
             if (manager.Bot.State != BotState.Running) return;
             var eevees = manager.Bot.Pokemon.Where(poke => (int)poke.PokemonId == 133).OrderByDescending(poke => poke.Cp);
 
