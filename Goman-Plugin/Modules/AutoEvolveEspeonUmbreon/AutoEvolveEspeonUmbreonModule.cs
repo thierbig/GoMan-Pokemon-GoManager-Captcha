@@ -2,23 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Timers;
-using System.Windows.Forms;
 using Goman_Plugin.Wrapper;
 using GoPlugin;
 using GoPlugin.Enums;
 using POGOProtos.Data;
 using MethodResult = Goman_Plugin.Model.MethodResult;
 using Timer = System.Timers.Timer;
-using Goman_Plugin.Modules.AutoEvolveEspeonUmbreon;
-using GoPlugin.Events;
 
 namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
 {
     public class AutoEvolveEspeonUmbreonModule : AbstractModule
     {
         public new BaseSettings<AutoEvolveEspeonUmbreonSettings> Settings { get; }
-        private Plugin _plugin;
 
         public AutoEvolveEspeonUmbreonModule()
         {
@@ -70,12 +65,12 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
             return saveSettingsResult;
         }
 
-        private async void PluginOnManagerAdded(object o, Manager manager)
+        private void PluginOnManagerAdded(object o, Manager manager)
         {
             // OnLogEvent(this, new LogModel(LoggerTypes.Info, $"Subscribing to account {manager.Bot.AccountName}"));
             manager.Bot.OnAccountStart += OnAccountStart;
             manager.Bot.OnAccountStop += OnAccountStop;
-            await Plugin.AutoEvolveEspeonUmbreonModule.AddLog(new Model.LogModel(LoggerTypes.Debug, "MANAGER ADDED", "", null), null);
+            OnLogEvent(this, new Model.LogModel(LoggerTypes.Debug, "MANAGER ADDED", "", null), manager.Bot);
         }
 
         private void PluginOnManagerRemoved(object o, Manager manager)
@@ -88,17 +83,16 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
 
         private async void OnAccountStart(object sender, EventArgs e)
         {
-            await Plugin.AutoEvolveEspeonUmbreonModule.AddLog(new Model.LogModel(LoggerTypes.Debug, "START", "", null), null);
+            OnLogEvent(this, new Model.LogModel(LoggerTypes.Debug, "START", "", null));
             await Task.Delay(30000);
             var wrapperManager=Plugin.Accounts.Single(x => x.Bot == (IManager)sender);
-            if (wrapperManager.Bot.IsRunning)
-            {
-                Execute(wrapperManager);
-                wrapperManager.RunningTimeTimer= new Timer(Settings.Extra.IntervalMilliseconds);
-                wrapperManager.RunningTimeTimer.AutoReset = true;
-                wrapperManager.RunningTimeTimer.Elapsed += (s, a) => OnTimerElapsed(sender, e, wrapperManager);
-                wrapperManager.RunningTimeTimer.Start();               
-            }
+
+            if (!wrapperManager.Bot.IsRunning) return;
+
+            Execute(wrapperManager);
+            wrapperManager.RunningTimeTimer = new Timer(Settings.Extra.IntervalMilliseconds) {AutoReset = true};
+            wrapperManager.RunningTimeTimer.Elapsed += (s, a) => OnTimerElapsed(sender, e, wrapperManager);
+            wrapperManager.RunningTimeTimer.Start();
         }
 
         private void OnAccountStop(object sender, EventArgs e)
@@ -108,50 +102,39 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
             wrapperManager.RunningTimeTimer.Dispose();
 
         }
-        private async void OnTimerElapsed(object sender, EventArgs e, Manager manager)
+        private void OnTimerElapsed(object sender, EventArgs e, Manager manager)
         {
-            await Plugin.AutoEvolveEspeonUmbreonModule.AddLog(new Model.LogModel(LoggerTypes.Debug, "ELAPSED", "", null), null);
-            if (manager.Bot.State == BotState.Running)
-            {
-                IEnumerable<PokemonData> eevees = manager.Bot.Pokemon.Where(poke => (int)poke.PokemonId == 133).OrderByDescending(poke => poke.Cp);
-                if (eevees.Count() > 0)
-                {
-                    if (eevees.Any(x => x.BuddyTotalKmWalked > 0))
-                    {
-                        IEnumerable<PokemonData> ienumerable_eevee = eevees.Where(x => x.BuddyTotalKmWalked >= 10).Take(1);
-                        if (ienumerable_eevee.Count() > 0)
-                        {
-                            await manager.Bot.EvolvePokemon(ienumerable_eevee);
-                        }
-                    }
-                    else
-                    {
-                        await manager.Bot.SetBuddyPokemon(eevees.ElementAt(0));
-                    }
-                }
-            }
+            OnLogEvent(this, new Model.LogModel(LoggerTypes.Debug, "ELAPSED", "", null),manager.Bot);
+            if (manager.Bot.State != BotState.Running) return;
+
+            IEnumerable<PokemonData> eevees = manager.Bot.Pokemon.Where(poke => (int)poke.PokemonId == 133).OrderByDescending(poke => poke.Cp);
+
+            DoEeveeStuff(eevees, manager);
         }
-        private async void Execute(Manager manager)
+        private void Execute(Manager manager)
         {
-            await Plugin.AutoEvolveEspeonUmbreonModule.AddLog(new Model.LogModel(LoggerTypes.Debug, "EXECUTE", "", null), null);
-            if (manager.Bot.State == BotState.Running)
+            OnLogEvent(this, new Model.LogModel(LoggerTypes.Debug, "EXECUTE", "", null), manager.Bot);
+            if (manager.Bot.State != BotState.Running) return;
+            var eevees = manager.Bot.Pokemon.Where(poke => (int)poke.PokemonId == 133).OrderByDescending(poke => poke.Cp);
+
+
+            DoEeveeStuff(eevees, manager);
+        }
+
+        private static async void DoEeveeStuff(IEnumerable<PokemonData> eevees, Manager manager)
+        {
+            var pokemonDatas = eevees as PokemonData[] ?? eevees.ToArray();
+
+            if (!pokemonDatas.Any()) return;
+            if (pokemonDatas.Any(x => x.BuddyTotalKmWalked > 0))
             {
-                IEnumerable<PokemonData> eevees = manager.Bot.Pokemon.Where(poke => (int)poke.PokemonId == 133).OrderByDescending(poke => poke.Cp);
-                if (eevees.Count() > 0)
-                {
-                    if (eevees.Any(x => x.BuddyTotalKmWalked > 0))
-                    {
-                        IEnumerable<PokemonData> ienumerable_eevee = eevees.Where(x => x.BuddyTotalKmWalked >= 10).Take(1);
-                        if (ienumerable_eevee.Count() > 0)
-                        {
-                            await manager.Bot.EvolvePokemon(ienumerable_eevee);
-                        }
-                    }
-                    else
-                    {
-                        await manager.Bot.SetBuddyPokemon(eevees.ElementAt(0));
-                    }
-                }
+                var ienumerableEevee = pokemonDatas.Where(x => x.BuddyTotalKmWalked >= 10).Take(1);
+                await manager.Bot.EvolvePokemon(ienumerableEevee);
+
+            }
+            else
+            {
+                await manager.Bot.SetBuddyPokemon(pokemonDatas.ElementAt(0));
             }
         }
 

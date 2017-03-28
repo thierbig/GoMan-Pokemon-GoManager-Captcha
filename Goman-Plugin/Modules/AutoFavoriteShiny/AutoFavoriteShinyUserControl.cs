@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
+using Goman_Plugin.Model;
 using GoPlugin;
 using GoPlugin.Extensions;
 
@@ -38,10 +39,10 @@ namespace Goman_Plugin.Modules.AutoFavoriteShiny
 
         private void fastObjectListViewLogs_FormatCell(object sender, FormatCellEventArgs e)
         {
-            Log log = e.Model as Log;
+            LogModel log = e.Model as LogModel;
             if (log != null)
             {
-                e.Item.ForeColor = log.GetLogColor();
+                e.SubItem.ForeColor = log.GetLogColor();
             }
         }
     }

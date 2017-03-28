@@ -4,6 +4,7 @@ using System.Linq;
 using System.Timers;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
+using Goman_Plugin.Model;
 using Goman_Plugin.Wrapper;
 using GoPlugin;
 using GoPlugin.Enums;
@@ -167,10 +168,10 @@ namespace Goman_Plugin.Modules.Captcha
 
         private void fastObjectListViewLogs_FormatCell(object sender, FormatCellEventArgs e)
         {
-            Log log = e.Model as Log;
+            LogModel log = e.Model as LogModel;
             if (log != null)
             {
-                e.Item.ForeColor = log.GetLogColor();
+                e.SubItem.ForeColor = log.GetLogColor();
             }
         }
     }

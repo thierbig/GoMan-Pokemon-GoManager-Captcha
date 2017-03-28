@@ -4,6 +4,7 @@ using BrightIdeasSoftware;
 using GMap.NET;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
+using Goman_Plugin.Model;
 using GoPlugin;
 using Timer = System.Timers.Timer;
 
@@ -79,10 +80,10 @@ namespace Goman_Plugin.Modules.AccountMap
 
         private void fastObjectListViewLogs_FormatCell(object sender, FormatCellEventArgs e)
         {
-            Log log = e.Model as Log;
+            LogModel log = e.Model as LogModel;
             if (log != null)
             {
-                e.Item.ForeColor = log.GetLogColor();
+                e.SubItem.ForeColor = log.GetLogColor();
             }
         }
     }

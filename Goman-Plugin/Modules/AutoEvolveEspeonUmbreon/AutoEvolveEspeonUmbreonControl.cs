@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
+using Goman_Plugin.Model;
 using GoPlugin;
 using GoPlugin.Extensions;
 
@@ -17,13 +18,14 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
             this.fastObjectListViewLogs.PrimarySortOrder = SortOrder.Descending;
             this.fastObjectListViewLogs.ListFilter = new TailFilter(200);
             //await Plugin.AutoEvolveEspeonUmbreonModule.AddLog(new Model.LogModel(LoggerTypes.Debug, Plugin.AutoEvolveEspeonUmbreonModule.Settings.Extra.IntervalMilliseconds.ToString(), "", null), null);
-            textBox1.Text = Plugin.AutoEvolveEspeonUmbreonModule.Settings.Extra.IntervalMilliseconds.ToString();
+            
         }
 
         internal void SetControls()
         {          
             cbkEnabled.Checked = Plugin.AutoEvolveEspeonUmbreonModule.Settings.Enabled;
-            fastObjectListViewLogs.SetObjects(Plugin.AutoEvolveEspeonUmbreonModule.Logs);            
+            textBox1.Text = Plugin.AutoEvolveEspeonUmbreonModule.Settings.Extra.IntervalMilliseconds.ToString();
+            fastObjectListViewLogs.SetObjects(Plugin.AutoEvolveEspeonUmbreonModule.Logs);             
         }
 
         private async void cbkEnabled_CheckedChanged(object sender, EventArgs e)
@@ -38,10 +40,10 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
 
         private void fastObjectListViewLogs_FormatCell(object sender, FormatCellEventArgs e)
         {
-            Log log = e.Model as Log;
+            LogModel log = e.Model as LogModel;
             if (log != null)
             {
-                e.Item.ForeColor = log.GetLogColor();
+                e.SubItem.ForeColor = log.GetLogColor();
             }
         }
 

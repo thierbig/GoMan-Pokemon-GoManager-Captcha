@@ -11,9 +11,11 @@ namespace Goman_Plugin.Model
         public string StackTrace { get; }
         public string Message { get; }
         public string Html { get; }
+        public DateTime Date { get; }
 
         public LogModel(LoggerTypes loggerType, string message, string html = "", Exception exception = null)
         {
+            Date = DateTime.Now;
             this.LoggerType = loggerType;
             this.Message = string.Intern(message);
             this.Html = html;
@@ -37,7 +39,7 @@ namespace Goman_Plugin.Model
                     return Color.DarkGray;
             }
 
-            return SystemColors.WindowText;
+            return Color.LightGray;
         }
 
         public override string ToString()
