@@ -95,6 +95,22 @@
     <Compile Include="Modules\AccountMap\AccountMapUserControl.Designer.cs">
       <DependentUpon>AccountMapUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\AutoEvolveEspeonUmbreon\AutoEvolveEspeonUmbreonModule.cs" />
+    <Compile Include="Modules\AutoEvolveEspeonUmbreon\AutoEvolveEspeonUmbreonSettings.cs" />
+    <Compile Include="Modules\AutoEvolveEspeonUmbreon\AutoEvolveEspeonUmbreonControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Modules\AutoEvolveEspeonUmbreon\AutoEvolveEspeonUmbreonControl.Designer.cs">
+      <DependentUpon>AutoEvolveEspeonUmbreonControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\AutoFavoriteShiny\AutoFavoriteShinyModule.cs" />
+    <Compile Include="Modules\AutoFavoriteShiny\AutoFavoriteShinySettings.cs" />
+    <Compile Include="Modules\AutoFavoriteShiny\AutoFavoriteShinyUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Modules\AutoFavoriteShiny\AutoFavoriteShinyUserControl.Designer.cs">
+      <DependentUpon>AutoFavoriteShinyUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modules\PokemonManager\PokemonManagerUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -161,6 +177,12 @@
     <EmbeddedResource Include="Modules\Authentication\AuthenticationUI.resx">
       <DependentUpon>AuthenticationUI.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Modules\AutoEvolveEspeonUmbreon\AutoEvolveEspeonUmbreonControl.resx">
+      <DependentUpon>AutoEvolveEspeonUmbreonControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\AutoFavoriteShiny\AutoFavoriteShinyUserControl.resx">
+      <DependentUpon>AutoFavoriteShinyUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modules\Captcha\CaptchaUserControl.resx">
       <DependentUpon>CaptchaUserControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -183,7 +205,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modules\AutoSniper\" />
-    <Folder Include="Modules\DownloadManager\" />
+    <Folder Include="Modules\Captcha\DownloadManager\" />
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>

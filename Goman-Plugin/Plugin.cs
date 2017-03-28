@@ -10,6 +10,8 @@ using Goman_Plugin.Modules.Authentication;
 using Goman_Plugin.Modules.Captcha;
 using Goman_Plugin.Modules.PokemonFeeder;
 using Goman_Plugin.Modules.PokemonManager;
+using Goman_Plugin.Modules.AutoFavoriteShiny;
+using Goman_Plugin.Modules.AutoEvolveEspeonUmbreon;
 using Goman_Plugin.View;
 using Goman_Plugin.Wrapper;
 using GoPlugin;
@@ -25,6 +27,9 @@ namespace Goman_Plugin
         internal static AuthenticationModule AuthenticationModule = new AuthenticationModule();
         internal static PokemonFeederModule PokemonFeederModule = new PokemonFeederModule();
         internal static CaptchaModule CaptchaModule = new CaptchaModule();
+        internal static AutoFavoriteShinyModule AutoFavoriteShinyModule = new AutoFavoriteShinyModule();
+        internal static AutoEvolveEspeonUmbreonModule AutoEvolveEspeonUmbreonModule = new AutoEvolveEspeonUmbreonModule();
+
         internal static PokemonManagerModule PokemonManagerModule;
         public override string PluginName { get; set; } = "Goman Plugin";
         public override IEnumerable<PluginDropDownItem> MenuItems { get; set; }
@@ -87,10 +92,12 @@ namespace Goman_Plugin
         {
             if (moduleEvent == ModuleEvent.Enabled)
             {
+                await AutoFavoriteShinyModule.Enable();
                 await PokemonFeederModule.Enable();
                 await AccountMapModule.Enable();
                 await CaptchaModule.Enable();
                 await PokemonManagerModule.Enable();
+                await AutoEvolveEspeonUmbreonModule.Enable();
 
                 foreach (var manager in _uniqueManagers)
                 {
@@ -107,11 +114,12 @@ namespace Goman_Plugin
                     Accounts.Add(wrappedManager);
                     OnManagerRemoved(this, wrappedManager);
                 }
-
+                await AutoFavoriteShinyModule.Disable();
                 await PokemonFeederModule.Disable();
                 await AccountMapModule.Disable();
                 await CaptchaModule.Disable();
                 await PokemonManagerModule.Disable();
+                await AutoEvolveEspeonUmbreonModule.Disable();
             }
         }
         public override void AddManager(IManager manager)
