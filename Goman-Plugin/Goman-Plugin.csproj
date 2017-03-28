@@ -205,7 +205,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modules\AutoSniper\" />
-    <Folder Include="Modules\Captcha\DownloadManager\" />
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>

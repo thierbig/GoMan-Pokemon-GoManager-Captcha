@@ -27,7 +27,15 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
             await LoadSettings();
 
             if (Settings.Enabled)
-            {               
+            {
+                if (forceSubscribe)
+                {
+                    foreach (var account in Plugin.Accounts)
+                    {
+                        PluginOnManagerAdded(this, account);
+                    }
+                }
+
                 OnModuleEvent(this, Modules.ModuleEvent.Enabled);
             }
 
@@ -38,6 +46,13 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
         public override async Task<MethodResult> Disable(bool forceUnsubscribe = false)
         {
             await SaveSettings();
+            if (forceUnsubscribe)
+            {
+                foreach (var account in Plugin.Accounts)
+                {
+                    PluginOnManagerRemoved(this, account);
+                }
+            }
             OnModuleEvent(this, Modules.ModuleEvent.Disabled);
             return new MethodResult { Success = true };
         }
