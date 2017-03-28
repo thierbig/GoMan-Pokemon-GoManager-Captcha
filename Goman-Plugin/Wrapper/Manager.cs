@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Timers;
+using System.Windows.Forms;
 using BrightIdeasSoftware;
 using Goman_Plugin.Model;
 using GoPlugin;
@@ -55,6 +58,7 @@ namespace Goman_Plugin.Wrapper
                 return logs;
             }
         }
+
         public string LastLog => LastLogMessageMunger.GetValue(Bot).ToString();
         public string RunTime => RunTimeMunger.GetValue(Bot).ToString();
         public string TillLevelUp => TillLevelUpMunger.GetValue(Bot).ToString();
