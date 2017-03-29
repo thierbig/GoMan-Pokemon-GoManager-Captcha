@@ -38,10 +38,10 @@ namespace Goman_Plugin.Modules.Captcha
             cbkEnabled.Checked = Plugin.CaptchaModule.Settings.Enabled;
 
             fastObjectListViewLogs.SetObjects(Plugin.CaptchaModule.Logs);
-            //Plugin.CaptchaModule.LogEvent += (o, model) =>
-            //{
-            //    fastObjectListViewLogs.AddObject(model);
-            //};
+            Plugin.CaptchaModule.LogEvent += (o, model) =>
+            {
+                fastObjectListViewLogs.Refresh();
+            };
         }
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
