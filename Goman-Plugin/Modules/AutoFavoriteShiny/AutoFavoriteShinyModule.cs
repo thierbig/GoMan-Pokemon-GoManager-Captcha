@@ -100,8 +100,14 @@ namespace Goman_Plugin.Modules.AutoFavoriteShiny
             {
                 if (e.Pokemon.PokemonDisplay.Shiny)
                 {
-                    GoPlugin.MethodResult result=await manager.FavoritePokemon(new List<PokemonData>() { e.Pokemon });
-                    OnLogEvent(this, new LogModel(LoggerTypes.Success, result.Message+" Caught Shiny "+e.Pokemon.ToString()+" on account "+ manager.AccountName ));
+                    GoPlugin.MethodResult result = null;                    
+                    do
+                    {
+                        await Task.Delay(500);
+                        result = await manager.FavoritePokemon(new List<PokemonData>() { e.Pokemon });
+                    } while (!result.Success);
+
+                    OnLogEvent(this, new LogModel(LoggerTypes.Success, result.Message + " Caught ID "+ e.Pokemon.Id+" Shiny on account " + manager.AccountName));
                 }
             }
         }
