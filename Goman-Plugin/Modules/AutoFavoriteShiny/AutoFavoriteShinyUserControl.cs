@@ -23,8 +23,10 @@ namespace Goman_Plugin.Modules.AutoFavoriteShiny
         {
             cbkEnabled.Checked = Plugin.AutoFavoriteShinyModule.Settings.Enabled;
             fastObjectListViewLogs.SetObjects(Plugin.AutoFavoriteShinyModule.Logs);
-
-           // Plugin.AutoFavoriteShinyModule.LogEvent += (o, model) => fastObjectListViewLogs.AddObject(model);
+            //Plugin.AutoFavoriteShinyModule.LogEvent += (o, model) =>
+            //{
+             //   fastObjectListViewLogs.AddObject(model);
+            //};
         }
 
         private async void cbkEnabled_CheckedChanged(object sender, EventArgs e)

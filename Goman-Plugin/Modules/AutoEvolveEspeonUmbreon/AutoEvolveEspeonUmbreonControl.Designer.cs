@@ -280,6 +280,7 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
             this.fastObjectListViewLogs.View = System.Windows.Forms.View.Details;
             this.fastObjectListViewLogs.VirtualMode = true;
             this.fastObjectListViewLogs.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.fastObjectListViewLogs_FormatCell);
+            this.fastObjectListViewLogs.SelectedIndexChanged += new System.EventHandler(this.fastObjectListViewLogs_SelectedIndexChanged);
             // 
             // olvColumnDate
             // 

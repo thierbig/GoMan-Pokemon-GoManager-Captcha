@@ -30,7 +30,7 @@ namespace Goman_Plugin.Modules
                         Logs.RemoveRange(0, topRange);
                     }
 
-                    Logs.Add(log);
+                    Logs.Add(log);                    
                 }
             }
 
