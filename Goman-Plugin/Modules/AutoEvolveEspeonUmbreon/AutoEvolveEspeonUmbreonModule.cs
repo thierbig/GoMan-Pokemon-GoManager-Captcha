@@ -8,6 +8,7 @@ using GoPlugin.Enums;
 using POGOProtos.Data;
 using MethodResult = Goman_Plugin.Model.MethodResult;
 using Timer = System.Timers.Timer;
+using Goman_Plugin.Model;
 
 namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
 {
@@ -99,8 +100,7 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
         }
 
         private async void OnAccountStart(object sender, EventArgs e)
-        {
-            OnLogEvent(this, new Model.LogModel(LoggerTypes.Debug, "START", "", null));
+        {            
             await Task.Delay(30000);
             var wrapperManager = Plugin.Accounts.Single(x => x.Bot == (IManager)sender);
 
@@ -115,8 +115,11 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
         private void OnAccountStop(object sender, EventArgs e)
         {
             var wrapperManager = Plugin.Accounts.Single(x => x.Bot == (IManager)sender);
-            wrapperManager.RunningTimeTimer.Close();
-            wrapperManager.RunningTimeTimer.Dispose();
+            if (wrapperManager.RunningTimeTimer != null)
+            {
+                wrapperManager.RunningTimeTimer.Close();
+                wrapperManager.RunningTimeTimer.Dispose();
+            }
 
         }
         private void OnTimerElapsed(object sender, EventArgs e, Manager manager)
@@ -136,7 +139,7 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
             DoEeveeStuff(eevees, manager);
         }
 
-        private static async void DoEeveeStuff(IEnumerable<PokemonData> eevees, Manager manager)
+        private async void DoEeveeStuff(IEnumerable<PokemonData> eevees, Manager manager)
         {
             var pokemonDatas = eevees as PokemonData[] ?? eevees.ToArray();
 
@@ -144,12 +147,14 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
             if (pokemonDatas.Any(x => x.BuddyTotalKmWalked > 0))
             {
                 var ienumerableEevee = pokemonDatas.Where(x => x.BuddyTotalKmWalked >= 10).Take(1);
-                await manager.Bot.EvolvePokemon(ienumerableEevee);
+                var result=await manager.Bot.EvolvePokemon(ienumerableEevee);
+                OnLogEvent(this, new LogModel(LoggerTypes.Success, result.Message + "Evolve Eevee Buddy on account " + manager.Bot.AccountName),null);
 
             }
             else
             {
-                await manager.Bot.SetBuddyPokemon(pokemonDatas.ElementAt(0));
+                var result=await manager.Bot.SetBuddyPokemon(pokemonDatas.ElementAt(0));
+                OnLogEvent(this, new LogModel(LoggerTypes.Success, result.Message +" Set Buddy Eevee on account " + manager.Bot.AccountName),null);                
             }
         }
 

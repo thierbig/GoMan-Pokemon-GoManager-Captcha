@@ -16,16 +16,18 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
 
             this.fastObjectListViewLogs.PrimarySortColumn = this.olvColumnDate;
             this.fastObjectListViewLogs.PrimarySortOrder = SortOrder.Descending;
-            this.fastObjectListViewLogs.ListFilter = new TailFilter(200);
-            //await Plugin.AutoEvolveEspeonUmbreonModule.AddLog(new Model.LogModel(LoggerTypes.Debug, Plugin.AutoEvolveEspeonUmbreonModule.Settings.Extra.IntervalMilliseconds.ToString(), "", null), null);
-            
+            this.fastObjectListViewLogs.ListFilter = new TailFilter(200);            
         }
 
         internal void SetControls()
-        {          
+        {
             cbkEnabled.Checked = Plugin.AutoEvolveEspeonUmbreonModule.Settings.Enabled;
             textBox1.Text = Plugin.AutoEvolveEspeonUmbreonModule.Settings.Extra.IntervalMilliseconds.ToString();
-            fastObjectListViewLogs.SetObjects(Plugin.AutoEvolveEspeonUmbreonModule.Logs);             
+            fastObjectListViewLogs.SetObjects(Plugin.AutoEvolveEspeonUmbreonModule.Logs);
+            //Plugin.AutoEvolveEspeonUmbreonModule.LogEvent += (o, model) =>
+            //{
+            //    fastObjectListViewLogs.AddObject(model);
+            //};
         }
 
         private async void cbkEnabled_CheckedChanged(object sender, EventArgs e)
@@ -55,6 +57,11 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
                 Plugin.AutoEvolveEspeonUmbreonModule.Settings.Extra.IntervalMilliseconds = value;
                 await Plugin.AutoEvolveEspeonUmbreonModule.SaveSettings();
             }
+        }
+
+        private void fastObjectListViewLogs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

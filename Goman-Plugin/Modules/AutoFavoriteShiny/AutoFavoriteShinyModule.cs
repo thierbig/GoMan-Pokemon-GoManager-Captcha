@@ -101,7 +101,7 @@ namespace Goman_Plugin.Modules.AutoFavoriteShiny
                 if (e.Pokemon.PokemonDisplay.Shiny)
                 {
                     GoPlugin.MethodResult result=await manager.FavoritePokemon(new List<PokemonData>() { e.Pokemon });
-                    OnLogEvent(this, new LogModel(LoggerTypes.Success, result.Message+" "+e.Pokemon.ToString() ));
+                    OnLogEvent(this, new LogModel(LoggerTypes.Success, result.Message+" Caught Shiny "+e.Pokemon.ToString()+" on account "+ manager.AccountName ));
                 }
             }
         }
