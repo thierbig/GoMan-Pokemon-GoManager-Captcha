@@ -5,6 +5,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Goman_Plugin.Model;
 using Goman_Plugin.Modules.Authentication;
+using POGOProtos.Data;
+using System.Linq;
 
 namespace Goman_Plugin.Helpers
 {
@@ -60,6 +62,21 @@ namespace Goman_Plugin.Helpers
 
                 return methodResults;
             }
+        }
+
+        public static PokemonData getPokemonCaught(IEnumerable<PokemonData> p_pokemons, PokemonData p_lastCaught)
+        {
+            bool found = false;
+            for (int i = p_pokemons.Count(); i-- > 0 && !found;)
+            {
+                PokemonData temp = p_pokemons.ElementAt(i);
+                if (temp.DeployedFortId == p_lastCaught.DeployedFortId && p_lastCaught.PokemonId == temp.PokemonId && p_lastCaught.Cp == temp.Cp && p_lastCaught.IndividualAttack == temp.IndividualAttack && p_lastCaught.IndividualDefense == temp.IndividualDefense && p_lastCaught.IndividualStamina == temp.IndividualStamina)
+                {
+                    found = true;
+                    return temp;
+                }
+            }
+            return p_lastCaught;
         }
 
         public class Authentication

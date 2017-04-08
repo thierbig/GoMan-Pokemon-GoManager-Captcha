@@ -102,7 +102,7 @@ namespace Goman_Plugin.Modules.PokemonManager
             var pokemonToHandle = new List<PokemonData>();
 
             foreach (var pokemonManager in Settings.Extra.Pokemons.Values)
-            {
+            {                
                 pokemonToHandle
                     .AddRange(
                     manager.Pokemon

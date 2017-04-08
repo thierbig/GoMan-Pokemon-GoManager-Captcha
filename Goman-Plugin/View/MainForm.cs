@@ -32,6 +32,7 @@ namespace Goman_Plugin.View
             pokemonManagerUserControl1.SetControls();
             autoEvolveEspeonUmbreonControl1.SetControls();
             autoFavoriteShinyUserControl1.SetControls();
+            autoRename100IVOnCaughtUserControl1.SetControls();
         }
 
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)

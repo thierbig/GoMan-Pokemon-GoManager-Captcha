@@ -68,9 +68,9 @@ namespace Goman_Plugin.Modules.Captcha
                             e.SubItem.ForeColor = Color.Red;
                             break;
                         case AccountState.AccountWarning:
-                        case AccountState.PokemonBanAndPokestopBanTemp:
-                        case AccountState.PokestopBanTemp:
-                        case AccountState.PokemonBanTemp:
+                        case AccountState.PokemonLimitAndPokestopLimit:
+                        case AccountState.PokestopLimitReached:
+                        case AccountState.PokemonLimitReached:
                             e.SubItem.ForeColor = Color.Yellow;
                             break;
                         case AccountState.CaptchaRequired:

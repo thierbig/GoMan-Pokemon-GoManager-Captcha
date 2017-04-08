@@ -12,6 +12,7 @@ using Goman_Plugin.Modules.PokemonFeeder;
 using Goman_Plugin.Modules.PokemonManager;
 using Goman_Plugin.Modules.AutoFavoriteShiny;
 using Goman_Plugin.Modules.AutoEvolveEspeonUmbreon;
+using Goman_Plugin.Modules.AutoRename100IVOnCaught;
 using Goman_Plugin.View;
 using Goman_Plugin.Wrapper;
 using GoPlugin;
@@ -29,6 +30,7 @@ namespace Goman_Plugin
         internal static CaptchaModule CaptchaModule = new CaptchaModule();
         internal static AutoFavoriteShinyModule AutoFavoriteShinyModule = new AutoFavoriteShinyModule();
         internal static AutoEvolveEspeonUmbreonModule AutoEvolveEspeonUmbreonModule = new AutoEvolveEspeonUmbreonModule();
+        internal static AutoRename100IVOnCaughtModule AutoRename100IVOnCaughtModule = new AutoRename100IVOnCaughtModule();
 
         internal static PokemonManagerModule PokemonManagerModule;
         public override string PluginName { get; set; } = "Goman Plugin";
@@ -98,6 +100,7 @@ namespace Goman_Plugin
                 await CaptchaModule.Enable();
                 await PokemonManagerModule.Enable();
                 await AutoEvolveEspeonUmbreonModule.Enable();
+                await AutoRename100IVOnCaughtModule.Enable();
 
                 foreach (var manager in _uniqueManagers)
                 {
@@ -120,6 +123,7 @@ namespace Goman_Plugin
                 await CaptchaModule.Disable();
                 await PokemonManagerModule.Disable();
                 await AutoEvolveEspeonUmbreonModule.Disable();
+                await AutoRename100IVOnCaughtModule.Disable();
             }
         }
         public override void AddManager(IManager manager)

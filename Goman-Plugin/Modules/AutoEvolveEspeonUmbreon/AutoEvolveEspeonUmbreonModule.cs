@@ -133,7 +133,7 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
         private void Execute(Manager manager)
         {
             if (manager.Bot.State != BotState.Running) return;
-            var eevees = manager.Bot.Pokemon.Where(poke => (int)poke.PokemonId == 133).OrderByDescending(poke => poke.Cp);
+            var eevees = manager.Bot.Pokemon.Where(poke => (int)poke.PokemonId == 133).OrderByDescending(poke => manager.Bot.CalculateIVPerfection(poke).Data);
 
 
             DoEeveeStuff(eevees, manager);

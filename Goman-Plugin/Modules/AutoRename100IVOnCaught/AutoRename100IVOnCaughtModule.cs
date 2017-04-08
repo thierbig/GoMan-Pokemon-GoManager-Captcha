@@ -14,22 +14,22 @@ using MethodResult = Goman_Plugin.Model.MethodResult;
 using POGOProtos.Data;
 using System.Linq;
 
-namespace Goman_Plugin.Modules.AutoFavoriteShiny
+namespace Goman_Plugin.Modules.AutoRename100IVOnCaught
 {
-    public class AutoFavoriteShinyModule : AbstractModule
+    public class AutoRename100IVOnCaughtModule : AbstractModule
     {
-        public new BaseSettings<AutoFavoriteShinySettings> Settings { get; }
+        public new BaseSettings<AutoRename100IVOnCaughtSettings> Settings { get; }
 
-        public AutoFavoriteShinyModule()
+        public AutoRename100IVOnCaughtModule()
         {
-            Settings = new BaseSettings<AutoFavoriteShinySettings> { Enabled = true };
+            Settings = new BaseSettings<AutoRename100IVOnCaughtSettings> { Enabled = true };
         }
         public async override Task<MethodResult> Disable(bool forceUnubscribe = false)
-        {           
+        {
             Plugin.ManagerAdded -= PluginOnManagerAdded;
             Plugin.ManagerRemoved -= PluginOnManagerRemoved;
             await SaveSettings();
-            if(forceUnubscribe)
+            if (forceUnubscribe)
             {
                 foreach (var account in Plugin.Accounts)
                 {
@@ -43,7 +43,7 @@ namespace Goman_Plugin.Modules.AutoFavoriteShiny
         public async override Task<MethodResult> Enable(bool forceSubscribe = false)
         {
             await LoadSettings();
-           // Settings.Extra.MyAwesomeSetting //acccess it like this
+            // Settings.Extra.MyAwesomeSetting //acccess it like this
             if (Settings.Enabled)
             {
 
@@ -67,7 +67,7 @@ namespace Goman_Plugin.Modules.AutoFavoriteShiny
 
             if (!loadSettingsResult.Success)
             {
-                Settings.Extra = new AutoFavoriteShinySettings();
+                Settings.Extra = new AutoRename100IVOnCaughtSettings();
                 await SaveSettings();
             }
 
@@ -99,12 +99,9 @@ namespace Goman_Plugin.Modules.AutoFavoriteShiny
             var manager = (IManager)sender;            
             if (e.CatchResponse.Status == POGOProtos.Networking.Responses.CatchPokemonResponse.Types.CatchStatus.CatchSuccess)
             {
-                if (e.Pokemon.PokemonDisplay.Shiny)
-                {
-                    PokemonData lastCaught = Helpers.GomanHttpHelper.getPokemonCaught(manager.Pokemon, e.Pokemon);
-                    await manager.FavoritePokemon(new List<PokemonData>() { lastCaught });                 
-                    OnLogEvent(this, new LogModel(LoggerTypes.Success, "Caught Shiny "+lastCaught.PokemonId.ToString()+" on account " + manager.AccountName));
-                }
+                PokemonData lastCaught = Helpers.GomanHttpHelper.getPokemonCaught(manager.Pokemon, e.Pokemon);
+                await manager.RenameAllPokemonToIV(new List<PokemonData>() { lastCaught });
+                OnLogEvent(this, GetLog(new MethodResult() { Message = "Renamed Pokemon" + lastCaught.PokemonId.ToString(), MethodName = "RenameWithIv" }));
             }
         }
     }
