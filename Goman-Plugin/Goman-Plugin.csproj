@@ -120,6 +120,14 @@
     </Compile>
     <Compile Include="Modules\AutoRename100IVOnCaught\AutoRename100IVOnCaughtModule.cs" />
     <Compile Include="Modules\AutoRename100IVOnCaught\AutoRename100IVOnCaughtSettings.cs" />
+    <Compile Include="Modules\AutoStratTechnique\AutoStratTechniqueModule.cs" />
+    <Compile Include="Modules\AutoStratTechnique\AutoStratTechniqueSettings.cs" />
+    <Compile Include="Modules\AutoStratTechnique\AutoStratTechniqueUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Modules\AutoStratTechnique\AutoStratTechniqueUserControl.Designer.cs">
+      <DependentUpon>AutoStratTechniqueUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modules\PokemonManager\PokemonManagerUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -194,6 +202,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\AutoRename100IVOnCaught\AutoRename100IVOnCaughtUserControl.resx">
       <DependentUpon>AutoRename100IVOnCaughtUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modules\AutoStratTechnique\AutoStratTechniqueUserControl.resx">
+      <DependentUpon>AutoStratTechniqueUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modules\Captcha\CaptchaUserControl.resx">
       <DependentUpon>CaptchaUserControl.cs</DependentUpon>

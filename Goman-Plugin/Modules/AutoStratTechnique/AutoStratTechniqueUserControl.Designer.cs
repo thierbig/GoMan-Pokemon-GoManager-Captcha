@@ -1,8 +1,8 @@
 ﻿using Goman_Plugin.View;
 
-namespace Goman_Plugin.Modules.AutoRename100IVOnCaught
+namespace Goman_Plugin.Modules.AutoStratTechnique
 {
-    partial class AutoRename100IVOnCaughtUserControl
+    partial class AutoStratTechniqueUserControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -210,9 +210,9 @@ namespace Goman_Plugin.Modules.AutoRename100IVOnCaught
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 35);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(322, 13);
+            this.label1.Size = new System.Drawing.Size(356, 13);
             this.label1.TabIndex = 13;
-            this.label1.Text = "When enabled, will rename all Pokemons with 100 IV being caught";
+            this.label1.Text = "When enabled, will transfer all non-strat pokemons after Pokemon Caught.";
             // 
             // cbkEnabled
             // 
@@ -295,12 +295,12 @@ namespace Goman_Plugin.Modules.AutoRename100IVOnCaught
             this.olvColumnStackTrace.Text = "StackTrace";
             this.olvColumnStackTrace.Width = 372;
             // 
-            // AutoRename100IVOnCaughtUserControl
+            // AutoStratTechniqueUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabControlCaptcha);
-            this.Name = "AutoRename100IVOnCaughtUserControl";
+            this.Name = "AutoStratTechniqueUserControl";
             this.Size = new System.Drawing.Size(752, 471);
             this.contextMenuStripScraper.ResumeLayout(false);
             this.tabControlCaptcha.ResumeLayout(false);

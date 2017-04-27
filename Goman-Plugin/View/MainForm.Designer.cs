@@ -45,6 +45,7 @@ namespace Goman_Plugin.View
             this.tbAutoEvolveEspeonUmbreon = new System.Windows.Forms.TabPage();
             this.autoEvolveEspeonUmbreonControl1 = new Goman_Plugin.Modules.AutoEvolveEspeonUmbreon.AutoEvolveEspeonUmbreonControl();
             this.tabAutoRename100IVOnCaught = new System.Windows.Forms.TabPage();
+            this.autoRename100IVOnCaughtUserControl1 = new Goman_Plugin.Modules.AutoRename100IVOnCaught.AutoRename100IVOnCaughtUserControl();
             this.tpPokemonManager = new System.Windows.Forms.TabPage();
             this.pokemonManagerUserControl1 = new Goman_Plugin.Modules.PokemonManager.PokemonManagerUserControl();
             this.tpPokemonFeeder = new System.Windows.Forms.TabPage();
@@ -56,7 +57,8 @@ namespace Goman_Plugin.View
             this.labelMaximumLogs = new System.Windows.Forms.Label();
             this.cbkSaveLogs = new System.Windows.Forms.CheckBox();
             this.cbkAutoUpdate = new System.Windows.Forms.CheckBox();
-            this.autoRename100IVOnCaughtUserControl1 = new Goman_Plugin.Modules.AutoRename100IVOnCaught.AutoRename100IVOnCaughtUserControl();
+            this.tpAutoStratTechnique = new System.Windows.Forms.TabPage();
+            this.autoStratTechniqueUserControl1 = new Goman_Plugin.Modules.AutoStratTechnique.AutoStratTechniqueUserControl();
             this.statusStrip1.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tpCaptcha.SuspendLayout();
@@ -68,6 +70,7 @@ namespace Goman_Plugin.View
             this.tpAccountFeeder.SuspendLayout();
             this.tpGlobalSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaximumLogs)).BeginInit();
+            this.tpAutoStratTechnique.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -139,6 +142,7 @@ namespace Goman_Plugin.View
             this.tabControlMain.Controls.Add(this.tpPokemonFeeder);
             this.tabControlMain.Controls.Add(this.tpAccountFeeder);
             this.tabControlMain.Controls.Add(this.tpGlobalSettings);
+            this.tabControlMain.Controls.Add(this.tpAutoStratTechnique);
             this.tabControlMain.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.tabControlMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControlMain.ItemSize = new System.Drawing.Size(30, 115);
@@ -214,6 +218,13 @@ namespace Goman_Plugin.View
             this.tabAutoRename100IVOnCaught.TabIndex = 7;
             this.tabAutoRename100IVOnCaught.Text = "AutoRename100IV On caught Pokemon";
             this.tabAutoRename100IVOnCaught.UseVisualStyleBackColor = true;
+            // 
+            // autoRename100IVOnCaughtUserControl1
+            // 
+            this.autoRename100IVOnCaughtUserControl1.Location = new System.Drawing.Point(0, -1);
+            this.autoRename100IVOnCaughtUserControl1.Name = "autoRename100IVOnCaughtUserControl1";
+            this.autoRename100IVOnCaughtUserControl1.Size = new System.Drawing.Size(1002, 302);
+            this.autoRename100IVOnCaughtUserControl1.TabIndex = 0;
             // 
             // tpPokemonManager
             // 
@@ -347,12 +358,22 @@ namespace Goman_Plugin.View
             this.cbkAutoUpdate.UseVisualStyleBackColor = true;
             this.cbkAutoUpdate.CheckedChanged += new System.EventHandler(this.ckAutoUpdate_CheckedChanged);
             // 
-            // autoRename100IVOnCaughtUserControl1
+            // tpAutoStratTechnique
             // 
-            this.autoRename100IVOnCaughtUserControl1.Location = new System.Drawing.Point(0, -1);
-            this.autoRename100IVOnCaughtUserControl1.Name = "autoRename100IVOnCaughtUserControl1";
-            this.autoRename100IVOnCaughtUserControl1.Size = new System.Drawing.Size(1002, 302);
-            this.autoRename100IVOnCaughtUserControl1.TabIndex = 0;
+            this.tpAutoStratTechnique.Controls.Add(this.autoStratTechniqueUserControl1);
+            this.tpAutoStratTechnique.Location = new System.Drawing.Point(116, 1);
+            this.tpAutoStratTechnique.Name = "tpAutoStratTechnique";
+            this.tpAutoStratTechnique.Size = new System.Drawing.Size(1001, 300);
+            this.tpAutoStratTechnique.TabIndex = 8;
+            this.tpAutoStratTechnique.Text = "tpAutoStratTechnique";
+            this.tpAutoStratTechnique.UseVisualStyleBackColor = true;
+            // 
+            // autoStratTechniqueUserControl1
+            // 
+            this.autoStratTechniqueUserControl1.Location = new System.Drawing.Point(0, 0);
+            this.autoStratTechniqueUserControl1.Name = "autoStratTechniqueUserControl1";
+            this.autoStratTechniqueUserControl1.Size = new System.Drawing.Size(1002, 301);
+            this.autoStratTechniqueUserControl1.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -381,6 +402,7 @@ namespace Goman_Plugin.View
             this.tpGlobalSettings.ResumeLayout(false);
             this.tpGlobalSettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaximumLogs)).EndInit();
+            this.tpAutoStratTechnique.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -413,5 +435,7 @@ namespace Goman_Plugin.View
         private Modules.AutoEvolveEspeonUmbreon.AutoEvolveEspeonUmbreonControl autoEvolveEspeonUmbreonControl1;
         private System.Windows.Forms.TabPage tabAutoRename100IVOnCaught;
         private Modules.AutoRename100IVOnCaught.AutoRename100IVOnCaughtUserControl autoRename100IVOnCaughtUserControl1;
+        private System.Windows.Forms.TabPage tpAutoStratTechnique;
+        private Modules.AutoStratTechnique.AutoStratTechniqueUserControl autoStratTechniqueUserControl1;
     }
 }

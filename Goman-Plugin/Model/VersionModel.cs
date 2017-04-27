@@ -6,7 +6,7 @@ namespace Goman_Plugin.Model
     class VersionModel
     {
         [JsonIgnore]
-        public static readonly string CurrentVersion = "Thierbig fork 1.0";
+        public static readonly string CurrentVersion = "Thierbig fork 1.1";
         [JsonIgnore]
         public static readonly string SavePath = "./Plugins/GoMan-Plugin.dll";
         [JsonIgnore]

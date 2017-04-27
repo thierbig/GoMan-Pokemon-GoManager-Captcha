@@ -102,8 +102,12 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
         private async void OnAccountStart(object sender, EventArgs e)
         {            
             await Task.Delay(30000);
-            var wrapperManager = Plugin.Accounts.Single(x => x.Bot == (IManager)sender);
-
+            var wrapperManager = Plugin.Accounts.SingleOrDefault(x => x.Bot == (IManager)sender);
+            if(wrapperManager==null)
+            {
+                OnLogEvent(this, new LogModel(LoggerTypes.FatalError, "Could not start Evolve Eevee on account " + wrapperManager.Bot.AccountName), null);
+                return;
+            }
             if (!wrapperManager.Bot.IsRunning) return;
 
             Execute(wrapperManager);
@@ -114,9 +118,15 @@ namespace Goman_Plugin.Modules.AutoEvolveEspeonUmbreon
 
         private void OnAccountStop(object sender, EventArgs e)
         {
-            var wrapperManager = Plugin.Accounts.Single(x => x.Bot == (IManager)sender);
+            var wrapperManager = Plugin.Accounts.SingleOrDefault(x => x.Bot == (IManager)sender);
+            if (wrapperManager == null)
+            {
+                OnLogEvent(this, new LogModel(LoggerTypes.FatalError, "Could not start Evolve Eevee on account " + wrapperManager.Bot.AccountName), null);
+                return;
+            }
             if (wrapperManager.RunningTimeTimer != null)
             {
+
                 wrapperManager.RunningTimeTimer.Close();
                 wrapperManager.RunningTimeTimer.Dispose();
             }

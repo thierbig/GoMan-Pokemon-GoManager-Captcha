@@ -33,6 +33,8 @@ namespace Goman_Plugin.View
             autoEvolveEspeonUmbreonControl1.SetControls();
             autoFavoriteShinyUserControl1.SetControls();
             autoRename100IVOnCaughtUserControl1.SetControls();
+            autoStratTechniqueUserControl1.SetControls();
+
         }
 
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)

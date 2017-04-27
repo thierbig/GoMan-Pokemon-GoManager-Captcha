@@ -99,8 +99,12 @@ namespace Goman_Plugin.Modules.AutoRename100IVOnCaught
             var manager = (IManager)sender;            
             if (e.CatchResponse.Status == POGOProtos.Networking.Responses.CatchPokemonResponse.Types.CatchStatus.CatchSuccess)
             {
+                
                 PokemonData lastCaught = Helpers.GomanHttpHelper.getPokemonCaught(manager.Pokemon, e.Pokemon);
+                if(manager.CalculateIVPerfection(lastCaught).Data­>99)
+                { 
                 await manager.RenameAllPokemonToIV(new List<PokemonData>() { lastCaught });
+               }
                 OnLogEvent(this, GetLog(new MethodResult() { Message = "Renamed Pokemon" + lastCaught.PokemonId.ToString(), MethodName = "RenameWithIv" }));
             }
         }

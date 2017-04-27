@@ -6,11 +6,11 @@ using Goman_Plugin.Model;
 using GoPlugin;
 using GoPlugin.Extensions;
 
-namespace Goman_Plugin.Modules.AutoRename100IVOnCaught
+namespace Goman_Plugin.Modules.AutoStratTechnique
 {
-    public partial class AutoRename100IVOnCaughtUserControl : UserControl
+    public partial class AutoStratTechniqueUserControl : UserControl
     {
-        public AutoRename100IVOnCaughtUserControl()
+        public AutoStratTechniqueUserControl()
         {
             InitializeComponent();
 
@@ -21,9 +21,9 @@ namespace Goman_Plugin.Modules.AutoRename100IVOnCaught
 
         internal void SetControls()
         {
-            cbkEnabled.Checked = Plugin.AutoRename100IVOnCaughtModule.Settings.Enabled;
-            fastObjectListViewLogs.SetObjects(Plugin.AutoRename100IVOnCaughtModule.Logs);
-            //Plugin.AutoRename100IVOnCaughtModule.LogEvent += (o, model) =>
+            cbkEnabled.Checked = Plugin.AutoStratTechniqueModule.Settings.Enabled;
+            fastObjectListViewLogs.SetObjects(Plugin.AutoStratTechniqueModule.Logs);
+            //Plugin.AutoStratTechniqueModule.LogEvent += (o, model) =>
             //{
              //   fastObjectListViewLogs.AddObject(model);
             //};
@@ -31,12 +31,12 @@ namespace Goman_Plugin.Modules.AutoRename100IVOnCaught
 
         private async void cbkEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            Plugin.AutoRename100IVOnCaughtModule.Settings.Enabled = cbkEnabled.Checked;
-            await Plugin.AutoRename100IVOnCaughtModule.SaveSettings();
-            if (!Plugin.AutoRename100IVOnCaughtModule.Settings.Enabled)
-                await Plugin.AutoRename100IVOnCaughtModule.Disable(true);
-            else if(!Plugin.AutoRename100IVOnCaughtModule.IsEnabled)
-                await Plugin.AutoRename100IVOnCaughtModule.Enable(true);
+            Plugin.AutoStratTechniqueModule.Settings.Enabled = cbkEnabled.Checked;
+            await Plugin.AutoStratTechniqueModule.SaveSettings();
+            if (!Plugin.AutoStratTechniqueModule.Settings.Enabled)
+                await Plugin.AutoStratTechniqueModule.Disable(true);
+            else if(!Plugin.AutoStratTechniqueModule.IsEnabled)
+                await Plugin.AutoStratTechniqueModule.Enable(true);
         }
 
         private void fastObjectListViewLogs_FormatCell(object sender, FormatCellEventArgs e)
